@@ -5,13 +5,13 @@
   "type": "module",
   "main": "./index.ts",
   "peerDependencies": {
-    "@tailwindcss/vite": "^4.2.4",
-    "daisyui": "^5.5.19",
-    "glob": "^13.0.6",
-    "tailwindcss": "^4.2.2",
-    "typescript": "^6.0.3",
-    "vite": "^8.0.10",
-    "vue": "^3.5.32"
+    "@tailwindcss/vite": ">=4.1.0",
+    "daisyui": ">=5.5.0",
+    "glob": ">=10.0.0",
+    "tailwindcss": ">=4.0.0",
+    "typescript": ">=5.8.3",
+    "vite": ">=6.4.1",
+    "vue": ">=3.5.0"
   },
   "exports": {
     ".": "./index.ts",
