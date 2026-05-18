@@ -12,6 +12,7 @@ const props = withDefaults(defineProps<SEARCHProps>(), {
     ghost: false,
     disabled: false,
     addOption: false,
+    autoCommit: false,
     required: false,
     multiple: false,
 })
@@ -266,13 +267,32 @@ function scrollHighlightedIntoView() {
     })
 }
 
-function onClickOutside(e: MouseEvent) {
-    if (!root.value) return
-    if (!root.value.contains(e.target as Node)) {
-        open.value = false
-        // En mode simple, si on clique à l'extérieur et qu'on est en édition
-        if (!props.multiple && isEditing.value) {
-            // Si la query est vide, garder la sélection vide
+function commitQuery() {
+    if (query.value === "") {
+        selectedValues.value = []
+        updateModel()
+        return
+    }
+    const match = props.listValues.find(
+        o => o.name.toLowerCase() === query.value.toLowerCase()
+    )
+    if (match) {
+        selectValue(match)
+    } else if (props.addOption) {
+        selectValue({ id: null, name: query.value })
+    } else {
+        selectedValues.value = []
+        updateModel()
+    }
+    isEditing.value = false
+    query.value = ""
+}
+
+function onBlurCleanup() {
+    if (!props.multiple && isEditing.value) {
+        if (props.autoCommit) {
+            commitQuery()
+        } else {
             if (query.value === "") {
                 selectedValues.value = []
                 updateModel()
@@ -283,23 +303,22 @@ function onClickOutside(e: MouseEvent) {
     }
 }
 
-function onFocusOut(e: FocusEvent) {
+function onClickOutside(e: MouseEvent) {
+    if (!root.value) return
+    if (!root.value.contains(e.target as Node)) {
+        open.value = false
+        onBlurCleanup()
+    }
+}
+
+function onFocusOut(_e: FocusEvent) {
     setTimeout(() => {
         if (!root.value) return
 
         const activeElement = document.activeElement
         if (!activeElement || !root.value.contains(activeElement)) {
             open.value = false
-            // En mode simple, arrêter l'édition quand on perd le focus
-            if (!props.multiple && isEditing.value) {
-                // Si la query est vide, garder la sélection vide
-                if (query.value === "") {
-                    selectedValues.value = []
-                    updateModel()
-                }
-                isEditing.value = false
-                query.value = ""
-            }
+            onBlurCleanup()
         }
     }, 0)
 }

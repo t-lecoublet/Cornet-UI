@@ -20,6 +20,7 @@ export interface SEARCHProps {
   listValues: SearchOption[]
   limit?: number
   addOption?: boolean
+  autoCommit?: boolean
   type?: string
   required?: boolean
   pattern?: string
