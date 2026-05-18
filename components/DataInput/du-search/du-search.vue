@@ -13,6 +13,8 @@ const props = withDefaults(defineProps<SEARCHProps>(), {
     disabled: false,
     addOption: false,
     autoCommit: false,
+    remoteSearch: false,
+    labelBy: "name",
     required: false,
     multiple: false,
 })
@@ -44,7 +46,9 @@ const computedInputClass = computed(() => {
     return classes.join(' ')
 })
 
-const emit = defineEmits(["update:modelValue", "select", "remove", "add"])
+const emit = defineEmits(["update:modelValue", "select", "remove", "add", "query"])
+
+const labelField = computed(() => props.labelBy ?? "name")
 
 const selectedValues = ref<any[]>([])
 watch(
@@ -72,7 +76,7 @@ const queryValue = computed(() =>
 
 const filteredValues = computed(() => {
     let values = props.listValues
-    if (query.value) {
+    if (query.value && !props.remoteSearch) {
         values = values.filter((el) =>
             el.name.toLowerCase().includes(query.value.toLowerCase())
         )
@@ -85,7 +89,7 @@ const filteredValues = computed(() => {
 
 const inputValue = computed(() => {
     if (props.multiple) {
-        const selectedPart = selectedValues.value.map((v) => v.name).join(", ")
+        const selectedPart = selectedValues.value.map((v) => v[labelField.value]).join(", ")
         if (selectedPart && query.value) {
             return `${selectedPart}, ${query.value}`
         } else if (selectedPart) {
@@ -94,11 +98,10 @@ const inputValue = computed(() => {
             return query.value
         }
     }
-    // En mode simple : si on est en train d'éditer, afficher la query, sinon la valeur sélectionnée
     if (isEditing.value) {
         return query.value
     }
-    return selectedValues.value[0]?.name || ""
+    return selectedValues.value[0]?.[labelField.value] || ""
 })
 
 function isSelected(option: SearchOption) {
@@ -197,6 +200,7 @@ function onInput(e: Event) {
         }
     }
 
+    emit("query", query.value)
     open.value = true
     highlightedIndex.value = 0
 }
@@ -274,10 +278,13 @@ function commitQuery() {
         return
     }
     const match = props.listValues.find(
-        o => o.name.toLowerCase() === query.value.toLowerCase()
+        o => String(o[labelField.value]).toLowerCase() === query.value.toLowerCase()
     )
     if (match) {
         selectValue(match)
+    } else if (props.remoteSearch && props.listValues.length > 0) {
+        // Recherche distante : sélectionner le meilleur résultat (premier)
+        selectValue(props.listValues[0])
     } else if (props.addOption) {
         selectValue({ id: null, name: query.value })
     } else {
@@ -372,7 +379,7 @@ onBeforeUnmount(() => {
                     @mouseover.prevent="highlightedIndex = (props.addOption && queryValue ? i + 1 : i)">
                     <a class="flex items-center gap-3 bg-transparent">
                         <slot name="option" :option="val" :index="i">
-                            {{ val.name }}
+                            {{ val[labelField] }}
                         </slot>
                     </a>
 

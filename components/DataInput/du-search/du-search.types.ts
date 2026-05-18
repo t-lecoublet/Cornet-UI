@@ -10,6 +10,7 @@ export type SEARCHSize = (typeof SEARCH_SIZES)[number]
 export interface SearchOption {
   id: any
   name: string
+  [key: string]: any
 }
 
 export interface SEARCHProps {
@@ -21,6 +22,10 @@ export interface SEARCHProps {
   limit?: number
   addOption?: boolean
   autoCommit?: boolean
+  /** Désactive le filtrage interne — les résultats viennent d'une recherche externe */
+  remoteSearch?: boolean
+  /** Clé de l'option utilisée comme libellé affiché (défaut : 'name') */
+  labelBy?: string
   type?: string
   required?: boolean
   pattern?: string
