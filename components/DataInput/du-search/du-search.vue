@@ -383,7 +383,7 @@ onBeforeUnmount(() => {
             enter-to-class="opacity-100 scale-100" leave-active-class="transition ease-in duration-75"
             leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
             <ul v-if="open" :id="listId"
-                class=" dropdown-content absolute mt-1 max-h-60 w-full overflow-auto rounded-box bg-base-100 shadow z-50 menu flex-nowrap"
+                class=" dropdown-content absolute mt-1 max-h-60 w-full overflow-auto rounded-box bg-base-100 shadow z-50 menu flex-nowrap gap-0.5"
                 :class="[subSizeClass]"
                 role="listbox">
                 <li v-if="props.addOption && queryValue" class="cursor-pointer rounded" :class="{
