@@ -72,6 +72,12 @@ export default {
       default: 'false',
     },
     {
+      title: 'clearable',
+      description: 'Show a clear button to deselect (single) or clear all (multiple)',
+      type: 'boolean',
+      default: 'false',
+    },
+    {
       title: 'ghost',
       description: 'Use ghost/transparent style',
       type: 'boolean',
@@ -368,6 +374,19 @@ const selected = ref(null) // will hold the id (trackBy value)
   labelBy="name"
   placeholder="Choose a country"
 />`,
+    },
+    {
+      title: 'Clearable',
+      description: 'Add `clearable` to show an ✕ button that clears the selection. For multi-select, it clears all selected values at once.',
+      preview: `<div class="flex flex-col gap-2 w-72">
+  <DuSelect :options="['Apple', 'Banana', 'Cherry']" clearable placeholder="Choose a fruit" />
+  <DuSelect :options="['Apple', 'Banana', 'Cherry']" multiple clearable placeholder="Select fruits..." />
+</div>`,
+      code: `<!-- Single clearable -->
+<DuSelect v-model="selected" :options="options" clearable placeholder="Choose..." />
+
+<!-- Multi-select clearable -->
+<DuSelect v-model="selected" :options="options" multiple clearable placeholder="Select..." />`,
     },
     {
       title: 'Sizes',

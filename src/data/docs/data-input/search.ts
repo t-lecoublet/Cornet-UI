@@ -40,6 +40,12 @@ export default {
       default: 'false',
     },
     {
+      title: 'clearable',
+      description: 'Show a ✕ on selected options in the dropdown to allow deselection',
+      type: 'boolean',
+      default: 'false',
+    },
+    {
       title: 'size',
       description: 'Size of the search input',
       type: 'string',
@@ -254,6 +260,40 @@ const selectedTags = ref([])
     ]"
   />
 </template>`,
+    },
+    {
+      title: 'Clearable',
+      description: 'Add `clearable` to display a ✕ on selected options in the dropdown. Clicking them deselects the value. Works in both single and multiple mode.',
+      preview: `<div class="flex flex-col gap-2 w-72">
+  <DuSearch
+    name="fruit"
+    id="search-clearable"
+    clearable
+    placeholder="Search a fruit..."
+    :listValues="[
+      { id: 1, name: 'Apple' },
+      { id: 2, name: 'Banana' },
+      { id: 3, name: 'Cherry' },
+    ]"
+  />
+  <DuSearch
+    name="tags"
+    id="search-clearable-multiple"
+    multiple
+    clearable
+    placeholder="Select tags..."
+    :listValues="[
+      { id: 1, name: 'Vue' },
+      { id: 2, name: 'React' },
+      { id: 3, name: 'TypeScript' },
+    ]"
+  />
+</div>`,
+      code: `<!-- Single clearable -->
+<DuSearch v-model="selected" name="fruit" id="fruit" clearable :listValues="fruits" />
+
+<!-- Multiple clearable -->
+<DuSearch v-model="selected" name="tags" id="tags" multiple clearable :listValues="tags" />`,
     },
     {
       title: 'Add new option',
