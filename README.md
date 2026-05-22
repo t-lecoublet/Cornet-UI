@@ -30,7 +30,7 @@ The server listens on `http://localhost:3000/mcp`.
 claude mcp add --transport http cornet http://localhost:3000/mcp
 ```
 
-Or in `.claude/mcp.json`:
+Or in `.mcp.json`:
 
 ```json
 {
