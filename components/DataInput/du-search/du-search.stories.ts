@@ -19,6 +19,7 @@ const meta: Meta<typeof DuSearch> = {
     addOption: { control: { type: "boolean" } },
     required: { control: { type: "boolean" } },
     multiple: { control: { type: "boolean" } },
+    clearable: { control: { type: "boolean" }, description: "Permettre la déselection depuis le dropdown" },
     limit: { control: { type: "number" } },
     placeholder: { control: { type: "text" } },
     pattern: { control: { type: "text" } },
@@ -296,6 +297,59 @@ export const Ghost: Story = {
       { id: 1, name: "Option 1" },
       { id: 2, name: "Option 2" },
       { id: 3, name: "Option 3" },
+    ],
+  },
+}
+
+// CLEARABLE
+export const Clearable: Story = {
+  render: (args: any) => ({
+    components: { DuSearch },
+    setup() {
+      const selectedValue = ref(null)
+      return { args, selectedValue }
+    },
+    template: `
+      <div class="flex flex-col gap-4 w-72">
+        <DuSearch v-model="selectedValue" v-bind="args" />
+        <div class="text-sm">Selected: {{ selectedValue?.name || 'None' }}</div>
+      </div>
+    `,
+  }),
+  args: {
+    clearable: true,
+    listValues: [
+      { id: 1, name: "Apple" },
+      { id: 2, name: "Banana" },
+      { id: 3, name: "Cherry" },
+      { id: 4, name: "Date" },
+    ],
+  },
+}
+
+// CLEARABLE MULTIPLE
+export const ClearableMultiple: Story = {
+  render: (args: any) => ({
+    components: { DuSearch },
+    setup() {
+      const selectedValues = ref([])
+      return { args, selectedValues }
+    },
+    template: `
+      <div class="flex flex-col gap-4 w-72">
+        <DuSearch v-model="selectedValues" v-bind="args" />
+        <div class="text-sm">Selected: {{ selectedValues.map(v => v.name).join(', ') || 'None' }}</div>
+      </div>
+    `,
+  }),
+  args: {
+    multiple: true,
+    clearable: true,
+    listValues: [
+      { id: 1, name: "JavaScript" },
+      { id: 2, name: "TypeScript" },
+      { id: 3, name: "Python" },
+      { id: 4, name: "Go" },
     ],
   },
 }

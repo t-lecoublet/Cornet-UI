@@ -36,4 +36,5 @@ export interface SEARCHProps {
   ghost?: boolean
   disabled?: boolean
   customClass?: string
+  clearable?: boolean
 }

@@ -26,4 +26,5 @@ export interface SELECTProps {
   trackBy?: string
   labelBy?: string
   returnObject?: boolean
+  clearable?: boolean
 }

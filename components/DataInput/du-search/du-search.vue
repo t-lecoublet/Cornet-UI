@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<SEARCHProps>(), {
     labelBy: "name",
     required: false,
     multiple: false,
+    clearable: false,
 })
 
 const { sizeClass } = useSizeMapping(props, 'input')
@@ -142,6 +143,31 @@ function selectValue(val: any) {
     }
 }
 
+function deselectValue(val: SearchOption) {
+    if (props.multiple) {
+        const idx = selectedValues.value.findIndex((v) => v.id === val.id && v.name === val.name)
+        if (idx > -1) {
+            selectedValues.value.splice(idx, 1)
+            emit('remove', val)
+            updateModel()
+        }
+    } else {
+        selectedValues.value = []
+        updateModel()
+        open.value = false
+        query.value = ''
+        isEditing.value = false
+    }
+}
+
+function handleOptionClick(val: SearchOption) {
+    if (props.clearable && isSelected(val)) {
+        deselectValue(val)
+    } else {
+        selectValue(val)
+    }
+}
+
 function onInput(e: Event) {
     const val = (e.target as HTMLInputElement).value
 
@@ -229,10 +255,10 @@ function onKeydown(e: KeyboardEvent) {
                 if (highlightedIndex.value === 0) {
                     selectValue(queryValue.value)
                 } else {
-                    selectValue(filteredValues.value[highlightedIndex.value - 1])
+                    handleOptionClick(filteredValues.value[highlightedIndex.value - 1])
                 }
             } else {
-                selectValue(filteredValues.value[highlightedIndex.value])
+                handleOptionClick(filteredValues.value[highlightedIndex.value])
             }
         }
         e.preventDefault()
@@ -375,12 +401,13 @@ onBeforeUnmount(() => {
                     'bg-base-300': highlightedIndex === (props.addOption && queryValue ? i + 1 : i) && !isSelected(val),
                     'bg-primary/75': isSelected(val) && highlightedIndex === (props.addOption && queryValue ? i + 1 : i)
                 }" role="option" :aria-selected="(highlightedIndex === (props.addOption && queryValue ? i + 1 : i))"
-                    @mousedown="selectValue(val)"
+                    @mousedown="handleOptionClick(val)"
                     @mouseover.prevent="highlightedIndex = (props.addOption && queryValue ? i + 1 : i)">
                     <a class="flex items-center gap-3 bg-transparent">
                         <slot name="option" :option="val" :index="i">
                             {{ val[labelField] }}
                         </slot>
+                        <span v-if="clearable && isSelected(val)" class="ml-auto opacity-60 hover:opacity-100" aria-hidden="true">✕</span>
                     </a>
 
                 </li>

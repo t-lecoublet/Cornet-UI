@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<SELECTProps>(), {
     trackBy: 'id',
     labelBy: 'name',
     returnObject: false,
+    clearable: false,
     ghost: false,
     variant: 'default',
     size: 'default',
@@ -119,10 +120,16 @@ function toggleOption(opt: any) {
         }
         emitModelForMultiple()
     } else {
-        selectedSingle.value = v
-        emit('select', optionFromValue(v))
-        emitModelForSingle(v)
-        if (props.closeOnSelect) close()
+        if (props.clearable && selectedSingle.value === v) {
+            selectedSingle.value = null
+            emit('update:modelValue', null)
+            close()
+        } else {
+            selectedSingle.value = v
+            emit('select', optionFromValue(v))
+            emitModelForSingle(v)
+            if (props.closeOnSelect) close()
+        }
     }
 }
 
@@ -325,6 +332,7 @@ const selectedOption = computed(() => optionFromValue(selectedSingle.value))
                                 <slot name="option" :option="opt" :index="i">
                                     {{ labelFromOption(opt) }}
                                 </slot>
+                                <span v-if="clearable && isSelected(opt)" class="ml-auto opacity-60 hover:opacity-100" aria-hidden="true">✕</span>
                             </a>
                         </li>
 

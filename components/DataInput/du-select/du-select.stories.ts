@@ -30,6 +30,7 @@ const meta: Meta<typeof DuSelect> = {
     ghost: { control: "boolean", description: "Style fantôme" },
     disabled: { control: "boolean", description: "Désactivé" },
     checkboxes: { control: "boolean", description: "Afficher des checkboxes" },
+    clearable: { control: "boolean", description: "Permettre la déselection" },
     placeholder: { control: "text", description: "Texte de placeholder" },
     searchPlaceholder: { control: "text", description: "Placeholder de la recherche" },
     returnObject: { control: "boolean", description: "Retourner l'objet complet" },
@@ -187,6 +188,37 @@ export const Ghost: Story = {
     options: sampleOptions,
     ghost: true,
     placeholder: "Select ghost style...",
+  },
+}
+
+export const Clearable: Story = {
+  render: (args: any) => ({
+    components: { DuSelect },
+    setup() {
+      return { args }
+    },
+    template: defaultTplStr,
+  }),
+  args: {
+    options: sampleOptions,
+    clearable: true,
+    placeholder: "Choisissez une option...",
+  },
+}
+
+export const ClearableMultiple: Story = {
+  render: (args: any) => ({
+    components: { DuSelect },
+    setup() {
+      return { args }
+    },
+    template: defaultTplStr,
+  }),
+  args: {
+    options: sampleOptions,
+    multiple: true,
+    clearable: true,
+    placeholder: "Sélectionnez plusieurs options...",
   },
 }
 
