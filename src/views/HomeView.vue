@@ -193,9 +193,9 @@ export default defineConfig({
           </h1>
           <p class="text-lg text-base-content/60">
             55 beautifully crafted components, powered by
-            <DuLink target="_blank" href="https://daisyui.com" class="font-semibold" variant="primary">daisyUI 5</DuLink>
+            <DuLink target="_blank" href="https://daisyui.com" class="font-semibold">daisyUI 5</DuLink>
             &amp;
-            <DuLink target="_blank" href="https://tailwindcss.com/" class="font-semibold" variant="primary">Tailwind CSS 4</DuLink>
+            <DuLink target="_blank" href="https://tailwindcss.com/" class="font-semibold">Tailwind CSS 4</DuLink>
             Pick your flavors. Stack your scoops. Ship faster.
           </p>
         </div>
@@ -247,7 +247,7 @@ export default defineConfig({
     <section id="flavors" class="container mx-auto px-6 py-24">
       <div class="text-center mb-14">
         <h2 class="text-4xl font-black mb-3">Pick your flavors</h2>
-        <p class="text-base-content/55 max-w-md mx-auto">
+        <p class="text-base-content/70 max-w-md mx-auto">
           Every category is a scoop. Mix and match to build the UI you need.
         </p>
       </div>
@@ -290,7 +290,7 @@ export default defineConfig({
       <div class="container mx-auto px-6">
         <div class="text-center mb-14">
           <h2 class="text-4xl font-black mb-3">Why Cornet?</h2>
-          <p class="text-base-content/55 max-w-sm mx-auto">
+          <p class="text-base-content/70 max-w-sm mx-auto">
             Because great UIs deserve a solid cone to hold them together.
           </p>
         </div>
@@ -307,7 +307,7 @@ export default defineConfig({
               </svg>
             </div>
             <h3 class="font-bold text-base mb-2">{{ why.headline }}</h3>
-            <p class="text-sm text-base-content/55">{{ why.body }}</p>
+            <p class="text-sm text-base-content/70">{{ why.body }}</p>
           </DuCard>
         </div>
       </div>
@@ -317,7 +317,7 @@ export default defineConfig({
     <section id="quickstart" class="container mx-auto px-6 py-24">
       <div class="text-center mb-14">
         <h2 class="text-4xl font-black mb-3">First scoop in 4 steps</h2>
-        <p class="text-base-content/55 max-w-sm mx-auto">
+        <p class="text-base-content/70 max-w-sm mx-auto">
           No npm publish, no registry — just Git. Pick your setup and go.
         </p>
       </div>
@@ -332,19 +332,19 @@ export default defineConfig({
             <DuTabs class="max-w-[85dvw]" v-model="selectedTab" :items="installTabs" type="box" name="install_tabs">
               <template #content-0>
                 <div class="pt-3">
-                  <p class="text-sm text-base-content/55 mb-2">{{ installMethods[0].description }}</p>
+                  <p class="text-sm text-base-content/70 mb-2">{{ installMethods[0].description }}</p>
                   <CodeBlock :code="installMethods[0].code" />
                 </div>
               </template>
               <template #content-1>
                 <div class="pt-3">
-                  <p class="text-sm text-base-content/55 mb-2">{{ installMethods[1].description }}</p>
+                  <p class="text-sm text-base-content/70 mb-2">{{ installMethods[1].description }}</p>
                   <CodeBlock :code="installMethods[1].code" />
                 </div>
               </template>
               <template #content-2>
                 <div class="pt-3">
-                  <p class="text-sm text-base-content/55 mb-2">{{ installMethods[2].description }}</p>
+                  <p class="text-sm text-base-content/70 mb-2">{{ installMethods[2].description }}</p>
                   <CodeBlock class="max-w-[85dvw]" :code="installMethods[2].code" />
                 </div>
               </template>
@@ -422,9 +422,9 @@ export default defineConfig({
       <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-3">
           <Logo class="h-7 w-min" />
-          <span class="text-sm text-base-content/50">Vue 3 component library for DaisyUI</span>
+          <span class="text-sm text-base-content/80">Vue 3 component library for DaisyUI</span>
         </div>
-        <div class="text-xs text-base-content/35">
+        <div class="text-xs text-base-content/80">
           Built with Vue 3 · DaisyUI 5 · Tailwind CSS 4
         </div>
       </div>

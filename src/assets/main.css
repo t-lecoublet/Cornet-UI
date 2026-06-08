@@ -56,6 +56,11 @@
   --noise: 0;
 }
 
+/* Force sufficient contrast on inactive tab labels (DaisyUI default is ~40% opacity) */
+.tabs-box .tab {
+  color: oklch(from var(--color-base-content) l c h / 0.7);
+}
+
 @layer utilities {
   .card-dash {
     @layer daisyui.l1.l2 {

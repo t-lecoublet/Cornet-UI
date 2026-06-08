@@ -33,7 +33,7 @@ function choose(pref: RepoPref) {
             </svg>
             <div>
               <div class="font-semibold text-sm">GitLab</div>
-              <div class="text-xs text-base-content/50 mt-0.5 leading-relaxed">
+              <div class="text-xs text-base-content/70 mt-0.5 leading-relaxed">
                 Independent CNRS lab — sovereign hosting, no dependency on a big platform.
               </div>
             </div>
@@ -49,7 +49,7 @@ function choose(pref: RepoPref) {
             </svg>
             <div>
               <div class="font-semibold text-sm">GitHub</div>
-              <div class="text-xs text-base-content/50 mt-0.5 leading-relaxed">
+              <div class="text-xs text-base-content/70 mt-0.5 leading-relaxed">
                 Microsoft — wider reach, the code is more likely to stay accessible long-term.
               </div>
             </div>
