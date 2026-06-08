@@ -73,6 +73,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
         <div class="flex items-center gap-3 px-2">
           <button
             v-if="isDocsRoute"
+            aria-label="Toggle sidebar navigation"
             class="lg:hidden p-1.5 rounded-lg hover:bg-base-200 transition-colors cursor-pointer"
             @click="sidebarOpen = !sidebarOpen"
           >
@@ -92,6 +93,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
         <!-- Fake search button -->
         <div class="hidden md:flex flex-1 px-6">
           <button
+            aria-label="Open search"
             class="flex items-center gap-2 w-full max-w-sm px-3 py-1.5 rounded-lg bg-base-200/60 border border-base-300 text-sm text-base-content/40 hover:border-base-content/20 hover:bg-base-200 transition-colors cursor-pointer"
             @click="openSearch"
           >
@@ -103,7 +105,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
           </button>
         </div>
         <!-- Mobile search icon -->
-        <button class="md:hidden p-1.5 rounded-lg hover:bg-base-200 transition-colors cursor-pointer" @click="openSearch">
+        <button aria-label="Open search" class="md:hidden p-1.5 rounded-lg hover:bg-base-200 transition-colors cursor-pointer" @click="openSearch">
           <svg class="w-5 h-5 text-base-content/50" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
@@ -136,6 +138,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
             :data-tip="`Switch to ${preference === 'gitlab' ? 'GitHub' : 'GitLab'}`"
           >
             <button
+              :aria-label="`Switch to ${preference === 'gitlab' ? 'GitHub' : 'GitLab'}`"
               class="p-1.5 rounded-lg border border-base-300 text-base-content/50 hover:text-base-content/80 hover:border-base-content/20 hover:bg-base-200 transition-colors cursor-pointer"
               @click="set(preference === 'gitlab' ? 'github' : 'gitlab')"
             >
@@ -187,7 +190,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
             </div>
           </template>
         </DuSearch>
-        <button class="shrink-0 text-xs text-base-content/30 hover:text-base-content/60 transition-colors cursor-pointer" @click="closeSearch">
+        <button aria-label="Close search" class="shrink-0 text-xs text-base-content/30 hover:text-base-content/60 transition-colors cursor-pointer" @click="closeSearch">
           Esc
         </button>
       </div>
