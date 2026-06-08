@@ -1,4 +1,43 @@
 Options -MultiViews
+
+# ─── SPA routing ─────────────────────────────────────────────
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.html [QSA,L]
+
+# ─── Compression gzip ────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# ─── Cache: assets hashés (1 an) ─────────────────────────────
+# Les fichiers /assets/*.js et /assets/*.css ont un hash dans leur nom
+# → immutable, cache maximal
+<IfModule mod_headers.c>
+  <FilesMatch "\.[0-9a-f]{8,}\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # SVG, favicon : 1 semaine
+  <FilesMatch "\.(svg|ico)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+
+  # index.html : jamais caché (sinon les nouveaux deploys ne se voient pas)
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+  </FilesMatch>
+
+  # robots.txt : 1 jour
+  <FilesMatch "^robots\.txt$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+</IfModule>
+
+# ─── Types MIME ──────────────────────────────────────────────
+<IfModule mod_mime.c>
+  AddType application/javascript .js .mjs
+  AddType text/css .css
+  AddType image/svg+xml .svg
+</IfModule>
