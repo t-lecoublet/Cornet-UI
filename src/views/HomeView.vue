@@ -6,7 +6,6 @@ const { transformUrl } = useRepoPreference()
 import { DuButton, DuBadge, DuCard, DuTabs, DuLink } from 'daisyui-vue-kit'
 import CodeBlock from '@/components/CodeBlock.vue'
 import Logo from '@/components/logos/logo.vue'
-import LogoLong from '@/components/logos/logoLong.vue'
 
 // ─── SVG icon paths (Heroicons 24 outline) ───────────────
 const icons = {
@@ -175,7 +174,14 @@ export default defineConfig({
 
       <div class="container mx-auto px-6 flex flex-col items-center text-center gap-10 relative">
         <div class="relative inline-block">
-          <LogoLong alt="Cornet – daisyUI + Vue" class="w-full h-min max-w-xl" />
+          <img
+            src="/logoLong.svg"
+            alt="Cornet – daisyUI + Vue component library"
+            class="w-full h-min max-w-xl"
+            width="2750"
+            height="905"
+            fetchpriority="high"
+          >
           <span class="beta-badge beta-badge--hero">Beta</span>
         </div>
 
