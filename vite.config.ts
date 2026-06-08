@@ -21,4 +21,15 @@ export default defineConfig({
       'vue': fileURLToPath(new URL('./node_modules/vue/dist/vue.esm-bundler.js', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('/lib/components/') || id.includes('/lib/composables/')) {
+            return 'vendor-cornet'
+          }
+        },
+      },
+    },
+  },
 })

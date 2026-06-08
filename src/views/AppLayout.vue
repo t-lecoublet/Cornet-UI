@@ -2,7 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter, RouterLink, RouterView } from 'vue-router'
 import { DuButton, DuModal, DuNavbar, DuSearch } from 'daisyui-vue-kit'
-import { docsNav, docsRegistry } from '@/data/docs/registry'
+import { docsNav } from '@/data/docs/registry'
 import Logo from '@/components/logos/logo.vue'
 import RepoChoiceModal from '@/components/RepoChoiceModal.vue'
 import { useRepoPreference } from '@/composables/useRepoPreference'
@@ -25,7 +25,7 @@ const searchItems = docsNav.flatMap(cat =>
     id: item.path,
     name: item.label,
     category: cat.category,
-    description: docsRegistry[item.path]?.description ?? '',
+    description: item.description ?? '',
   }))
 )
 const navSearch = ref<{ id: string; name: string } | null>(null)
