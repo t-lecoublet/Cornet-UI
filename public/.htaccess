@@ -14,13 +14,13 @@ RewriteRule ^ index.html [QSA,L]
 # Les fichiers /assets/*.js et /assets/*.css ont un hash dans leur nom
 # → immutable, cache maximal
 <IfModule mod_headers.c>
-  <FilesMatch "\.[0-9a-f]{8,}\.(js|css)$">
+  <FilesMatch "\.(js|css)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 
   # SVG, favicon : 1 semaine
   <FilesMatch "\.(svg|ico)$">
-    Header set Cache-Control "public, max-age=604800"
+    Header set Cache-Control "public, max-age=31536000"
   </FilesMatch>
 
   # index.html : jamais caché (sinon les nouveaux deploys ne se voient pas)
