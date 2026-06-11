@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type TABLEItemProps } from './du-table-item.types'
 
-const props = withDefaults(
+withDefaults(
   defineProps<TABLEItemProps>(),
   {
     customClass: "",

@@ -15,7 +15,7 @@ echo
 
 cat > "$OUTPUT_FILE" << 'EOF'
 /**
- * Types and Interfaces exports for daisyui-vue-kit
+ * Types and Interfaces exports for cornet-ui
  * Auto-generated file - do not edit manually
  */
 
@@ -24,11 +24,11 @@ EOF
 extract_and_write_types() {
     local file=$1
     local relative_path=${file#$BASE_DIR/}
-    local import_path="../components/${relative_path}"
+    local import_path="../components/${relative_path%.ts}"
     
-    types=$(grep -oP 'export type \K[A-Z_][A-Za-z0-9_]*(?=\s*=)' "$file" 2>/dev/null)
-    
-    interfaces=$(grep -oP 'export interface \K[A-Z_][A-Za-z0-9_]*(?=\s*{)' "$file" 2>/dev/null)
+    types=$(grep -oP 'export type \K[A-Za-z_][A-Za-z0-9_]*(?=\s*=)' "$file" 2>/dev/null)
+
+    interfaces=$(grep -oP 'export interface \K[A-Za-z_][A-Za-z0-9_]*' "$file" 2>/dev/null)
     
     all_exports=""
     

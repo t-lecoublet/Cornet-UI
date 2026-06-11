@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { type Size, useSizeMapping } from "../../../composables/useSizeProps"
 import { type Variant, useVariantMapping } from "../../../composables/useVariantProps"
-import { type STATUSSize, type STATUSVariant } from './du-status.types'
 import { computed } from "vue"
 
 // Définition des types pour les props

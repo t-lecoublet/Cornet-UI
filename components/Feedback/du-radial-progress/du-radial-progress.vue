@@ -16,7 +16,7 @@ const props = withDefaults(
 const { colorClass } = useVariantMapping(props, "text");
 
 const styleVar = computed(() => {
-  let styleObject: any = {
+  const styleObject: any = {
     "--value": props.value?.toString() || "0",
   }
   // let styles = `--value: ${props.value};`;

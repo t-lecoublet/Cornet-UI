@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { type Size, useSizeMapping } from "../../../composables/useSizeProps"
-import { type KBDSize } from './du-kbd.types'
 
 // Définition des types pour les props
 const props = withDefaults(

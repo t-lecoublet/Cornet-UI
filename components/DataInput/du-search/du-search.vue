@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, reactive, nextTick, onMounted, onBeforeUnmount, watch } from "vue"
 import { useSizeMapping, type Size } from "../../../composables/useSizeProps"
-import { useVariantMapping, type Variant } from "../../../composables/useVariantProps"
+import { useVariantMapping } from "../../../composables/useVariantProps"
 import type { SEARCHProps, SearchOption } from "./du-search.types"
 
 const props = withDefaults(defineProps<SEARCHProps>(), {
@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<SEARCHProps>(), {
     ghost: false,
     disabled: false,
     addOption: false,
+    addOptionText: 'Add',
+    noResultsText: 'No results',
     autoCommit: false,
     remoteSearch: false,
     labelBy: "name",
@@ -47,7 +49,13 @@ const computedInputClass = computed(() => {
     return classes.join(' ')
 })
 
-const emit = defineEmits(["update:modelValue", "select", "remove", "add", "query"])
+const emit = defineEmits<{
+    'update:modelValue': [value: any]
+    select: [option: SearchOption]
+    remove: [option: SearchOption]
+    add: [option: SearchOption]
+    query: [query: string]
+}>()
 
 const labelField = computed(() => props.labelBy ?? "name")
 
@@ -171,34 +179,34 @@ function handleOptionClick(val: SearchOption) {
 function onInput(e: Event) {
     const val = (e.target as HTMLInputElement).value
 
-    // En mode simple, commencer l'édition dès qu'on tape
+    // In single mode, start editing as soon as the user types
     if (!props.multiple) {
         isEditing.value = true
     }
 
     if (props.multiple) {
-        // Reconstruit la partie des valeurs sélectionnées
+        // Rebuild the selected-values part of the input
         const selectedPart = selectedValues.value.map((v) => v.name).join(", ")
 
-        // Extrait la query en retirant la partie des valeurs sélectionnées
+        // Extract the query by stripping the selected-values part
         let newQuery = ""
         if (selectedPart && val.startsWith(selectedPart)) {
-            // Retire la partie sélectionnée + la virgule et l'espace qui suivent
+            // Strip the selected part plus the trailing comma and space
             const remainder = val.slice(selectedPart.length)
             if (remainder.startsWith(", ")) {
-                newQuery = remainder.slice(2) // Retire ", "
+                newQuery = remainder.slice(2) // Strip ", "
             } else if (remainder === "") {
                 newQuery = ""
             } else {
-                // Cas où on modifie directement après les valeurs sélectionnées
+                // Editing right after the selected values
                 newQuery = remainder
             }
         } else if (!selectedPart) {
-            // Aucune valeur sélectionnée, tout l'input est la query
+            // No selected value, the whole input is the query
             newQuery = val
         }
 
-        // Vérifie si on tape une virgule pour ajouter une nouvelle valeur
+        // A comma in the query adds a new value
         if (newQuery.includes(",")) {
             const parts = newQuery.split(",").map((p) => p.trim()).filter(Boolean)
             const lastPart = parts.pop()
@@ -219,7 +227,7 @@ function onInput(e: Event) {
         }
     } else {
         query.value = val
-        // En mode simple, si l'input est vide, vider la sélection
+        // In single mode, an empty input clears the selection
         if (val === "") {
             selectedValues.value = []
             updateModel()
@@ -265,9 +273,9 @@ function onKeydown(e: KeyboardEvent) {
     } else if (e.key === "Escape") {
         open.value = false
         highlightedIndex.value = -1
-        // En mode simple, arrêter l'édition
+        // In single mode, stop editing
         if (!props.multiple && isEditing.value) {
-            // Si la query est vide, garder la sélection vide
+            // If the query is empty, keep the selection empty
             if (query.value === "") {
                 selectedValues.value = []
                 updateModel()
@@ -277,7 +285,7 @@ function onKeydown(e: KeyboardEvent) {
         }
         e.preventDefault()
     } else if (e.key === "Backspace" && props.multiple) {
-        // Ne supprime une valeur sélectionnée que si la query est vide
+        // Only remove a selected value when the query is empty
         if (query.value === "" && selectedValues.value.length > 0) {
             const removed = selectedValues.value.pop()
             emit("remove", removed)
@@ -309,7 +317,7 @@ function commitQuery() {
     if (match) {
         selectValue(match)
     } else if (props.remoteSearch && props.listValues.length > 0) {
-        // Recherche distante : sélectionner le meilleur résultat (premier)
+        // Remote search: select the best (first) result
         selectValue(props.listValues[0])
     } else if (props.addOption) {
         selectValue({ id: null, name: query.value })
@@ -356,7 +364,7 @@ function onFocusOut(_e: FocusEvent) {
     }, 0)
 }
 
-function onFocus(e: FocusEvent) {
+function onFocus(_e: FocusEvent) {
     if (!open.value) {
         open.value = true
     }
@@ -389,11 +397,11 @@ onBeforeUnmount(() => {
                 <li v-if="props.addOption && queryValue" class="cursor-pointer rounded" :class="{
                     'bg-base-300': highlightedIndex === 0
                 }" role="option" :aria-selected="(highlightedIndex === 0)" @mousedown="selectValue(queryValue)">
-                    <slot name="add-option" :query="query">Ajouter "{{ query }}"</slot>
+                    <slot name="add-option" :query="query">{{ addOptionText }} "{{ query }}"</slot>
                 </li>
 
                 <li v-if="!props.addOption && filteredValues.length === 0" class=" text-gray-400">
-                    <slot name="no-results">Aucun résultat</slot>
+                    <slot name="no-results">{{ noResultsText }}</slot>
                 </li>
 
                 <li v-for="(val, i) in filteredValues" :key="val.id" class="block w-full rounded-box" :class="{

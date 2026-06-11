@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { type Size, useSizeMapping } from '../../../composables/useSizeProps'
-import { type CARDSize, type CARDProperty } from './du-card.types'
 
 const props = withDefaults(
   defineProps<{

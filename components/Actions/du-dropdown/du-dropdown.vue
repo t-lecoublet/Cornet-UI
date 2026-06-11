@@ -26,7 +26,7 @@ const getPlacementClasses = (input: PlacementInput): string[] => {
 
   if (typeof input === 'string') {
     if (input.includes(',')) {
-      return input.split(',').map(s => s.trim()).filter(Boolean).map(placementToClass)
+      return input.split(',').map(s => s.trim()).filter(Boolean).map(s => placementToClass(s as PlacementValue))
     }
     return [placementToClass(input as PlacementValue)]
   }

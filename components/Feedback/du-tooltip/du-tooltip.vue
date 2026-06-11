@@ -30,6 +30,8 @@ const positionClass = computed(() => {
       return "tooltip-bottom";
     case "left":
       return "tooltip-left";
+    default:
+      return "";
   }
 });
 

@@ -45,8 +45,6 @@ const handleChange = (value: number) => {
     return;
   }
   if (value === internalValue.value && props.clearable) {
-    console.log("Clearing rating");
-
     internalValue.value = 0;
     emit("update:modelValue", 0);
     emit("change", 0);

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue'
-import { type MODALPlacement } from './du-modal.types'
 
 const props = withDefaults(
   defineProps<{
@@ -82,7 +81,7 @@ watch(
   },
 )
 
-function handleEscapeKey(event: KeyboardEvent) {
+function handleEscapeKey(_event: KeyboardEvent) {
   if (props.closeOnEscape) {
     closeModal()
   }

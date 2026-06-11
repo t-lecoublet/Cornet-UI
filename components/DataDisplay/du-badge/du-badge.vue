@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { type Variant, useVariantMapping } from '../../../composables/useVariantProps'
 import { type Size, useSizeMapping } from '../../../composables/useSizeProps'
-import { type BADGESize, type BADGEVariant } from './du-badge.types'
 
 // Définition des types pour les props
 const props = withDefaults(
@@ -61,6 +60,7 @@ const svgIcon = computed(() => {
     }
     return ''
   }
+  return ''
 })
 </script>
 <template>

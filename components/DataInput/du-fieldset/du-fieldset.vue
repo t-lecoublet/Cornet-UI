@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type FIELDSETProps } from './du-fieldset.types'
 
-const props = withDefaults(
+withDefaults(
   defineProps<FIELDSETProps>(),
   {},
 )

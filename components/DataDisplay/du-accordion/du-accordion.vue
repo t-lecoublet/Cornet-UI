@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
-import { type ACCORDIONItem, type ACCORDIONModifier } from './du-accordion.types'
+import { type ACCORDIONItem } from './du-accordion.types'
 
 const props = withDefaults(
   defineProps<{
