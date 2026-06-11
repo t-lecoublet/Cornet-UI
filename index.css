@@ -1,1 +1,5 @@
-/* Automatically generated file to exclude unused components */
+/* Cornet CSS entry.
+   During `vite build`, the Cornet Vite plugin temporarily appends
+   `@source not` directives here to exclude unused components from
+   Tailwind's scanning, then restores this file. Without the plugin,
+   Tailwind simply scans every component: everything still works. */
