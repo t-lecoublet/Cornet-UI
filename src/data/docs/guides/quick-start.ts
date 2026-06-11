@@ -18,7 +18,7 @@ export default {
   <DuButton variant="secondary">Secondary</DuButton>
 </div>`,
       code: `<script setup lang="ts">
-import { DuButton } from 'daisyui-vue-kit'
+import { DuButton } from 'cornet-ui'
 </script>
 
 <template>

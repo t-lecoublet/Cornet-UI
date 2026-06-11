@@ -40,7 +40,7 @@ echo "Done."`,
       lang: 'vue',
       code: `<script setup lang="ts">
 // Before (package)
-import { DuButton } from 'daisyui-vue-kit'
+import { DuButton } from 'cornet-ui'
 
 // After (local copy)
 import DuButton from '@/components/Actions/du-button/du-button.vue'

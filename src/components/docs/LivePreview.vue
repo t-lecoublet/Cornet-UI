@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent, compile, h, ref, reactive, computed, watch, type Component, type Ref } from 'vue'
-import * as CornetComponents from 'daisyui-vue-kit'
+import * as CornetComponents from 'cornet-ui'
 
 const duComponents = Object.fromEntries(
   Object.entries(CornetComponents).filter(

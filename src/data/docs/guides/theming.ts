@@ -2,7 +2,7 @@ import type { DocPageData } from '@/types/docs'
 
 export default {
   title: 'Theming',
-  description: 'daisyui-vue-kit inherits DaisyUI 5 themes. Switch between built-in themes or create your own.',
+  description: 'Cornet inherits DaisyUI 5 themes. Switch between built-in themes or create your own.',
   category: 'Guides',
   sections: [
     {

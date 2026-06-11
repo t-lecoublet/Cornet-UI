@@ -49,7 +49,7 @@ Add this line to your dependency file (package.json):
 
 ```json
 "dependencies": {
-  "daisyui-vue-kit": "file:lib"
+  "cornet-ui": "file:lib"
 }
 ```
 
@@ -59,7 +59,7 @@ Finally add the vite plugin and import the lib in your css file:
 
 ```javascript
 // vite.config.js
-import vueDaisyUI from 'daisyui-vue-kit/plugin-vite'
+import vueDaisyUI from 'cornet-ui/plugin-vite'
 
 // ... Existing code
 export default defineConfig({
@@ -74,7 +74,7 @@ export default defineConfig({
 ```css
 /* your.css */
 @import "tailwindcss";
-@import "daisyui-vue-kit/css";
+@import "cornet-ui/css";
 @plugin "daisyui";
 ```
 
@@ -84,7 +84,7 @@ You can refer to this [Nuxt project with kit](https://gitlab.limos.fr/hub-isima/
 
 ## Storybook
 
-Library also provide storybook stories to test components. So you can install it and run daisyui-vue-kit stories.
+Library also provide storybook stories to test components. So you can install it and run Cornet stories.
 
 See [storybook](https://storybook.js.org/docs/vue/get-started/install) documentation for more information.
 

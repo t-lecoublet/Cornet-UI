@@ -3,14 +3,14 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
-import vueDaisyUI from 'daisyui-vue-kit/plugin-vite'
+import cornetPlugin from 'cornet-ui/plugin-vite'
 
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vueDaisyUI({
-      showOutput: false
+    cornetPlugin({
+      showOutput: true
     }),
     vue(),
     tailwindcss()

@@ -163,7 +163,7 @@ export const docsNav: NavCategory[] = [
     items: [
       { label: 'Installation', path: '/docs/guides/installation', description: 'No npm publish, no registry — just Git. Pick your setup and go.' },
       { label: 'Quick Start', path: '/docs/guides/quick-start', description: 'Start using components in minutes. A practical introduction to the most common patterns.' },
-      { label: 'Theming', path: '/docs/guides/theming', description: 'daisyui-vue-kit inherits DaisyUI 5 themes. Switch between built-in themes or create your own.' },
+      { label: 'Theming', path: '/docs/guides/theming', description: 'Cornet inherits DaisyUI 5 themes. Switch between built-in themes or create your own.' },
       { label: 'Copy Components', path: '/docs/guides/copy-components', description: 'Skip the submodule — download only the components and composables you need.' },
       { label: 'MCP Server', path: '/docs/guides/mcp', description: 'Use Cornet components directly in your AI assistant via the Model Context Protocol (MCP).' },
     ],

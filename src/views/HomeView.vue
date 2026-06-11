@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useRepoPreference } from '@/composables/useRepoPreference'
 
 const { transformUrl } = useRepoPreference()
-import { DuButton, DuBadge, DuCard, DuTabs, DuLink } from 'daisyui-vue-kit'
+import { DuButton, DuBadge, DuCard, DuTabs, DuLink } from 'cornet-ui'
 import CodeBlock from '@/components/CodeBlock.vue'
 import Logo from '@/components/logos/logo.vue'
 
@@ -140,7 +140,7 @@ const postSteps = [
     n: '02',
     label: 'Add the Vite plugin',
     code: `// vite.config.ts
-import vueDaisyUI from 'daisyui-vue-kit/plugin-vite'
+import vueDaisyUI from 'cornet-ui/plugin-vite'
 
 export default defineConfig({
   plugins: [vueDaisyUI({ showOutput: true }), vue(), tailwindcss()]
@@ -151,13 +151,13 @@ export default defineConfig({
     label: 'Import the CSS',
     code: `/* your main CSS file */
 @import "tailwindcss";
-@import "daisyui-vue-kit/css";
+@import "cornet-ui/css";
 @plugin "daisyui";`,
   },
   {
     n: '04',
     label: 'Use a component',
-    code: `import { DuButton } from 'daisyui-vue-kit'
+    code: `import { DuButton } from 'cornet-ui'
 
 <DuButton variant="primary">Hello!</DuButton>`,
   },

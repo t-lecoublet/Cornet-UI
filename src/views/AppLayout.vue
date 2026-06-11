@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { useRoute, useRouter, RouterLink, RouterView } from 'vue-router'
-import { DuButton, DuModal, DuNavbar, DuSearch } from 'daisyui-vue-kit'
+import { DuButton, DuModal, DuNavbar, DuSearch } from 'cornet-ui'
 import { docsNav } from '@/data/docs/registry'
 import Logo from '@/components/logos/logo.vue'
 import RepoChoiceModal from '@/components/RepoChoiceModal.vue'

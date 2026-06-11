@@ -41,7 +41,7 @@ npm install ./lib`,
       ],
       lang: 'ts',
       code: `// vite.config.ts
-import vueDaisyUI from 'daisyui-vue-kit/plugin-vite'
+import vueDaisyUI from 'cornet-ui/plugin-vite'
 
 export default defineConfig({
   plugins: [vueDaisyUI({ showOutput: true }), vue(), tailwindcss()]
@@ -56,7 +56,7 @@ export default defineConfig({
       ],
       code: `/* your main CSS file */
 @import "tailwindcss";
-@import "daisyui-vue-kit/css";
+@import "cornet-ui/css";
 @plugin "daisyui";`,
     },
     {
@@ -66,7 +66,7 @@ export default defineConfig({
         { label: 'Cornet button', href: '/docs/actions/button' },
         { label: 'Vue components docs', href: 'https://vuejs.org/guide/essentials/component-basics' },
       ],
-      code: `import { DuButton } from 'daisyui-vue-kit'
+      code: `import { DuButton } from 'cornet-ui'
 
 <DuButton variant="primary">Hello World!</DuButton>`,
     },

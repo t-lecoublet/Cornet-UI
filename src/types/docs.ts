@@ -26,6 +26,7 @@ export interface DocProp {
 export interface DocSlot {
   title: string
   description: string
+  links?: DocLink[]
   preview?: string
   code?: string
 }
