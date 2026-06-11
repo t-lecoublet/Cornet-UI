@@ -1,0 +1,62 @@
+# CI for the Cornet library (lib branch).
+# GitLab LIMOS is the source of truth; the GitHub repo is a mirror.
+
+image: node:22
+
+stages:
+  - check
+  - publish
+
+default:
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  before_script:
+    - npm ci --cache .npm --prefer-offline --no-audit --no-fund
+
+lint:
+  stage: check
+  script:
+    - npm run lint
+
+type-check:
+  stage: check
+  script:
+    - npm run type-check
+
+test:
+  stage: check
+  script:
+    - npm test
+
+build:
+  stage: check
+  script:
+    - npm run build
+    - npm pack --dry-run
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+# Regenerating types/index.ts must not produce a diff (anti-drift guard).
+types-drift:
+  stage: check
+  script:
+    - npm run generate:types
+    - git diff --exit-code types/index.ts
+
+# Publishes to npm when a v* tag is pushed.
+# Requires NPM_TOKEN (masked CI/CD variable) and `"private": true` removed.
+publish:
+  stage: publish
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v/
+      when: manual
+  script:
+    - npm run build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - npm publish --access public
