@@ -49,6 +49,21 @@ types-drift:
     - npm run generate:types
     - git diff --exit-code types/index.ts
 
+# Diagnostic: prints the runner's public egress IP, to scope the npm token
+# to a CIDR allowlist. Run it manually (ideally a few times / on the same
+# runner tag as `publish`) then delete or keep for future checks.
+egress-ip:
+  stage: check
+  rules:
+    - when: manual
+  allow_failure: true
+  before_script: []
+  cache: []
+  script:
+    - 'echo "IPv4:" && (curl -4 -s --max-time 10 https://api.ipify.org || curl -4 -s --max-time 10 https://ifconfig.me || curl -4 -s --max-time 10 https://icanhazip.com) && echo'
+    - 'echo "IPv6:" && (curl -6 -s --max-time 10 https://api6.ipify.org || echo "none") && echo'
+    - 'echo "Runner: $CI_RUNNER_DESCRIPTION ($CI_RUNNER_TAGS)"'
+
 # Publishes to npm when a v* tag is pushed.
 # Requires NPM_TOKEN (masked CI/CD variable) and `"private": true` removed.
 publish:
