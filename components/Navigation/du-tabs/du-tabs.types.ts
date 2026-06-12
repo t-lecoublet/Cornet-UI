@@ -20,4 +20,6 @@ export interface TabsProps {
   bottom?: boolean;
   name?: string;
   modelValue?: number;
+  /** Accessible name of the tab group. */
+  ariaLabel?: string;
 } 

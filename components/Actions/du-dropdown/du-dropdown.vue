@@ -64,8 +64,10 @@ const openClass = computed(() => {
 
 <template>
   <div :class="['dropdown', placementClass, hoverClass, openClass]">
-    <slot name="trigger"></slot>
-    <div class="dropdown-content">
+    <!-- Bind triggerProps on your trigger element (v-bind="triggerProps")
+         to get the expected role/tabindex/aria attributes for free. -->
+    <slot name="trigger" :trigger-props="{ role: 'button', tabindex: 0, 'aria-haspopup': 'true' }"></slot>
+    <div class="dropdown-content" tabindex="0">
       <slot name="content"></slot>
       <slot></slot>
     </div>

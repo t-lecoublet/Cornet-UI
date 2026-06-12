@@ -20,4 +20,11 @@ export interface PaginationProps {
   showEllipsis?: boolean;
   maxPages?: number;
   soft?: boolean;
+  /** Accessible name of the navigation landmark. */
+  ariaLabel?: string;
+  /** Accessible labels for the symbol-only buttons. */
+  previousAriaLabel?: string;
+  nextAriaLabel?: string;
+  firstAriaLabel?: string;
+  lastAriaLabel?: string;
 } 

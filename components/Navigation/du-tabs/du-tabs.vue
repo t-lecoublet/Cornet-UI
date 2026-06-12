@@ -12,6 +12,7 @@ const props = withDefaults(
     bottom: false,
     name: "my_tabs",
     modelValue: undefined,
+    ariaLabel: undefined,
   },
 );
 
@@ -41,7 +42,11 @@ const typeClass = computed(() => {
 </script>
 
 <template>
-  <div :class="['tabs', sizeClass, typeClass]">
+  <!-- Accessibility: this follows DaisyUI's radio-group tab pattern. The
+       wrapping <label> gives each radio its accessible name and the browser
+       provides arrow-key navigation between radios of the same name, which
+       matches the expected tablist keyboard behavior. -->
+  <div :class="['tabs', sizeClass, typeClass]" :aria-label="ariaLabel">
     <template v-if="$slots.default">
       <slot></slot>
     </template>
