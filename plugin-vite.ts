@@ -223,7 +223,11 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
 
         const indexPath = join(libRoot, 'index.ts')
         if (!existsSync(indexPath)) {
-          console.warn(`[vite-plugin-cornet] library index not found at ${indexPath}, skipping detection`)
+          // Expected with the dist-only npm package: Tailwind only scans the
+          // modules the app actually imports, so exclusions are unnecessary.
+          if (showOutput) {
+            console.log('[vite-plugin-cornet] sources not present (dist install), CSS exclusions skipped')
+          }
           return
         }
         const componentPaths = parseLibraryExports(readFileSync(indexPath, 'utf-8'))
