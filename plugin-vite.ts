@@ -35,10 +35,17 @@ const SOURCE_EXTENSIONS = ['.vue', '.js', '.ts', '.tsx', '.jsx']
  * this exact content so the file never changes from git's point of view.
  */
 export const CSS_BASE_CONTENT = `/* Cornet CSS entry.
+   The @source below registers the component sources with Tailwind: class
+   literals live in the .vue templates and .types.ts constants, and Tailwind
+   ignores node_modules unless a source is declared explicitly. Do not
+   remove it, or variant classes (btn-primary, alert-success, ...) will be
+   missing from the generated CSS when Cornet is installed from npm.
+
    During \`vite build\`, the Cornet Vite plugin temporarily appends
    \`@source not\` directives here to exclude unused components from
    Tailwind's scanning, then restores this file. Without the plugin,
    Tailwind simply scans every component: everything still works. */
+@source "./components";
 `
 
 /** Parse `export { default as X } from './components/...'` lines of index.ts. */
@@ -190,6 +197,9 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
   let config: ResolvedConfig | undefined
   let libRoot: string | undefined
   let cssFilePath: string | undefined
+  // Only touch index.css when detection actually ran: a dist-only install
+  // has no sources and its CSS file must never be rewritten.
+  let detectionActive = false
 
   const fail = (error: unknown) => {
     console.error('[vite-plugin-cornet] component detection failed:', error)
@@ -198,7 +208,7 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
 
   const restoreCss = () => {
     try {
-      if (cssFilePath && existsSync(cssFilePath) && readFileSync(cssFilePath, 'utf-8') !== CSS_BASE_CONTENT) {
+      if (detectionActive && cssFilePath && existsSync(cssFilePath) && readFileSync(cssFilePath, 'utf-8') !== CSS_BASE_CONTENT) {
         writeFileSync(cssFilePath, CSS_BASE_CONTENT)
       }
     } catch (error) {
@@ -230,6 +240,7 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
           }
           return
         }
+        detectionActive = true
         const componentPaths = parseLibraryExports(readFileSync(indexPath, 'utf-8'))
 
         let packageNames = options.packageNames

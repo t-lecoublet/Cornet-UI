@@ -28,23 +28,29 @@ pkg.types = './dist/index.d.ts'
 pkg.exports = {
   '.': {
     types: './dist/index.d.ts',
+    source: './index.ts',
     import: './dist/index.js',
   },
   './plugin-vite': {
     types: './dist/plugin-vite.d.ts',
+    source: './plugin-vite.ts',
     import: './dist/plugin-vite.js',
   },
   './css': './index.css',
   './types': {
     types: './dist/types/index.d.ts',
+    source: './types/index.ts',
     import: './dist/types/index.js',
   },
   './package.json': './package.json',
 }
 
-// The npm package ships the compiled dist only. The raw sources stay a
-// git-mode feature (submodule / embedded): copy them from the repository.
-pkg.files = ['dist', 'index.css', 'README.md', 'LICENSE']
+// IMPORTANT: the raw sources (components/, composables/, *.types.ts) MUST be
+// shipped alongside dist/. They are not redundant: Tailwind and daisyUI only
+// generate a class when its literal appears in a scanned file, and those
+// literals live in the .vue templates and the .types.ts constant arrays
+// (e.g. BUTTON_COLORS). The compiled dist does not carry them. Removing the
+// sources from the package ships components without any CSS.
 
 // Dev-only field, meaningless in the published package. `scripts` is kept:
 // removing it could prevent npm from running postpack to restore the file.

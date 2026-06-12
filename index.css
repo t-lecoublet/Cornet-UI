@@ -1,5 +1,12 @@
 /* Cornet CSS entry.
+   The @source below registers the component sources with Tailwind: class
+   literals live in the .vue templates and .types.ts constants, and Tailwind
+   ignores node_modules unless a source is declared explicitly. Do not
+   remove it, or variant classes (btn-primary, alert-success, ...) will be
+   missing from the generated CSS when Cornet is installed from npm.
+
    During `vite build`, the Cornet Vite plugin temporarily appends
    `@source not` directives here to exclude unused components from
    Tailwind's scanning, then restores this file. Without the plugin,
    Tailwind simply scans every component: everything still works. */
+@source "./components";

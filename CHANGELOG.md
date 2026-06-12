@@ -3,6 +3,17 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.6] - 2026-06-12
+
+### Fixed
+- npm installs rendered components without any styling: Tailwind ignores
+  node_modules during automatic source detection, so none of Cornet's class
+  literals were ever scanned. The shipped `index.css` now declares
+  `@source "./components";` explicitly. The raw sources are shipped in the
+  npm package again (reverting the brief dist-only experiment in beta.5):
+  they are Tailwind's scan surface, not dead weight.
+- The Vite plugin no longer touches `index.css` when detection did not run.
+
 ## [0.1.0-beta.1] - 2026-06-11
 
 First release under the **cornet-ui** name (formerly `daisyui-vue-kit`).
