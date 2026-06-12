@@ -74,4 +74,9 @@ publish:
   script:
     - npm run build
     - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-    - npm publish --access public
+    # Pack first, then publish the tarball: `npm publish` without a tarball
+    # snapshots the manifest BEFORE prepack mutates package.json, so the
+    # registry metadata would advertise the source entry points instead of
+    # dist/. Publishing the tarball uses the manifest packed by prepack.
+    - npm pack
+    - npm publish ./cornet-ui-*.tgz --access public
