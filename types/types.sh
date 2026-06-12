@@ -70,7 +70,9 @@ $interfaces"
     fi
 }
 
-find "$BASE_DIR" -name "*.types.ts" -type f | sort | while read -r file; do
+# LC_ALL=C makes the sort order byte-based and locale-independent,
+# so the generated file is identical on every machine (CI drift guard).
+find "$BASE_DIR" -name "*.types.ts" -type f | LC_ALL=C sort | while read -r file; do
     extract_and_write_types "$file"
 done
 
