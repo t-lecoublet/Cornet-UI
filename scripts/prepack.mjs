@@ -28,22 +28,27 @@ pkg.types = './dist/index.d.ts'
 pkg.exports = {
   '.': {
     types: './dist/index.d.ts',
-    source: './index.ts',
     import: './dist/index.js',
   },
   './plugin-vite': {
     types: './dist/plugin-vite.d.ts',
-    source: './plugin-vite.ts',
     import: './dist/plugin-vite.js',
   },
   './css': './index.css',
   './types': {
     types: './dist/types/index.d.ts',
-    source: './types/index.ts',
     import: './dist/types/index.js',
   },
   './package.json': './package.json',
 }
 
+// The npm package ships the compiled dist only. The raw sources stay a
+// git-mode feature (submodule / embedded): copy them from the repository.
+pkg.files = ['dist', 'index.css', 'README.md', 'LICENSE']
+
+// Dev-only field, meaningless in the published package. `scripts` is kept:
+// removing it could prevent npm from running postpack to restore the file.
+delete pkg.devDependencies
+
 writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
-console.warn('[prepack] package.json entry points switched to dist/')
+console.warn('[prepack] package.json switched to dist-only publish mode')
