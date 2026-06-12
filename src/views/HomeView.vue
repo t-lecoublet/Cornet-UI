@@ -140,10 +140,10 @@ const postSteps = [
     n: '02',
     label: 'Add the Vite plugin',
     code: `// vite.config.ts
-import vueDaisyUI from 'cornet-ui/plugin-vite'
+import cornetPlugin from 'cornet-ui/plugin-vite'
 
 export default defineConfig({
-  plugins: [vueDaisyUI({ showOutput: true }), vue(), tailwindcss()]
+  plugins: [cornetPlugin({ showOutput: true }), vue(), tailwindcss()]
 })`,
   },
   {

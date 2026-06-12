@@ -59,12 +59,12 @@ Finally add the vite plugin and import the lib in your css file:
 
 ```javascript
 // vite.config.js
-import vueDaisyUI from 'cornet-ui/plugin-vite'
+import cornetPlugin from 'cornet-ui/plugin-vite'
 
 // ... Existing code
 export default defineConfig({
   plugins: [
-    vueDaisyUI({
+    cornetPlugin({
       showOutput: true
     }),
   ]

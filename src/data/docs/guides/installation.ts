@@ -35,16 +35,17 @@ npm install ./lib`,
       code: `git clone git@gitlab.limos.fr:hub-isima/daisyui-vue-kit-nuxt-starter.git`,
     },
     {
-      title: '2. Add the Vite plugin',
+      title: '2. Add the Vite plugin (optional)',
+      description: 'At build time, the plugin detects which Cornet components your app uses and excludes the unused ones from Tailwind scanning, reducing the generated CSS. It is fail-safe: without it everything still works, you just ship a bit more CSS. Options: srcDirs (source folders to scan, default [\'src\']), libPath and packageNames for custom layouts, showOutput, failOnError.',
       links: [
         { label: 'Vite plugin docs', href: 'https://vite.dev/guide/using-plugins#adding-a-plugin' },
       ],
       lang: 'ts',
       code: `// vite.config.ts
-import vueDaisyUI from 'cornet-ui/plugin-vite'
+import cornetPlugin from 'cornet-ui/plugin-vite'
 
 export default defineConfig({
-  plugins: [vueDaisyUI({ showOutput: true }), vue(), tailwindcss()]
+  plugins: [cornetPlugin({ showOutput: true }), vue(), tailwindcss()]
 })`,
     },
     {
