@@ -8,11 +8,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and the p
 ### Fixed
 - npm installs rendered components without any styling: Tailwind ignores
   node_modules during automatic source detection, so none of Cornet's class
-  literals were ever scanned. The shipped `index.css` now declares
-  `@source "./components";` explicitly. The raw sources are shipped in the
-  npm package again (reverting the brief dist-only experiment in beta.5):
-  they are Tailwind's scan surface, not dead weight.
-- The Vite plugin no longer touches `index.css` when detection did not run.
+  literals were ever scanned. The shipped `index.css` now declares an
+  explicit `@source` directive, which overrides that exclusion.
+
+### Changed
+- The npm package is now fully generated, with no raw sources: compiled
+  `dist/` plus `dist/tw/` — per-component Tailwind class candidates extracted
+  at build time with Tailwind's own scanner (`@tailwindcss/oxide`) and a
+  manifest carrying the internal dependency graph. The published `index.css`
+  declares `@source "./dist/tw";`. Raw sources remain the git/submodule
+  (embedded) distribution, where `index.css` declares
+  `@source "./components";` instead.
+- The Vite plugin supports both layouts: it reads `index.ts` and the sources
+  in embedded mode, or `dist/tw/manifest.json` in npm mode, and restores
+  whatever `index.css` contained before the build (it also cleans exclusions
+  left over by a previously interrupted build).
 
 ## [0.1.0-beta.1] - 2026-06-11
 

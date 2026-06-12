@@ -95,6 +95,25 @@ export function scanSourceContent(content: string, packageNames: string[]): Usag
   return { used, namespaceImport }
 }
 
+/** Transitively expand the used set with a component dependency map. */
+export function expandWithDependencyMap(
+  used: Set<string>,
+  dependencies: Map<string, string[]>,
+): Set<string> {
+  const expanded = new Set(used)
+  const queue = [...used]
+  while (queue.length) {
+    const current = queue.pop()!
+    for (const dep of dependencies.get(current) ?? []) {
+      if (!expanded.has(dep)) {
+        expanded.add(dep)
+        queue.push(dep)
+      }
+    }
+  }
+  return expanded
+}
+
 /**
  * Components may use each other internally (e.g. DuFab renders DuButton).
  * Expand the used set so a dependency of a used component is never excluded.
@@ -127,18 +146,7 @@ export function expandWithInternalDependencies(
     if (deps.length) dependencies.set(name, deps)
   }
 
-  const expanded = new Set(used)
-  const queue = [...used]
-  while (queue.length) {
-    const current = queue.pop()!
-    for (const dep of dependencies.get(current) ?? []) {
-      if (!expanded.has(dep)) {
-        expanded.add(dep)
-        queue.push(dep)
-      }
-    }
-  }
-  return expanded
+  return expandWithDependencyMap(used, dependencies)
 }
 
 /** Generate the deterministic `@source not` block for unused components. */
@@ -197,9 +205,10 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
   let config: ResolvedConfig | undefined
   let libRoot: string | undefined
   let cssFilePath: string | undefined
-  // Only touch index.css when detection actually ran: a dist-only install
-  // has no sources and its CSS file must never be rewritten.
-  let detectionActive = false
+  // Snapshot of index.css before we append exclusions, restored after the
+  // build. Captured at runtime because the file differs between the source
+  // package (@source "./components") and the npm package (@source "./dist/tw").
+  let cssBaseContent: string | undefined
 
   const fail = (error: unknown) => {
     console.error('[vite-plugin-cornet] component detection failed:', error)
@@ -208,8 +217,8 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
 
   const restoreCss = () => {
     try {
-      if (detectionActive && cssFilePath && existsSync(cssFilePath) && readFileSync(cssFilePath, 'utf-8') !== CSS_BASE_CONTENT) {
-        writeFileSync(cssFilePath, CSS_BASE_CONTENT)
+      if (cssBaseContent !== undefined && cssFilePath && existsSync(cssFilePath) && readFileSync(cssFilePath, 'utf-8') !== cssBaseContent) {
+        writeFileSync(cssFilePath, cssBaseContent)
       }
     } catch (error) {
       fail(error)
@@ -231,17 +240,30 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
           : findPackageRoot(dirname(fileURLToPath(import.meta.url)))
         cssFilePath = join(libRoot, 'index.css')
 
+        // Source mode (git/submodule/embedded): parse index.ts and read the
+        // dependency graph from the sources. npm mode (compiled package):
+        // both come from the generated dist/tw/manifest.json.
         const indexPath = join(libRoot, 'index.ts')
-        if (!existsSync(indexPath)) {
-          // Expected with the dist-only npm package: Tailwind only scans the
-          // modules the app actually imports, so exclusions are unnecessary.
+        const manifestPath = join(libRoot, 'dist', 'tw', 'manifest.json')
+        let componentPaths: Map<string, string>
+        let dependencies: Map<string, string[]> | undefined
+        if (existsSync(indexPath)) {
+          componentPaths = parseLibraryExports(readFileSync(indexPath, 'utf-8'))
+        } else if (existsSync(manifestPath)) {
+          const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8')) as Record<
+            string,
+            { file: string; deps: string[] }
+          >
+          componentPaths = new Map(
+            Object.entries(manifest).map(([name, entry]) => [name, `./dist/tw/${entry.file}`]),
+          )
+          dependencies = new Map(Object.entries(manifest).map(([name, entry]) => [name, entry.deps]))
+        } else {
           if (showOutput) {
-            console.log('[vite-plugin-cornet] sources not present (dist install), CSS exclusions skipped')
+            console.log('[vite-plugin-cornet] no library sources or candidates manifest found, CSS exclusions skipped')
           }
           return
         }
-        detectionActive = true
-        const componentPaths = parseLibraryExports(readFileSync(indexPath, 'utf-8'))
 
         let packageNames = options.packageNames
         if (!packageNames) {
@@ -265,6 +287,17 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
           }
         }
 
+        // Capture the pristine css entry, dropping exclusions a previously
+        // interrupted build may have left behind.
+        if (existsSync(cssFilePath)) {
+          cssBaseContent = readFileSync(cssFilePath, 'utf-8')
+            .split('\n')
+            .filter((line) => !line.startsWith('@source not '))
+            .join('\n')
+        } else {
+          cssBaseContent = CSS_BASE_CONTENT
+        }
+
         if (namespaceImport) {
           if (showOutput) {
             console.log('[vite-plugin-cornet] namespace import detected, keeping all components')
@@ -273,9 +306,11 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
           return
         }
 
-        const expanded = expandWithInternalDependencies(used, componentPaths, libRoot)
+        const expanded = dependencies
+          ? expandWithDependencyMap(used, dependencies)
+          : expandWithInternalDependencies(used, componentPaths, libRoot)
         const { css, excludedCount } = generateExclusionCss(componentPaths, expanded)
-        writeFileSync(cssFilePath, CSS_BASE_CONTENT + css)
+        writeFileSync(cssFilePath, cssBaseContent + css)
 
         if (showOutput) {
           console.log(

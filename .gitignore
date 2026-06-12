@@ -31,3 +31,4 @@ coverage
 
 *.tsbuildinfo
 package.json.backup
+index.css.backup
