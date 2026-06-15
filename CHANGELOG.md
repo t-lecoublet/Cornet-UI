@@ -3,6 +3,26 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.7] - 2026-06-15
+
+### Changed
+- The npm package now follows the standard Tailwind-component-library model
+  and ships **compiled output only** — no raw sources. Your Tailwind +
+  daisyUI generate Cornet's classes by scanning a single generated class
+  list: the published `index.css` declares `@source "./dist/cornet-classes.txt"`.
+  That file is produced at build time with Tailwind's own scanner
+  (`@tailwindcss/oxide`), so it matches exactly what Tailwind would extract
+  from the sources. As with other Tailwind component libraries (e.g.
+  Flowbite), the component CSS is shipped whole — Tailwind only keeps what
+  your build references.
+- The Vite plugin is now an **embedded-mode optimization only**: in the
+  git/submodule layout it tree-shakes unused components via `@source not`
+  (and restores `index.css` after the build). On an npm install it is a
+  no-op, so there is no file mutation in `node_modules`.
+- Replaced the earlier per-component `dist/tw/` approach (and its index.css
+  rewriting in npm mode), which depended on Tailwind read-timing that is not
+  guaranteed and could ship components unstyled.
+
 ## [0.1.0-beta.6] - 2026-06-12
 
 ### Fixed
@@ -10,19 +30,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and the p
   node_modules during automatic source detection, so none of Cornet's class
   literals were ever scanned. The shipped `index.css` now declares an
   explicit `@source` directive, which overrides that exclusion.
-
-### Changed
-- The npm package is now fully generated, with no raw sources: compiled
-  `dist/` plus `dist/tw/` — per-component Tailwind class candidates extracted
-  at build time with Tailwind's own scanner (`@tailwindcss/oxide`) and a
-  manifest carrying the internal dependency graph. The published `index.css`
-  declares `@source "./dist/tw";`. Raw sources remain the git/submodule
-  (embedded) distribution, where `index.css` declares
-  `@source "./components";` instead.
-- The Vite plugin supports both layouts: it reads `index.ts` and the sources
-  in embedded mode, or `dist/tw/manifest.json` in npm mode, and restores
-  whatever `index.css` contained before the build (it also cleans exclusions
-  left over by a previously interrupted build).
 
 ## [0.1.0-beta.1] - 2026-06-11
 

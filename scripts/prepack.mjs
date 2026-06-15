@@ -20,8 +20,8 @@ if (!existsSync(join(root, 'dist', 'index.js'))) {
   console.error('[prepack] dist/ not found — run `npm run build` before packing.')
   process.exit(1)
 }
-if (!existsSync(join(root, 'dist', 'tw', 'manifest.json'))) {
-  console.error('[prepack] dist/tw/ not found — run `npm run build` before packing.')
+if (!existsSync(join(root, 'dist', 'cornet-classes.txt'))) {
+  console.error('[prepack] dist/cornet-classes.txt not found — run `npm run build` before packing.')
   process.exit(1)
 }
 
@@ -49,8 +49,9 @@ pkg.exports = {
   './package.json': './package.json',
 }
 
-// The npm package is fully generated: compiled output + extracted Tailwind
-// candidates. Raw sources remain a git-mode (submodule/embedded) feature.
+// The npm package is fully generated: compiled output + the extracted
+// Tailwind class list (dist/cornet-classes.txt). Raw sources remain a
+// git-mode (submodule/embedded) feature.
 pkg.files = ['dist', 'index.css', 'README.md', 'LICENSE']
 
 // Dev-only field, meaningless in the published package. `scripts` is kept:
@@ -62,16 +63,12 @@ writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
 writeFileSync(
   cssPath,
   `/* Cornet CSS entry (npm package).
-   The @source below registers the generated class candidates (dist/tw) with
-   Tailwind: it ignores node_modules unless a source is declared explicitly.
-   Do not remove it, or component classes (btn-primary, alert-success, ...)
-   would be missing from your generated CSS.
-
-   During \`vite build\`, the Cornet Vite plugin temporarily appends
-   \`@source not\` directives here to exclude unused components, then
-   restores this file. Without the plugin everything still works, you just
-   ship the CSS of all components. */
-@source "./dist/tw";
+   The @source below points your Tailwind + daisyUI at Cornet's class list so
+   they generate Cornet's component classes (btn-primary, alert-success, ...).
+   It is required: Tailwind ignores node_modules unless a source is declared
+   explicitly, and the compiled output does not carry the class literals.
+   Like other Tailwind component libraries, Cornet's CSS is shipped whole. */
+@source "./dist/cornet-classes.txt";
 `,
 )
 

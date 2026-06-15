@@ -166,31 +166,20 @@ export { default as DuUnused } from './components/Actions/du-unused/du-unused.vu
   })
 })
 
-describe('cornetPlugin npm mode (generated candidates manifest)', () => {
+describe('cornetPlugin npm mode (no sources)', () => {
   let fixtureRoot: string
   let libRoot: string
-  const NPM_CSS = '/* npm css entry */\n@source "./dist/tw";\n'
 
   beforeEach(() => {
     fixtureRoot = mkdtempSync(join(tmpdir(), 'cornet-npm-'))
     libRoot = join(fixtureRoot, 'node_modules/cornet-ui')
-    mkdirSync(join(libRoot, 'dist/tw'), { recursive: true })
+    mkdirSync(join(libRoot, 'dist'), { recursive: true })
     mkdirSync(join(fixtureRoot, 'src'))
     writeFileSync(join(libRoot, 'package.json'), JSON.stringify({ name: 'cornet-ui' }))
-    // No index.ts: the package ships generated files only.
-    writeFileSync(
-      join(libRoot, 'dist/tw/manifest.json'),
-      JSON.stringify({
-        DuUsed: { file: 'DuUsed.txt', deps: ['DuInternal'] },
-        DuInternal: { file: 'DuInternal.txt', deps: [] },
-        DuUnused: { file: 'DuUnused.txt', deps: [] },
-      }),
-    )
-    for (const f of ['DuUsed.txt', 'DuInternal.txt', 'DuUnused.txt']) {
-      writeFileSync(join(libRoot, 'dist/tw', f), 'btn\n')
-    }
-    writeFileSync(join(libRoot, 'index.css'), NPM_CSS)
-    writeFileSync(join(fixtureRoot, 'src/App.vue'), `<script>import { DuUsed } from 'cornet-ui'</script>`)
+    // npm package: compiled output + class list, no index.ts.
+    writeFileSync(join(libRoot, 'dist', 'cornet-classes.txt'), 'btn\nbtn-primary\ncard\n')
+    writeFileSync(join(libRoot, 'index.css'), '@source "./dist/cornet-classes.txt";\n')
+    writeFileSync(join(fixtureRoot, 'src/App.vue'), `<script>import { DuButton } from 'cornet-ui'</script>`)
   })
 
   afterEach(() => {
@@ -203,17 +192,16 @@ describe('cornetPlugin npm mode (generated candidates manifest)', () => {
     return typeof hook === 'function' ? hook : hook.handler
   }
 
-  it('excludes unused candidate files and follows manifest dependencies', async () => {
+  it('leaves the package untouched (CSS shipped whole, like other Tailwind libs)', async () => {
+    const cssBefore = readFileSync(join(libRoot, 'index.css'), 'utf-8')
+    const classesBefore = readFileSync(join(libRoot, 'dist', 'cornet-classes.txt'), 'utf-8')
+
     const plugin = cornetPlugin({ libPath: libRoot, showOutput: false })
     await callable(plugin.configResolved)({ root: fixtureRoot } as never)
     await callable(plugin.buildStart).call({} as never, {} as never)
-
-    const duringBuild = readFileSync(join(libRoot, 'index.css'), 'utf-8')
-    expect(duringBuild).toContain('@source not "./dist/tw/DuUnused.txt";')
-    expect(duringBuild).not.toContain('DuUsed.txt')
-    expect(duringBuild).not.toContain('DuInternal.txt') // kept via manifest deps
-
     await callable(plugin.closeBundle).call({} as never)
-    expect(readFileSync(join(libRoot, 'index.css'), 'utf-8')).toBe(NPM_CSS)
+
+    expect(readFileSync(join(libRoot, 'index.css'), 'utf-8')).toBe(cssBefore)
+    expect(readFileSync(join(libRoot, 'dist', 'cornet-classes.txt'), 'utf-8')).toBe(classesBefore)
   })
 })

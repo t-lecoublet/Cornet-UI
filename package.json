@@ -1,7 +1,7 @@
 {
   "name": "cornet-ui",
   "private": false,
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.7",
   "description": "Cornet — Vue 3 component library built on DaisyUI 5 and Tailwind CSS 4. Usable as an npm package or embedded directly as source in your project.",
   "license": "MIT",
   "type": "module",

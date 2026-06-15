@@ -30,21 +30,22 @@ export interface CornetPluginOptions {
 const SOURCE_EXTENSIONS = ['.vue', '.js', '.ts', '.tsx', '.jsx']
 
 /**
- * Stable content of `index.css`. The plugin temporarily appends
- * `@source not` directives to that file during `vite build`, then restores
- * this exact content so the file never changes from git's point of view.
+ * Fallback content for the embedded `index.css` when it is missing entirely.
+ * In normal operation the plugin restores the file by stripping the
+ * `@source not` lines it added, so it returns to its committed content.
  */
-export const CSS_BASE_CONTENT = `/* Cornet CSS entry.
-   The @source below registers the component sources with Tailwind: class
-   literals live in the .vue templates and .types.ts constants, and Tailwind
-   ignores node_modules unless a source is declared explicitly. Do not
-   remove it, or variant classes (btn-primary, alert-success, ...) will be
-   missing from the generated CSS when Cornet is installed from npm.
+export const CSS_BASE_CONTENT = `/* Cornet CSS entry (embedded / submodule mode).
+   The @source below registers the component sources with Tailwind so it
+   generates Cornet's classes (the class literals live in the .vue templates
+   and .types.ts constants).
 
    During \`vite build\`, the Cornet Vite plugin temporarily appends
-   \`@source not\` directives here to exclude unused components from
-   Tailwind's scanning, then restores this file. Without the plugin,
-   Tailwind simply scans every component: everything still works. */
+   \`@source not\` directives here to exclude unused components, then restores
+   this file. Without the plugin, Tailwind scans every component and
+   everything still works.
+
+   The npm package ships a different entry (see scripts/prepack.mjs): it
+   points at the generated dist/cornet-classes.txt instead. */
 @source "./components";
 `
 
@@ -123,30 +124,7 @@ export function expandWithInternalDependencies(
   componentPaths: Map<string, string>,
   libRoot: string,
 ): Set<string> {
-  // Map absolute .vue file path -> component name
-  const fileToComponent = new Map<string, string>()
-  for (const [name, relPath] of componentPaths) {
-    fileToComponent.set(resolve(libRoot, relPath), name)
-  }
-
-  // Map component name -> internal component dependencies
-  const dependencies = new Map<string, string[]>()
-  const importRegex = /import\s+\w+\s+from\s+['"](\.[^'"]+\.vue)['"]/g
-  for (const [name, relPath] of componentPaths) {
-    const absPath = resolve(libRoot, relPath)
-    if (!existsSync(absPath)) continue
-    const content = readFileSync(absPath, 'utf-8')
-    const deps: string[] = []
-    let match: RegExpExecArray | null
-    while ((match = importRegex.exec(content)) !== null) {
-      const depAbs = resolve(dirname(absPath), match[1])
-      const depName = fileToComponent.get(depAbs)
-      if (depName && depName !== name) deps.push(depName)
-    }
-    if (deps.length) dependencies.set(name, deps)
-  }
-
-  return expandWithDependencyMap(used, dependencies)
+  return expandWithDependencyMap(used, buildDependencyMap(componentPaths, libRoot))
 }
 
 /** Generate the deterministic `@source not` block for unused components. */
@@ -203,26 +181,79 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
   const { showOutput = true, failOnError = false } = options
 
   let config: ResolvedConfig | undefined
-  let libRoot: string | undefined
-  let cssFilePath: string | undefined
-  // Snapshot of index.css before we append exclusions, restored after the
-  // build. Captured at runtime because the file differs between the source
-  // package (@source "./components") and the npm package (@source "./dist/tw").
-  let cssBaseContent: string | undefined
+  // Set during buildStart to undo whatever the build touched; null until then.
+  let restore: (() => void) | null = null
 
   const fail = (error: unknown) => {
     console.error('[vite-plugin-cornet] component detection failed:', error)
     if (failOnError) throw error
   }
 
-  const restoreCss = () => {
-    try {
-      if (cssBaseContent !== undefined && cssFilePath && existsSync(cssFilePath) && readFileSync(cssFilePath, 'utf-8') !== cssBaseContent) {
-        writeFileSync(cssFilePath, cssBaseContent)
-      }
-    } catch (error) {
-      fail(error)
+  const log = (msg: string) => {
+    if (showOutput) console.log(`[vite-plugin-cornet] ${msg}`)
+  }
+
+  /** Components the app imports, expanded with their internal dependencies. */
+  const resolveUsed = (
+    libRoot: string,
+    dependencies: Map<string, string[]>,
+  ): { used: Set<string>; namespaceImport: boolean } => {
+    let packageNames = options.packageNames
+    if (!packageNames) {
+      const pkgPath = join(libRoot, 'package.json')
+      const pkgName = existsSync(pkgPath)
+        ? (JSON.parse(readFileSync(pkgPath, 'utf-8')).name as string | undefined)
+        : undefined
+      packageNames = pkgName ? [pkgName] : []
     }
+    const root = config?.root ?? process.cwd()
+    const srcDirs = options.srcDirs ?? ['src']
+    const used = new Set<string>()
+    let namespaceImport = false
+    for (const srcDir of srcDirs) {
+      for (const file of collectSourceFiles(resolve(root, srcDir))) {
+        const result = scanSourceContent(readFileSync(file, 'utf-8'), packageNames)
+        result.used.forEach((name) => used.add(name))
+        namespaceImport ||= result.namespaceImport
+      }
+    }
+    return { used: expandWithDependencyMap(used, dependencies), namespaceImport }
+  }
+
+  /**
+   * Embedded mode: sources are present. Tailwind scans components/ (index.css
+   * declares `@source "./components"`); we append `@source not` directives for
+   * unused components and restore index.css afterwards.
+   */
+  const runEmbedded = (libRoot: string) => {
+    const cssFilePath = join(libRoot, 'index.css')
+    const componentPaths = parseLibraryExports(readFileSync(join(libRoot, 'index.ts'), 'utf-8'))
+
+    // Pristine css entry, minus exclusions an interrupted build may have left.
+    const cssBase = existsSync(cssFilePath)
+      ? readFileSync(cssFilePath, 'utf-8')
+          .split('\n')
+          .filter((line) => !line.startsWith('@source not '))
+          .join('\n')
+      : CSS_BASE_CONTENT
+    restore = () => {
+      if (existsSync(cssFilePath) && readFileSync(cssFilePath, 'utf-8') !== cssBase) {
+        writeFileSync(cssFilePath, cssBase)
+      }
+    }
+
+    const { used, namespaceImport } = resolveUsed(
+      libRoot,
+      buildDependencyMap(componentPaths, libRoot),
+    )
+    if (namespaceImport) {
+      log('namespace import detected, keeping all components')
+      restore()
+      return
+    }
+    const { css, excludedCount } = generateExclusionCss(componentPaths, used)
+    writeFileSync(cssFilePath, cssBase + css)
+    log(`${used.size}/${componentPaths.size} components used, ${excludedCount} excluded from CSS`)
   }
 
   return {
@@ -235,99 +266,59 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
 
     buildStart() {
       try {
-        libRoot = options.libPath
+        const libRoot = options.libPath
           ? resolve(options.libPath)
           : findPackageRoot(dirname(fileURLToPath(import.meta.url)))
-        cssFilePath = join(libRoot, 'index.css')
 
-        // Source mode (git/submodule/embedded): parse index.ts and read the
-        // dependency graph from the sources. npm mode (compiled package):
-        // both come from the generated dist/tw/manifest.json.
-        const indexPath = join(libRoot, 'index.ts')
-        const manifestPath = join(libRoot, 'dist', 'tw', 'manifest.json')
-        let componentPaths: Map<string, string>
-        let dependencies: Map<string, string[]> | undefined
-        if (existsSync(indexPath)) {
-          componentPaths = parseLibraryExports(readFileSync(indexPath, 'utf-8'))
-        } else if (existsSync(manifestPath)) {
-          const manifest = JSON.parse(readFileSync(manifestPath, 'utf-8')) as Record<
-            string,
-            { file: string; deps: string[] }
-          >
-          componentPaths = new Map(
-            Object.entries(manifest).map(([name, entry]) => [name, `./dist/tw/${entry.file}`]),
-          )
-          dependencies = new Map(Object.entries(manifest).map(([name, entry]) => [name, entry.deps]))
+        // Only the embedded/submodule layout (raw sources present) is tree-
+        // shaken. The npm package ships compiled output and a fixed class list
+        // (dist/cornet-classes.txt) scanned by every consumer — like other
+        // Tailwind component libraries, its CSS is shipped whole, so there is
+        // nothing for the plugin to do there.
+        if (existsSync(join(libRoot, 'index.ts'))) {
+          runEmbedded(libRoot)
         } else {
-          if (showOutput) {
-            console.log('[vite-plugin-cornet] no library sources or candidates manifest found, CSS exclusions skipped')
-          }
-          return
-        }
-
-        let packageNames = options.packageNames
-        if (!packageNames) {
-          const pkgPath = join(libRoot, 'package.json')
-          const pkgName = existsSync(pkgPath)
-            ? (JSON.parse(readFileSync(pkgPath, 'utf-8')).name as string | undefined)
-            : undefined
-          packageNames = pkgName ? [pkgName] : []
-        }
-
-        const root = config?.root ?? process.cwd()
-        const srcDirs = options.srcDirs ?? ['src']
-
-        const used = new Set<string>()
-        let namespaceImport = false
-        for (const srcDir of srcDirs) {
-          for (const file of collectSourceFiles(resolve(root, srcDir))) {
-            const result = scanSourceContent(readFileSync(file, 'utf-8'), packageNames)
-            result.used.forEach((name) => used.add(name))
-            namespaceImport ||= result.namespaceImport
-          }
-        }
-
-        // Capture the pristine css entry, dropping exclusions a previously
-        // interrupted build may have left behind.
-        if (existsSync(cssFilePath)) {
-          cssBaseContent = readFileSync(cssFilePath, 'utf-8')
-            .split('\n')
-            .filter((line) => !line.startsWith('@source not '))
-            .join('\n')
-        } else {
-          cssBaseContent = CSS_BASE_CONTENT
-        }
-
-        if (namespaceImport) {
-          if (showOutput) {
-            console.log('[vite-plugin-cornet] namespace import detected, keeping all components')
-          }
-          restoreCss()
-          return
-        }
-
-        const expanded = dependencies
-          ? expandWithDependencyMap(used, dependencies)
-          : expandWithInternalDependencies(used, componentPaths, libRoot)
-        const { css, excludedCount } = generateExclusionCss(componentPaths, expanded)
-        writeFileSync(cssFilePath, cssBaseContent + css)
-
-        if (showOutput) {
-          console.log(
-            `[vite-plugin-cornet] ${expanded.size}/${componentPaths.size} components used, ${excludedCount} excluded from CSS`,
-          )
+          log('npm install detected, Cornet ships its full class list (nothing to tree-shake)')
         }
       } catch (error) {
         fail(error)
       }
     },
 
-    // Restore the committed content so index.css never appears modified in git.
-    closeBundle: restoreCss,
+    // Restore the pristine files so nothing appears modified after the build.
+    closeBundle() {
+      restore?.()
+    },
     buildEnd(error) {
-      if (error) restoreCss()
+      if (error) restore?.()
     },
   }
+}
+
+/** Build the component -> internal-dependencies map by reading the sources. */
+function buildDependencyMap(
+  componentPaths: Map<string, string>,
+  libRoot: string,
+): Map<string, string[]> {
+  const fileToComponent = new Map<string, string>()
+  for (const [name, relPath] of componentPaths) {
+    fileToComponent.set(resolve(libRoot, relPath), name)
+  }
+  const dependencies = new Map<string, string[]>()
+  const importRegex = /import\s+\w+\s+from\s+['"](\.[^'"]+\.vue)['"]/g
+  for (const [name, relPath] of componentPaths) {
+    const absPath = resolve(libRoot, relPath)
+    if (!existsSync(absPath)) continue
+    const content = readFileSync(absPath, 'utf-8')
+    const deps: string[] = []
+    let m: RegExpExecArray | null
+    while ((m = importRegex.exec(content)) !== null) {
+      const depName = fileToComponent.get(resolve(dirname(absPath), m[1]))
+      if (depName && depName !== name) deps.push(depName)
+    }
+    if (deps.length) dependencies.set(name, deps)
+  }
+  return dependencies
 }
 
 export { cornetPlugin }
