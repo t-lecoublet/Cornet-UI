@@ -29,6 +29,12 @@ export interface CornetPluginOptions {
 
 const SOURCE_EXTENSIONS = ['.vue', '.js', '.ts', '.tsx', '.jsx']
 
+// npm mode: the published index.css scans this file by default; the plugin
+// swaps it for an inline safelist of the used components, wrapped in markers.
+const NPM_SCAN_DIRECTIVE = '@source "./dist/cornet-classes.txt";'
+const INLINE_START = '/* cornet:tree-shake start */'
+const INLINE_END = '/* cornet:tree-shake end */'
+
 /**
  * Fallback content for the embedded `index.css` when it is missing entirely.
  * In normal operation the plugin restores the file by stripping the
@@ -256,6 +262,61 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
     log(`${used.size}/${componentPaths.size} components used, ${excludedCount} excluded from CSS`)
   }
 
+  /**
+   * npm mode: no sources. By default index.css scans dist/cornet-classes.txt
+   * (every component's classes). When the plugin runs, it replaces that scan
+   * directive with an `@source inline(...)` safelist of just the used
+   * components' classes (read from dist/cornet-tw.json), then restores it.
+   *
+   * The rewrite targets index.css — the entry Tailwind reads at transform
+   * time — which is reliable, unlike narrowing a separately-scanned file. The
+   * json is never mutated and the pristine index.css is reconstructed
+   * deterministically, so an interrupted build self-heals on the next run.
+   */
+  const runNpm = (libRoot: string, jsonPath: string) => {
+    const cssFilePath = join(libRoot, 'index.css')
+    const data = JSON.parse(readFileSync(jsonPath, 'utf-8')) as Record<
+      string,
+      { classes: string[]; deps: string[] }
+    >
+
+    // Reconstruct the pristine index.css: swap any leftover inline block from
+    // a previous (possibly interrupted) build back to the full-scan directive.
+    const current = existsSync(cssFilePath) ? readFileSync(cssFilePath, 'utf-8') : NPM_SCAN_DIRECTIVE + '\n'
+    const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const inlineBlock = new RegExp(`${escape(INLINE_START)}[\\s\\S]*?${escape(INLINE_END)}\\n?`)
+    const pristine = inlineBlock.test(current)
+      ? current.replace(inlineBlock, NPM_SCAN_DIRECTIVE + '\n')
+      : current
+    restore = () => {
+      if (existsSync(cssFilePath) && readFileSync(cssFilePath, 'utf-8') !== pristine) {
+        writeFileSync(cssFilePath, pristine)
+      }
+    }
+
+    const dependencies = new Map(Object.entries(data).map(([name, e]) => [name, e.deps]))
+    const { used, namespaceImport } = resolveUsed(libRoot, dependencies)
+    if (namespaceImport) {
+      log('namespace import detected, keeping all components')
+      restore()
+      return
+    }
+    if (!pristine.includes(NPM_SCAN_DIRECTIVE)) {
+      log('index.css has no recognizable @source directive, skipping')
+      return
+    }
+
+    // Safelist exactly the used components' classes. Tailwind's @source inline
+    // forbids brace characters; everything else (incl. `/` and `:`) is fine.
+    const classes = [...new Set([...used].flatMap((n) => data[n]?.classes ?? []))]
+      .filter((c) => !/[{}]/.test(c))
+      .sort()
+    const inline = `${INLINE_START}\n@source inline("${classes.join(' ')}");\n${INLINE_END}\n`
+    writeFileSync(cssFilePath, pristine.replace(NPM_SCAN_DIRECTIVE + '\n', inline))
+    const total = Object.keys(data).length
+    log(`${used.size}/${total} components used, ${total - used.size} excluded from CSS`)
+  }
+
   return {
     name: 'vite-plugin-cornet',
     apply: 'build',
@@ -270,15 +331,17 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
           ? resolve(options.libPath)
           : findPackageRoot(dirname(fileURLToPath(import.meta.url)))
 
-        // Only the embedded/submodule layout (raw sources present) is tree-
-        // shaken. The npm package ships compiled output and a fixed class list
-        // (dist/cornet-classes.txt) scanned by every consumer — like other
-        // Tailwind component libraries, its CSS is shipped whole, so there is
-        // nothing for the plugin to do there.
+        // Embedded/submodule layout (raw sources present) vs npm package
+        // (compiled output + dist/cornet-tw.json). Both narrow index.css to
+        // the used components; without the plugin the npm package ships every
+        // component's CSS (the standard whole-CSS default).
+        const jsonPath = join(libRoot, 'dist', 'cornet-tw.json')
         if (existsSync(join(libRoot, 'index.ts'))) {
           runEmbedded(libRoot)
+        } else if (existsSync(jsonPath)) {
+          runNpm(libRoot, jsonPath)
         } else {
-          log('npm install detected, Cornet ships its full class list (nothing to tree-shake)')
+          log('no library sources or candidate data found, CSS exclusions skipped')
         }
       } catch (error) {
         fail(error)

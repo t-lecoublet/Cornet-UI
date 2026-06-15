@@ -64,6 +64,25 @@ Types are available from the main entry or from `cornet-ui/types`:
 import type { MenuItem, SELECTProps } from 'cornet-ui/types'
 ```
 
+## Smaller CSS: the optional Vite plugin
+
+By default Cornet ships the CSS of **every** component (the standard model for
+a Tailwind component library). Add the Vite plugin to generate only the CSS of
+the components your app actually imports:
+
+```ts
+// vite.config.ts
+import cornetPlugin from 'cornet-ui/plugin-vite'
+
+export default defineConfig({
+  plugins: [cornetPlugin(), vue(), tailwindcss()],
+})
+```
+
+The plugin is optional and fail-safe: without it everything still works, you
+just ship more CSS. Options: `srcDirs` (folders to scan, default `['src']`),
+`libPath`, `packageNames`, `showOutput`, `failOnError`.
+
 ## Peer dependencies
 
 - `vue` >= 3.5

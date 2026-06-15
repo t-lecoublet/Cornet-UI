@@ -166,9 +166,11 @@ export { default as DuUnused } from './components/Actions/du-unused/du-unused.vu
   })
 })
 
-describe('cornetPlugin npm mode (no sources)', () => {
+describe('cornetPlugin npm mode (tree-shaking via index.css)', () => {
   let fixtureRoot: string
   let libRoot: string
+  let cssPath: string
+  const PRISTINE_CSS = '/* entry */\n@source "./dist/cornet-classes.txt";\n'
 
   beforeEach(() => {
     fixtureRoot = mkdtempSync(join(tmpdir(), 'cornet-npm-'))
@@ -176,10 +178,18 @@ describe('cornetPlugin npm mode (no sources)', () => {
     mkdirSync(join(libRoot, 'dist'), { recursive: true })
     mkdirSync(join(fixtureRoot, 'src'))
     writeFileSync(join(libRoot, 'package.json'), JSON.stringify({ name: 'cornet-ui' }))
-    // npm package: compiled output + class list, no index.ts.
-    writeFileSync(join(libRoot, 'dist', 'cornet-classes.txt'), 'btn\nbtn-primary\ncard\n')
-    writeFileSync(join(libRoot, 'index.css'), '@source "./dist/cornet-classes.txt";\n')
-    writeFileSync(join(fixtureRoot, 'src/App.vue'), `<script>import { DuButton } from 'cornet-ui'</script>`)
+    // npm package: per-component class data, no index.ts.
+    writeFileSync(
+      join(libRoot, 'dist', 'cornet-tw.json'),
+      JSON.stringify({
+        DuFab: { classes: ['fab', 'btn-primary'], deps: ['DuButton'] },
+        DuButton: { classes: ['btn', 'btn-primary'], deps: [] },
+        DuCard: { classes: ['card'], deps: [] },
+      }),
+    )
+    cssPath = join(libRoot, 'index.css')
+    writeFileSync(cssPath, PRISTINE_CSS)
+    writeFileSync(join(fixtureRoot, 'src/App.vue'), `<script>import { DuFab } from 'cornet-ui'</script>`)
   })
 
   afterEach(() => {
@@ -192,16 +202,49 @@ describe('cornetPlugin npm mode (no sources)', () => {
     return typeof hook === 'function' ? hook : hook.handler
   }
 
-  it('leaves the package untouched (CSS shipped whole, like other Tailwind libs)', async () => {
-    const cssBefore = readFileSync(join(libRoot, 'index.css'), 'utf-8')
-    const classesBefore = readFileSync(join(libRoot, 'dist', 'cornet-classes.txt'), 'utf-8')
+  it('rewrites index.css to inline the used components (+ deps), then restores', async () => {
+    const plugin = cornetPlugin({ libPath: libRoot, showOutput: false })
+    await callable(plugin.configResolved)({ root: fixtureRoot } as never)
+    await callable(plugin.buildStart).call({} as never, {} as never)
 
+    const during = readFileSync(cssPath, 'utf-8')
+    expect(during).toContain('@source inline(')
+    expect(during).not.toContain('cornet-classes.txt') // full scan replaced
+    // DuFab used -> DuFab + dep DuButton kept, DuCard dropped.
+    expect(during).toContain('fab')
+    expect(during).toContain('btn')
+    expect(during).not.toMatch(/\bcard\b/)
+
+    await callable(plugin.closeBundle).call({} as never)
+    expect(readFileSync(cssPath, 'utf-8')).toBe(PRISTINE_CSS)
+  })
+
+  it('self-heals an index.css left mutated by an interrupted build', async () => {
+    // Simulate a previous build that never restored.
+    writeFileSync(
+      cssPath,
+      '/* entry */\n/* cornet:tree-shake start */\n@source inline("btn");\n/* cornet:tree-shake end */\n',
+    )
     const plugin = cornetPlugin({ libPath: libRoot, showOutput: false })
     await callable(plugin.configResolved)({ root: fixtureRoot } as never)
     await callable(plugin.buildStart).call({} as never, {} as never)
     await callable(plugin.closeBundle).call({} as never)
+    expect(readFileSync(cssPath, 'utf-8')).toBe(PRISTINE_CSS)
+  })
 
-    expect(readFileSync(join(libRoot, 'index.css'), 'utf-8')).toBe(cssBefore)
-    expect(readFileSync(join(libRoot, 'dist', 'cornet-classes.txt'), 'utf-8')).toBe(classesBefore)
+  it('never mutates the canonical json', async () => {
+    const before = readFileSync(join(libRoot, 'dist', 'cornet-tw.json'), 'utf-8')
+    const plugin = cornetPlugin({ libPath: libRoot, showOutput: false })
+    await callable(plugin.configResolved)({ root: fixtureRoot } as never)
+    await callable(plugin.buildStart).call({} as never, {} as never)
+    expect(readFileSync(join(libRoot, 'dist', 'cornet-tw.json'), 'utf-8')).toBe(before)
+  })
+
+  it('keeps the full scan on a namespace import', async () => {
+    writeFileSync(join(fixtureRoot, 'src/App.vue'), `<script>import * as C from 'cornet-ui'</script>`)
+    const plugin = cornetPlugin({ libPath: libRoot, showOutput: false })
+    await callable(plugin.configResolved)({ root: fixtureRoot } as never)
+    await callable(plugin.buildStart).call({} as never, {} as never)
+    expect(readFileSync(cssPath, 'utf-8')).toBe(PRISTINE_CSS)
   })
 })

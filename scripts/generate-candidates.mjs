@@ -1,13 +1,18 @@
 /**
- * Generates dist/cornet-classes.txt: the list of Tailwind class names Cornet's
- * components use. The published index.css points Tailwind at this file
- * (`@source "./dist/cornet-classes.txt"`) so the consumer's own Tailwind +
- * daisyUI generate Cornet's classes — the standard model for a Tailwind
- * component library (cf. Flowbite).
+ * Generates Cornet's Tailwind class data into dist/:
  *
- * It is needed because the npm package ships compiled output only, and a class
- * is generated only when its literal is scanned. Those literals live in the
- * .vue templates and .types.ts constants (e.g. `BUTTON_COLORS`), which the
+ *   - cornet-classes.txt : every class name Cornet's components use. The
+ *     published index.css scans it (`@source "./dist/cornet-classes.txt"`) so
+ *     the consumer's own Tailwind + daisyUI generate Cornet's classes — the
+ *     standard model for a Tailwind component library (cf. Flowbite). Without
+ *     the Vite plugin, this ships the CSS of every component.
+ *   - cornet-tw.json : per-component class list + internal dependency graph.
+ *     The optional Vite plugin uses it to narrow index.css to the components
+ *     the app actually imports (opt-in tree-shaking).
+ *
+ * These are needed because the npm package ships compiled output only, and a
+ * class is generated only when its literal is scanned. Those literals live in
+ * the .vue templates and .types.ts constants (e.g. `BUTTON_COLORS`), which the
  * compiled dist does not carry. We extract them with Tailwind's own scanner
  * (@tailwindcss/oxide) so the result matches exactly what Tailwind sees.
  *
@@ -29,25 +34,41 @@ if (!existsSync(distDir)) {
 // Component name -> source .vue path, from the library entry point.
 const indexContent = readFileSync(join(libRoot, 'index.ts'), 'utf-8')
 const exportRegex = /export\s*{\s*default\s+as\s+(\w+)\s*}\s+from\s+['"](.+?)['"]/g
-const componentDirs = new Set()
+const componentPaths = new Map()
 let match
 while ((match = exportRegex.exec(indexContent)) !== null) {
-  componentDirs.add(dirname(resolve(libRoot, match[2])))
+  componentPaths.set(match[1], resolve(libRoot, match[2]))
 }
 
 const scanner = new Scanner({})
-const classes = new Set()
-for (const dir of componentDirs) {
+const fileToComponent = new Map([...componentPaths].map(([name, p]) => [p, name]))
+const importRegex = /import\s+\w+\s+from\s+['"](\.[^'"]+\.vue)['"]/g
+
+const data = {}
+const allClasses = new Set()
+for (const [name, vuePath] of componentPaths) {
+  const dir = dirname(vuePath)
+
+  let text = ''
   for (const entry of readdirSync(dir)) {
     if (entry.endsWith('.vue') || entry.endsWith('.types.ts')) {
-      const extension = entry.endsWith('.vue') ? 'vue' : 'ts'
-      const content = readFileSync(join(dir, entry), 'utf-8')
-      for (const candidate of scanner.scanFiles([{ content, extension }])) {
-        classes.add(candidate)
-      }
+      text += '\n' + readFileSync(join(dir, entry), 'utf-8')
     }
   }
+  const classes = [...new Set(scanner.scanFiles([{ content: text, extension: 'vue' }]))].sort()
+  classes.forEach((c) => allClasses.add(c))
+
+  const deps = []
+  const vueContent = readFileSync(vuePath, 'utf-8')
+  let dep
+  while ((dep = importRegex.exec(vueContent)) !== null) {
+    const depName = fileToComponent.get(resolve(dir, dep[1]))
+    if (depName && depName !== name) deps.push(depName)
+  }
+
+  data[name] = { classes, deps }
 }
 
-writeFileSync(join(distDir, 'cornet-classes.txt'), [...classes].sort().join('\n') + '\n')
-console.log(`[candidates] ${componentDirs.size} component dirs -> dist/cornet-classes.txt (${classes.size} candidates)`)
+writeFileSync(join(distDir, 'cornet-classes.txt'), [...allClasses].sort().join('\n') + '\n')
+writeFileSync(join(distDir, 'cornet-tw.json'), JSON.stringify(data, null, 0) + '\n')
+console.log(`[candidates] ${componentPaths.size} components -> dist/cornet-classes.txt (${allClasses.size} classes) + cornet-tw.json`)

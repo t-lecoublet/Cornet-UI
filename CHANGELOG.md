@@ -3,6 +3,19 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.9] - 2026-06-15
+
+### Added
+- Opt-in CSS tree-shaking on npm installs. Add `cornetPlugin()` to your
+  `vite.config` and Cornet generates only the CSS of the components your app
+  imports (e.g. a one-button app drops from ~200 KB to ~32 KB of Cornet CSS).
+  It works by rewriting the package's `index.css` to an `@source inline(...)`
+  safelist of the used components for the duration of the build, then
+  restoring it — the same reliable mechanism the embedded mode uses. The
+  package ships `dist/cornet-tw.json` (per-component classes + dependency
+  graph) for this. Without the plugin, the full class list still ships, so
+  nothing breaks.
+
 ## [0.1.0-beta.7] - 2026-06-15
 
 ### Changed
