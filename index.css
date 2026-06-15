@@ -10,4 +10,5 @@
 
    The npm package ships a different entry (see scripts/prepack.mjs): it
    points at the generated dist/cornet-classes.txt instead. */
-@source "./components";
+@source "./components/**/*.vue";
+@source "./components/**/*.types.ts";

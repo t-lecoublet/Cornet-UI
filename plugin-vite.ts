@@ -140,9 +140,14 @@ export function generateExclusionCss(
 ): { css: string; excludedCount: number } {
   const unused = [...componentPaths.keys()].filter((name) => !used.has(name)).sort()
   let css = ''
+  const excludedDirs = new Set<string>()
   for (const name of unused) {
     const relPath = componentPaths.get(name)!.replace(/^\.\//, '')
-    css += `@source not "./${relPath}";\n`
+    const relDir = dirname(relPath)
+    if (!excludedDirs.has(relDir)) {
+      css += `@source not "./${relDir}";\n`
+      excludedDirs.add(relDir)
+    }
   }
   return { css, excludedCount: unused.length }
 }
