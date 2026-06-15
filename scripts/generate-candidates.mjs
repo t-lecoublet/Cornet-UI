@@ -46,17 +46,20 @@ const importRegex = /import\s+\w+\s+from\s+['"](\.[^'"]+\.vue)['"]/g
 // Bare daisyUI component class names that also occur as plain string literals
 // (HTML element tags / input `type` values) inside unrelated components — e.g.
 // DuButton can render as `<input type="radio">`, so 'input'/'radio'/'checkbox'
-// appear in its source though they are not its classes. Tailwind's scanner
-// cannot tell them apart, so we keep each only for the component that owns it.
-const FORM_BASE_OWNER = {
-  input: 'DuInputField',
-  checkbox: 'DuCheckbox',
-  radio: 'DuRadio',
-  select: 'DuSelect',
-  textarea: 'DuTextArea',
-  range: 'DuRange',
-  link: 'DuLink',
-}
+// appear in its source though they are not classes there. We keep such a bare
+// class only when the component also uses one of its modifiers (`input-xs`,
+// `checkbox-primary`, …): a real user always styles it, a string literal does
+// not. DuSelect, for instance, renders `class="input input-bordered ..."`, so
+// it keeps `input`; DuButton only mentions the word, so it drops it.
+const AMBIGUOUS_BASES = new Set([
+  'input',
+  'checkbox',
+  'radio',
+  'select',
+  'textarea',
+  'range',
+  'link',
+])
 
 const data = {}
 const allClasses = new Set()
@@ -73,8 +76,10 @@ for (const [name, vuePath] of componentPaths) {
   // emits candidates it has not seen before, so a shared instance would assign
   // each shared class to whichever component is scanned first.
   const scanner = new Scanner({})
-  const classes = [...new Set(scanner.scanFiles([{ content: text, extension: 'vue' }]))]
-    .filter((c) => !(c in FORM_BASE_OWNER) || FORM_BASE_OWNER[c] === name)
+  const raw = new Set(scanner.scanFiles([{ content: text, extension: 'vue' }]))
+  const usesModifier = (base) => [...raw].some((c) => c.startsWith(base + '-'))
+  const classes = [...raw]
+    .filter((c) => !AMBIGUOUS_BASES.has(c) || usesModifier(c))
     .sort()
   classes.forEach((c) => allClasses.add(c))
 

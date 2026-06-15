@@ -17,7 +17,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and the p
   (`input`, `checkbox`, `radio`, `select`, …). Those bare names appear as
   plain string literals in other components (DuButton can render as
   `<input type="radio">`), which Tailwind's scanner cannot distinguish from
-  classes; they are now kept only for the component that owns them.
+  classes. A bare ambiguous base class is now kept only when the component
+  also uses one of its modifiers (`input-bordered`, `checkbox-primary`, …) —
+  a real user always styles it, a string literal does not. This keeps
+  `input` for DuSelect/DuSearch (which render `class="input ..."`) while
+  dropping it from DuButton.
 
 ## [0.1.0-beta.9] - 2026-06-15
 
