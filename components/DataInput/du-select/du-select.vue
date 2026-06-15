@@ -377,6 +377,11 @@ const selectedOption = computed(() => optionFromValue(selectedSingle.value))
         display: block;
     }
 
+    & li > a,
+    & li > button {
+        margin-block: .125rem;
+    }
+
     & li a {
         white-space: nowrap;
     }
