@@ -263,10 +263,12 @@ function onKeydown(e: KeyboardEvent) {
                 if (highlightedIndex.value === 0) {
                     selectValue(queryValue.value)
                 } else {
-                    handleOptionClick(filteredValues.value[highlightedIndex.value - 1])
+                    const option = filteredValues.value[highlightedIndex.value - 1]
+                    if (option) handleOptionClick(option)
                 }
             } else {
-                handleOptionClick(filteredValues.value[highlightedIndex.value])
+                const option = filteredValues.value[highlightedIndex.value]
+                if (option) handleOptionClick(option)
             }
         }
         e.preventDefault()
