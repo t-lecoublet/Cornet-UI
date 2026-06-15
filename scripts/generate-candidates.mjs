@@ -40,9 +40,23 @@ while ((match = exportRegex.exec(indexContent)) !== null) {
   componentPaths.set(match[1], resolve(libRoot, match[2]))
 }
 
-const scanner = new Scanner({})
 const fileToComponent = new Map([...componentPaths].map(([name, p]) => [p, name]))
 const importRegex = /import\s+\w+\s+from\s+['"](\.[^'"]+\.vue)['"]/g
+
+// Bare daisyUI component class names that also occur as plain string literals
+// (HTML element tags / input `type` values) inside unrelated components — e.g.
+// DuButton can render as `<input type="radio">`, so 'input'/'radio'/'checkbox'
+// appear in its source though they are not its classes. Tailwind's scanner
+// cannot tell them apart, so we keep each only for the component that owns it.
+const FORM_BASE_OWNER = {
+  input: 'DuInputField',
+  checkbox: 'DuCheckbox',
+  radio: 'DuRadio',
+  select: 'DuSelect',
+  textarea: 'DuTextArea',
+  range: 'DuRange',
+  link: 'DuLink',
+}
 
 const data = {}
 const allClasses = new Set()
@@ -55,7 +69,13 @@ for (const [name, vuePath] of componentPaths) {
       text += '\n' + readFileSync(join(dir, entry), 'utf-8')
     }
   }
-  const classes = [...new Set(scanner.scanFiles([{ content: text, extension: 'vue' }]))].sort()
+  // A fresh Scanner per component: the oxide Scanner is stateful and only
+  // emits candidates it has not seen before, so a shared instance would assign
+  // each shared class to whichever component is scanned first.
+  const scanner = new Scanner({})
+  const classes = [...new Set(scanner.scanFiles([{ content: text, extension: 'vue' }]))]
+    .filter((c) => !(c in FORM_BASE_OWNER) || FORM_BASE_OWNER[c] === name)
+    .sort()
   classes.forEach((c) => allClasses.add(c))
 
   const deps = []

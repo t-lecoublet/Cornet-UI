@@ -3,6 +3,22 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.10] - 2026-06-15
+
+### Fixed
+- Per-component class lists were corrupted: the candidate generator reused a
+  single `@tailwindcss/oxide` Scanner across all components, and the Scanner
+  is stateful (emits each candidate only once), so a class shared by several
+  components was assigned only to whichever was scanned first. With the Vite
+  plugin enabled this could drop real classes — e.g. a DuModal-only app would
+  lose `.btn` for its action buttons. Each component is now scanned with a
+  fresh Scanner.
+- Tree-shaken builds no longer leak unrelated form-component classes
+  (`input`, `checkbox`, `radio`, `select`, …). Those bare names appear as
+  plain string literals in other components (DuButton can render as
+  `<input type="radio">`), which Tailwind's scanner cannot distinguish from
+  classes; they are now kept only for the component that owns them.
+
 ## [0.1.0-beta.9] - 2026-06-15
 
 ### Added
