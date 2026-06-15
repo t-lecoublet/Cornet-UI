@@ -140,16 +140,28 @@ export function generateExclusionCss(
 ): { css: string; excludedCount: number } {
   const unused = [...componentPaths.keys()].filter((name) => !used.has(name)).sort()
   let css = ''
+  for (const name of unused) {
+    const relPath = componentPaths.get(name)!.replace(/^\.\//, '')
+    css += `@source not "./${relPath}";\n`
+  }
+  return { css, excludedCount: unused.length }
+}
+
+/** Generate exclusions for .types.ts files of unused component directories. */
+function generateTypesExclusionCss(componentPaths: Map<string, string>, used: Set<string>): string {
+  const unused = [...componentPaths.keys()].filter((name) => !used.has(name)).sort()
   const excludedDirs = new Set<string>()
+  let css = ''
+
   for (const name of unused) {
     const relPath = componentPaths.get(name)!.replace(/^\.\//, '')
     const relDir = dirname(relPath)
-    if (!excludedDirs.has(relDir)) {
-      css += `@source not "./${relDir}";\n`
-      excludedDirs.add(relDir)
-    }
+    if (excludedDirs.has(relDir)) continue
+    excludedDirs.add(relDir)
+    css += `@source not "./${relDir}/*.types.ts";\n`
   }
-  return { css, excludedCount: unused.length }
+
+  return css
 }
 
 function findPackageRoot(startDir: string): string {
@@ -263,7 +275,8 @@ export default function cornetPlugin(options: CornetPluginOptions = {}): Plugin 
       return
     }
     const { css, excludedCount } = generateExclusionCss(componentPaths, used)
-    writeFileSync(cssFilePath, cssBase + css)
+    const typesExclusionCss = generateTypesExclusionCss(componentPaths, used)
+    writeFileSync(cssFilePath, cssBase + css + typesExclusionCss)
     log(`${used.size}/${componentPaths.size} components used, ${excludedCount} excluded from CSS`)
   }
 
