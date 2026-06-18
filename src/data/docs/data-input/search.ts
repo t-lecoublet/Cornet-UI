@@ -35,13 +35,13 @@ export default {
     },
     {
       title: 'multiple',
-      description: 'Allow selecting multiple values',
+      description: 'Allow selecting multiple values. In multiple mode, clicking a selected item in the dropdown deselects it.',
       type: 'boolean',
       default: 'false',
     },
     {
       title: 'clearable',
-      description: 'Show a ✕ on selected options in the dropdown to allow deselection',
+      description: 'Show a ✕ on selected options in the dropdown. In single mode, also enables deselection by clicking.',
       type: 'boolean',
       default: 'false',
     },
@@ -227,7 +227,7 @@ const query = ref(null)
     },
     {
       title: 'Multiple selection',
-      description: 'Set `multiple` to allow selecting more than one value. Selected values appear as tags.',
+      description: 'Set `multiple` to allow selecting more than one value. Selected values appear as tags. Clicking a selected item in the dropdown deselects it. Press Backspace to remove the last selected value.',
       preview: `<DuSearch
   name="tags"
   id="tags-search"
@@ -263,7 +263,7 @@ const selectedTags = ref([])
     },
     {
       title: 'Clearable',
-      description: 'Add `clearable` to display a ✕ on selected options in the dropdown. Clicking them deselects the value. Works in both single and multiple mode.',
+      description: 'Add `clearable` to display a ✕ on selected options in the dropdown. In single mode, this also enables click-to-deselect. In multiple mode, deselection by click is always active — `clearable` only adds the visual ✕ indicator.',
       preview: `<div class="flex flex-col gap-2 w-72">
   <DuSearch
     name="fruit"
