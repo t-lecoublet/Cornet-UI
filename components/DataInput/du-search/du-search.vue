@@ -169,7 +169,7 @@ function deselectValue(val: SearchOption) {
 }
 
 function handleOptionClick(val: SearchOption) {
-    if (props.clearable && isSelected(val)) {
+    if (isSelected(val) && (props.clearable || props.multiple)) {
         deselectValue(val)
     } else {
         selectValue(val)
