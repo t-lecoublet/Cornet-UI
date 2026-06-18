@@ -4,7 +4,7 @@ export type Variant = 'default' | 'neutral' | 'primary' | 'secondary' | 'accent'
 
 export function useVariantMapping(props: { variant: Variant }, suffix: string) {
   const colorClass = computed(() => {
-    return suffix + '-' + props.variant
+    return props.variant === 'default' ? '' : suffix + '-' + props.variant
   })
 
   return { colorClass }

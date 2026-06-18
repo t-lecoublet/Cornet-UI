@@ -7,11 +7,11 @@ import type { SELECTProps } from './du-select.types'
 const props = withDefaults(defineProps<SELECTProps>(), {
     options: () => [],
     multiple: false,
-    placeholder: 'Choisissez...',
+    placeholder: 'Select...',
     searchable: false,
     searchableInside: false,
-    searchPlaceholder: 'Rechercher...',
-    searchNoResultsText: 'Aucune option trouvée',
+    searchPlaceholder: 'Search...',
+    searchNoResultsText: 'No options found',
     checkboxes: false,
     closeOnSelect: true,
     trackBy: 'id',
@@ -23,9 +23,16 @@ const props = withDefaults(defineProps<SELECTProps>(), {
     size: 'default',
     disabled: false,
     search: false,
+    removeItemLabel: 'Remove',
 })
 
-const emit = defineEmits(['update:modelValue', 'select', 'remove', 'open', 'close'])
+const emit = defineEmits<{
+    'update:modelValue': [value: any]
+    select: [option: any]
+    remove: [option: any]
+    open: []
+    close: []
+}>()
 
 const { colorClass } = useVariantMapping(props, "select")
 const { sizeClass: inputSizeClass } = useSizeMapping(props, "input")
@@ -227,7 +234,7 @@ function onClickOutside(e: Event) {
     if (!root.value.contains(e.target as Node)) close()
 }
 
-function onFocusOut(e: FocusEvent) {
+function onFocusOut(_e: FocusEvent) {
     setTimeout(() => {
         if (!root.value) return
 
@@ -239,7 +246,7 @@ function onFocusOut(e: FocusEvent) {
     }, 0)
 }
 
-function onFocus(e: FocusEvent) {
+function onFocus(_e: FocusEvent) {
     if (!open.value) {
         openDropdown()
     }
@@ -269,7 +276,7 @@ const selectedOption = computed(() => optionFromValue(selectedSingle.value))
                         <label class="badge badge-sm badge-neutral mr-1 flex items-center gap-2 cursor-pointer">
                             {{ labelFromValue(val) }}
                             <button class="btn btn-ghost btn-circle btn-xs p-0" @click.stop="removeValue(val)"
-                                aria-label="Supprimer">✕</button>
+                                :aria-label="removeItemLabel">✕</button>
                         </label>
                     </slot>
                 </template>
@@ -337,7 +344,7 @@ const selectedOption = computed(() => optionFromValue(selectedSingle.value))
                         </li>
 
                         <li v-if="filteredOptions.length === 0" class="p-2 text-sm text-gray-500">
-                            <slot name="no-options">Aucune option trouvée</slot>
+                            <slot name="no-options">{{ searchNoResultsText }}</slot>
                         </li>
                     </ul>
                 </div>

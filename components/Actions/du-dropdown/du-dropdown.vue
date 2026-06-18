@@ -26,7 +26,7 @@ const getPlacementClasses = (input: PlacementInput): string[] => {
 
   if (typeof input === 'string') {
     if (input.includes(',')) {
-      return input.split(',').map(s => s.trim()).filter(Boolean).map(placementToClass)
+      return input.split(',').map(s => s.trim()).filter(Boolean).map(s => placementToClass(s as PlacementValue))
     }
     return [placementToClass(input as PlacementValue)]
   }
@@ -64,8 +64,10 @@ const openClass = computed(() => {
 
 <template>
   <div :class="['dropdown', placementClass, hoverClass, openClass]">
-    <slot name="trigger"></slot>
-    <div class="dropdown-content">
+    <!-- Bind triggerProps on your trigger element (v-bind="triggerProps")
+         to get the expected role/tabindex/aria attributes for free. -->
+    <slot name="trigger" :trigger-props="{ role: 'button', tabindex: 0, 'aria-haspopup': 'true' }"></slot>
+    <div class="dropdown-content" tabindex="0">
       <slot name="content"></slot>
       <slot></slot>
     </div>

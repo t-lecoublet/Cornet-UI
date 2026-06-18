@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { type SWAPProperty } from './du-swap.types'
 
 const props = withDefaults(
   defineProps<{
@@ -17,7 +16,9 @@ const props = withDefaults(
   },
 )
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits<{
+  'update:modelValue': [value: boolean]
+}>()
 
 const internalActive = ref(props.modelValue)
 

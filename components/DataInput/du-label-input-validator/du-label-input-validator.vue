@@ -7,7 +7,7 @@ defineOptions({ inheritAttrs: false })
 
 const model = defineModel<string>()
 
-const props = withDefaults(defineProps<LabelInputValidatorProps>(), {
+withDefaults(defineProps<LabelInputValidatorProps>(), {
   type: "floating-label",
   required: false,
   placeholder: "",

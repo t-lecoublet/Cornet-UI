@@ -17,7 +17,7 @@ const props = withDefaults(
     mainAction?: FABMainAction
     closeButton?: FABCloseButton
     absolute?: boolean
-    // position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left' // waiting potential daisyui implementation
+    position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
   }>(),
   {
     items: undefined,

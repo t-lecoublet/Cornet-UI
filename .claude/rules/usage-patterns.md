@@ -267,8 +267,8 @@
 ### Type data with kit interfaces
 
 ```typescript
-import type { MenuItem } from 'daisyui-vue-kit/types'
-import type { SearchOption } from 'daisyui-vue-kit/types'
+import type { MenuItem } from 'cornet-ui/types'
+import type { SearchOption } from 'cornet-ui/types'
 
 const items: MenuItem[] = [{ label: 'Home', href: '/' }]
 ```

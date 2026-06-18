@@ -1,0 +1,85 @@
+# CI for the Cornet library (lib branch).
+# GitLab LIMOS is the source of truth; the GitHub repo is a mirror.
+
+image: node:22
+
+stages:
+  - check
+  - publish
+
+default:
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  before_script:
+    - npm ci --cache .npm --prefer-offline --no-audit --no-fund
+
+lint:
+  stage: check
+  script:
+    - npm run lint
+
+type-check:
+  stage: check
+  script:
+    - npm run type-check
+
+test:
+  stage: check
+  script:
+    - npm test
+
+build:
+  stage: check
+  script:
+    - npm run build
+    - npm pack --dry-run
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+# Regenerating types/index.ts must not produce a diff (anti-drift guard).
+types-drift:
+  stage: check
+  script:
+    - npm run generate:types
+    - git diff --exit-code types/index.ts
+
+# Diagnostic: prints the runner's public egress IP, to scope the npm token
+# to a CIDR allowlist. Run it manually (ideally a few times / on the same
+# runner tag as `publish`) then delete or keep for future checks.
+egress-ip:
+  stage: check
+  rules:
+    - when: manual
+  allow_failure: true
+  before_script: []
+  cache: []
+  script:
+    - 'echo "IPv4:" && (curl -4 -s --max-time 10 https://api.ipify.org || curl -4 -s --max-time 10 https://ifconfig.me || curl -4 -s --max-time 10 https://icanhazip.com) && echo'
+    - 'echo "IPv6:" && (curl -6 -s --max-time 10 https://api6.ipify.org || echo "none") && echo'
+    - 'echo "Runner: $CI_RUNNER_DESCRIPTION ($CI_RUNNER_TAGS)"'
+
+# Publishes to npm when a v* tag is pushed.
+# Requires NPM_TOKEN (masked CI/CD variable) and `"private": true` removed.
+publish:
+  stage: publish
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v/
+      when: manual
+  script:
+    # The git tag is the source of truth for the published version:
+    # v0.1.0-beta.4 publishes 0.1.0-beta.4 whatever package.json says.
+    - npm pkg set version="${CI_COMMIT_TAG#v}"
+    - npm run build
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    # Pack first, then publish the tarball: `npm publish` without a tarball
+    # snapshots the manifest BEFORE prepack mutates package.json, so the
+    # registry metadata would advertise the source entry points instead of
+    # dist/. Publishing the tarball uses the manifest packed by prepack.
+    - npm pack
+    - npm publish ./cornet-ui-*.tgz --access public

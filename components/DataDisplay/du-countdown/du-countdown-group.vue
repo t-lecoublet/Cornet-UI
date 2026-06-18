@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed } from "vue"
 import DuCountdown from "./du-countdown.vue"
 import { type COUNTDOWNLabels } from './du-countdown.types'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     targetDate?: Date
     showDays?: boolean
@@ -31,23 +30,6 @@ const props = withDefaults(
   },
 )
 
-// Calculer la différence entre maintenant et la date cible
-const timeRemaining = computed(() => {
-  if (!props.targetDate) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
-
-  const now = new Date().getTime()
-  const target = props.targetDate.getTime()
-  const difference = Math.max(0, target - now)
-
-  const days = Math.floor(difference / (1000 * 60 * 60 * 24))
-  const hours = Math.floor(
-    (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-  )
-  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-  const seconds = Math.floor((difference % (1000 * 60)) / 1000)
-
-  return { days, hours, minutes, seconds }
-})
 </script>
 
 <template>

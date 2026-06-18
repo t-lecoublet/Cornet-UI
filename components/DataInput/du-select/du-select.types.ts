@@ -27,4 +27,5 @@ export interface SELECTProps {
   labelBy?: string
   returnObject?: boolean
   clearable?: boolean
+  removeItemLabel?: string
 }

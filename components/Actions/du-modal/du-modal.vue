@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue'
-import { type MODALPlacement } from './du-modal.types'
 
 const props = withDefaults(
   defineProps<{
@@ -11,6 +10,12 @@ const props = withDefaults(
     closeBackdrop?: boolean
     placement?: 'top' | 'middle' | 'bottom' | 'start' | 'end' | 'responsive'
     classBox?: string
+    /** Accessible name of the dialog (use when there is no visible title). */
+    ariaLabel?: string
+    /** id of the element naming the dialog (e.g. your title element). */
+    ariaLabelledby?: string
+    /** Accessible label of the close button and backdrop. */
+    closeLabel?: string
   }>(),
   {
     id: undefined,
@@ -20,6 +25,9 @@ const props = withDefaults(
     closeBackdrop: true,
     placement: 'middle',
     classBox: '',
+    ariaLabel: undefined,
+    ariaLabelledby: undefined,
+    closeLabel: 'Close',
   },
 )
 
@@ -82,7 +90,7 @@ watch(
   },
 )
 
-function handleEscapeKey(event: KeyboardEvent) {
+function handleEscapeKey(_event: KeyboardEvent) {
   if (props.closeOnEscape) {
     closeModal()
   }
@@ -94,12 +102,14 @@ function handleEscapeKey(event: KeyboardEvent) {
     ref="dialogRef"
     :id="id"
     :class="['modal', placementClass]"
+    :aria-label="ariaLabel"
+    :aria-labelledby="ariaLabelledby"
     @keydown.esc.prevent="handleEscapeKey"
     @close="emit('update:open', false)"
   >
     <div :class="['modal-box', classBox]">
       <form v-if="closeButton" method="dialog">
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" :aria-label="closeLabel">
           ✕
         </button>
       </form>
@@ -107,7 +117,7 @@ function handleEscapeKey(event: KeyboardEvent) {
       <div class="modal-action" v-if="$slots.actions"><slot name="actions"> </slot></div>
     </div>
     <form v-if="closeBackdrop" method="dialog" class="modal-backdrop">
-      <button>Close</button>
+      <button>{{ closeLabel }}</button>
     </form>
   </dialog>
 </template> 

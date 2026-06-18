@@ -1,1 +1,14 @@
-/* Automatically generated file to exclude unused components */
+/* Cornet CSS entry (embedded / submodule mode).
+   The @source below registers the component sources with Tailwind so it
+   generates Cornet's classes (the class literals live in the .vue templates
+   and .types.ts constants).
+
+   During `vite build`, the Cornet Vite plugin temporarily appends
+   `@source not` directives here to exclude unused components, then restores
+   this file. Without the plugin, Tailwind scans every component and
+   everything still works.
+
+   The npm package ships a different entry (see scripts/prepack.mjs): it
+   points at the generated dist/cornet-classes.txt instead. */
+@source "./components/**/*.vue";
+@source "./components/**/*.types.ts";

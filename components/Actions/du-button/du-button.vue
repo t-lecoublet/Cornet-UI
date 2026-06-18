@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { type Size, useSizeMapping } from '../../../composables/useSizeProps'
 import { useVariantMapping, type Variant } from '../../../composables/useVariantProps'
-import { type BUTTONColor, type BUTTONSize } from './du-button.types'
 import { computed, inject } from 'vue'
 
 type ElementType = 'button' | 'a' | 'input' | 'div' | 'RouterLink' | 'NuxtLink' | string

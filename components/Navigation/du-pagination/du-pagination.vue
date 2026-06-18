@@ -25,6 +25,11 @@ const props = withDefaults(
     showEllipsis: true,
     maxPages: 0,
     soft: false,
+    ariaLabel: "Pagination",
+    previousAriaLabel: "Previous page",
+    nextAriaLabel: "Next page",
+    firstAriaLabel: "First page",
+    lastAriaLabel: "Last page",
   },
 );
 
@@ -97,64 +102,69 @@ function changePage(page: number | string) {
 </script>
 
 <template>
-  <DuJoin>
-    <template v-if="manual">
-      <slot></slot>
-    </template>
+  <nav :aria-label="ariaLabel">
+    <DuJoin>
+      <template v-if="manual">
+        <slot></slot>
+      </template>
 
-    <template v-else>
-      <button v-if="showFirst" class="join-item btn" :class="[
-        sizeClass,
-        colorClass,
-        outlineClass,
-        softClass,
-        { 'btn-disabled': modelValue <= 1 },
-      ]" @click="changePage(1)" :disabled="modelValue <= 1">
-        <slot name="first">{{ firstLabel }}</slot>
-      </button>
+      <template v-else>
+        <button v-if="showFirst" class="join-item btn" :class="[
+          sizeClass,
+          colorClass,
+          outlineClass,
+          softClass,
+          { 'btn-disabled': modelValue <= 1 },
+        ]" @click="changePage(1)" :disabled="modelValue <= 1" :aria-label="firstAriaLabel">
+          <slot name="first">{{ firstLabel }}</slot>
+        </button>
 
-      <button v-if="showPrevious" class="join-item btn" :class="[
-        sizeClass,
-        colorClass,
-        outlineClass,
-        softClass,
-        { 'btn-disabled': modelValue <= 1 },
-      ]" @click="changePage(modelValue - 1)" :disabled="modelValue <= 1">
-        <slot name="previous">{{ previousLabel }}</slot>
-      </button>
+        <button v-if="showPrevious" class="join-item btn" :class="[
+          sizeClass,
+          colorClass,
+          outlineClass,
+          softClass,
+          { 'btn-disabled': modelValue <= 1 },
+        ]" @click="changePage(modelValue - 1)" :disabled="modelValue <= 1" :aria-label="previousAriaLabel">
+          <slot name="previous">{{ previousLabel }}</slot>
+        </button>
 
-      <button v-for="page in pages" :key="page" class="join-item btn" :class="[
-        sizeClass,
-        colorClass,
-        outlineClass,
-        softClass,
-        { 'btn-active': page === modelValue },
-        { 'btn-disabled': page === '...' },
-      ]" @click="changePage(page)">
-        <slot :name="`page-${page}`">{{ page }}</slot>
-      </button>
+        <button v-for="(page, i) in pages" :key="`${page}-${i}`" class="join-item btn" :class="[
+          sizeClass,
+          colorClass,
+          outlineClass,
+          softClass,
+          { 'btn-active': page === modelValue },
+          { 'btn-disabled': page === '...' },
+        ]" @click="changePage(page)" :disabled="page === '...'"
+          :aria-current="page === modelValue ? 'page' : undefined"
+          :aria-hidden="page === '...' ? 'true' : undefined"
+          :tabindex="page === '...' ? -1 : undefined">
+          <slot :name="`page-${page}`">{{ page }}</slot>
+        </button>
 
-      <button v-if="showNext" class="join-item btn" :class="[
-        sizeClass,
-        colorClass,
-        outlineClass,
-        softClass,
-        { 'btn-disabled': modelValue >= totalPages },
-      ]" @click="changePage(modelValue + 1)" :disabled="modelValue >= totalPages">
-        <slot name="next">{{ nextLabel }}</slot>
-      </button>
+        <button v-if="showNext" class="join-item btn" :class="[
+          sizeClass,
+          colorClass,
+          outlineClass,
+          softClass,
+          { 'btn-disabled': modelValue >= totalPages },
+        ]" @click="changePage(modelValue + 1)" :disabled="modelValue >= totalPages" :aria-label="nextAriaLabel">
+          <slot name="next">{{ nextLabel }}</slot>
+        </button>
 
-      <button v-if="showLast" class="join-item btn" :class="[
-        sizeClass,
-        colorClass,
-        outlineClass,
-        { 'btn-disabled': modelValue >= totalPages },
-        softClass,
-      ]" @click="changePage(totalPages)" :disabled="modelValue >= totalPages">
-        <slot name="last">{{ lastLabel }}</slot>
-      </button>
-    </template>
-  </DuJoin>
+        <button v-if="showLast" class="join-item btn" :class="[
+          sizeClass,
+          colorClass,
+          outlineClass,
+          { 'btn-disabled': modelValue >= totalPages },
+          softClass,
+        ]" @click="changePage(totalPages)" :disabled="modelValue >= totalPages" :aria-label="lastAriaLabel">
+          <slot name="last">{{ lastLabel }}</slot>
+        </button>
+      </template>
+    </DuJoin>
+  </nav>
 </template>
 
 <style scoped>

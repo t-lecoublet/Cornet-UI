@@ -21,10 +21,14 @@ export interface SEARCHProps {
   listValues: SearchOption[]
   limit?: number
   addOption?: boolean
+  /** Label prefix shown before the query in the "add option" entry (default: 'Add') */
+  addOptionText?: string
+  /** Text shown when no option matches the query (default: 'No results') */
+  noResultsText?: string
   autoCommit?: boolean
-  /** Désactive le filtrage interne — les résultats viennent d'une recherche externe */
+  /** Disables internal filtering — results come from an external search */
   remoteSearch?: boolean
-  /** Clé de l'option utilisée comme libellé affiché (défaut : 'name') */
+  /** Option key used as the displayed label (default: 'name') */
   labelBy?: string
   type?: string
   required?: boolean

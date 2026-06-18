@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type DIFFAspectRatio } from './du-diff.types'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     item1?: string
     item2?: string

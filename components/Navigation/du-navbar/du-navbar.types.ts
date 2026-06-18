@@ -1,3 +1,3 @@
-export interface NavbarProps {
-  // Le composant Navbar n'a pas de propriétés spécifiques pour l'instant
-} 
+// The Navbar component has no specific props for now.
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface NavbarProps {}

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
-import { type COLLAPSEItem, type COLLAPSEModifier } from './du-collapse.types'
+import { type COLLAPSEItem } from './du-collapse.types'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     items?: COLLAPSEItem[]
     modifier?:

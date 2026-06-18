@@ -1,0 +1,18 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "index.ts",
+    "plugin-vite.ts",
+    "types/index.ts",
+    "composables/**/*.ts",
+    "components/**/*.ts",
+    "components/**/*.vue"
+  ],
+  "exclude": ["**/*.stories.ts", "node_modules", "dist"],
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "skipLibCheck": true,
+    "types": ["node", "vite/client"]
+  }
+}

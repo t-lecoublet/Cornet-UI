@@ -10,7 +10,8 @@ const props = defineProps<{
   onSubItemClick?: (item: MenuItem) => void;
 }>();
 
-const slots = defineSlots();
+// Typed via defineSlots so the recursive slot forwarding below stays type-safe.
+const _slots = defineSlots();
 
 const idx = computed(() => props.parentIndex ? `${props.parentIndex}-${props.index}` : `${props.index}`);
 

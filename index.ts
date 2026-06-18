@@ -3,6 +3,8 @@ import { useVariantMapping, type Variant } from './composables/useVariantProps'
 
 export { AvailableSizes, useSizeMapping, type Size, useVariantMapping, type Variant }
 
+export * from './types'
+
 export { default as DuButton } from './components/Actions/du-button/du-button.vue';
 export { default as DuBadge } from './components/DataDisplay/du-badge/du-badge.vue';
 export { default as DuDropdown } from './components/Actions/du-dropdown/du-dropdown.vue';
@@ -27,6 +29,7 @@ export { default as DuStat } from './components/DataDisplay/du-stat/du-stat.vue'
 export { default as DuStats } from './components/DataDisplay/du-stats/du-stats.vue';
 export { default as DuStatus } from './components/DataDisplay/du-status/du-status.vue';
 export { default as DuTable } from './components/DataDisplay/du-table/du-table.vue';
+export { default as DuTableItem } from './components/DataDisplay/du-table/du-table-item.vue';
 export { default as DuTimeline } from './components/DataDisplay/du-timeline/du-timeline.vue';
 export { default as DuTimelineItem } from './components/DataDisplay/du-timeline/du-timeline-item.vue';
 export { default as DuCheckbox } from './components/DataInput/du-checkbox/du-checkbox.vue';
@@ -56,6 +59,7 @@ export { default as DuButtonLink } from './components/Navigation/du-button-link/
 export { default as DuDock } from './components/Navigation/du-dock/du-dock.vue';
 export { default as DuLink } from './components/Navigation/du-link/du-link.vue';
 export { default as DuMenu } from './components/Navigation/du-menu/du-menu.vue';
+export { default as DuMenuItem } from './components/Navigation/du-menu/du-menu-item.vue';
 export { default as DuNavbar } from './components/Navigation/du-navbar/du-navbar.vue';
 export { default as DuPagination } from './components/Navigation/du-pagination/du-pagination.vue';
 export { default as DuStepItem } from './components/Navigation/du-step-item/du-step-item.vue';

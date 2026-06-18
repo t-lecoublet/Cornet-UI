@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, useSlots } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { type AlertProps } from "./du-alert.types";
 
-const slots = useSlots();
 
 const props = withDefaults(
   defineProps<AlertProps>(),
