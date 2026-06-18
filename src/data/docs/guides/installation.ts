@@ -2,13 +2,24 @@ import type { DocPageData } from '@/types/docs'
 
 export default {
   title: 'Installation',
-  description: 'No npm publish, no registry — just Git. Pick your setup and go.',
+  description: 'Install via npm or add as a Git submodule. Pick your setup and go.',
   category: 'Guides',
   sections: [
+    {
+      title: '1. Install from npm',
+      description: 'Install cornet-ui directly from the npm registry.',
+      lang: 'bash',
+      showFor: ['npm'],
+      links: [
+        { label: 'cornet-ui on npm', href: 'https://www.npmjs.com/package/cornet-ui' },
+      ],
+      code: `npm install cornet-ui`,
+    },
     {
       title: '1. Add to Your project',
       description: 'Add only the lib as a Git submodule — no npm publish needed.',
       lang: 'bash',
+      showFor: ['gitlab', 'github'],
       links: [
         { label: 'Git submodules docs', href: 'https://git-scm.com/docs/gitsubmodules' },
       ],
@@ -21,6 +32,7 @@ npm install ./lib`,
       title: 'Or with New project',
       description: 'Clone the full repo — Vite + Vue already wired up.',
       lang: 'bash',
+      showFor: ['gitlab', 'github'],
       code: `git clone --recurse-submodules \\
   git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git`,
     },

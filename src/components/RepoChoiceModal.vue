@@ -16,32 +16,32 @@ function choose(pref: RepoPref) {
         <div class="p-6 pb-4">
           <h2 class="text-lg font-bold mb-1">Choose your source</h2>
           <p class="text-sm text-base-content/60">
-            Cornet is hosted on two platforms. Pick the one you prefer for
+            Cornet is available on npm and hosted on two Git platforms. Pick the one you prefer for
             links and code examples — you can switch anytime from the navbar.
           </p>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 px-6 pb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 px-6 pb-6">
 
-          <!-- GitLab -->
+          <!-- npm -->
           <button
-            class="flex flex-col items-start gap-3 p-4 rounded-xl border-2 border-base-300 hover:border-warning/60 hover:bg-warning/5 transition-all cursor-pointer text-left"
-            @click="choose('gitlab')"
+            class="sm:col-span-2 flex flex-col items-start gap-3 p-4 rounded-xl border-2 border-base-300 hover:border-error/60 hover:bg-error/5 transition-all cursor-pointer text-left"
+            @click="choose('npm')"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 448 512" fill="currentColor" class="text-warning shrink-0">
-              <path d="M0 96v320c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96m337.5 12.5l44.6 116.4l.4 1.2c5.6 16.8 7.2 35.2 2.3 52.5c-5 17.2-15.4 32.4-29.8 43.3l-.2.1l-68.4 51.2l-54.1 40.9c-.5.2-1.1.5-1.7.8c-2 1-4.4 2-6.7 2c-3 0-6.8-1.8-8.3-2.8l-54.2-40.9l-67.9-50.9l-.4-.3l-.2-.1c-14.3-10.8-24.8-26-29.7-43.3s-4.2-35.7 2.2-52.5l.5-1.2l44.7-116.4c.9-2.3 2.5-4.3 4.5-5.6c1.6-1 3.4-1.6 5.2-1.8c1.3-.7 2.1-.4 3.4.1c.6.2 1.2.5 2 .7c1 .4 1.6.9 2.4 1.5c.6.4 1.2 1 2.1 1.5c1.2 1.4 2.2 3 2.7 4.8l29.2 92.2H285l30.2-92.2c.5-1.8 1.4-3.4 2.6-4.8s2.8-2.4 4.5-3.1c1.7-.6 3.6-.9 5.4-.7s3.6.8 5.2 1.8c2 1.3 3.7 3.3 4.6 5.6"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" class="text-error shrink-0">
+              <path d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z"/>
             </svg>
             <div>
-              <div class="font-semibold text-sm">GitLab</div>
+              <div class="font-semibold text-sm">npm</div>
               <div class="text-xs text-base-content/70 mt-0.5 leading-relaxed">
-                Independent CNRS lab — sovereign hosting, no dependency on a big platform.
+                Standard registry — just <code class="font-mono">npm install cornet-ui</code>.
               </div>
             </div>
           </button>
 
           <!-- GitHub -->
           <button
-            class="flex flex-col items-start gap-3 p-4 rounded-xl border-2 border-base-300 hover:border-primary/60 hover:bg-primary/5 transition-all cursor-pointer text-left"
+            class="sm:col-span-2 flex flex-col items-start gap-3 p-4 rounded-xl border-2 border-base-300 hover:border-primary/60 hover:bg-primary/5 transition-all cursor-pointer text-left"
             @click="choose('github')"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" class="shrink-0">
@@ -50,7 +50,23 @@ function choose(pref: RepoPref) {
             <div>
               <div class="font-semibold text-sm">GitHub</div>
               <div class="text-xs text-base-content/70 mt-0.5 leading-relaxed">
-                Microsoft — wider reach, the code is more likely to stay accessible long-term.
+                Microsoft — wider reach, likely to stay accessible long-term.
+              </div>
+            </div>
+          </button>
+
+          <!-- GitLab -->
+          <button
+            class="sm:col-span-2 sm:col-start-2 flex flex-col items-start gap-3 p-4 rounded-xl border-2 border-base-300 hover:border-warning/60 hover:bg-warning/5 transition-all cursor-pointer text-left"
+            @click="choose('gitlab')"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 448 512" fill="currentColor" class="text-warning shrink-0">
+              <path d="M0 96v320c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64C28.7 32 0 60.7 0 96m337.5 12.5l44.6 116.4l.4 1.2c5.6 16.8 7.2 35.2 2.3 52.5c-5 17.2-15.4 32.4-29.8 43.3l-.2.1l-68.4 51.2l-54.1 40.9c-.5.2-1.1.5-1.7.8c-2 1-4.4 2-6.7 2c-3 0-6.8-1.8-8.3-2.8l-54.2-40.9l-67.9-50.9l-.4-.3l-.2-.1c-14.3-10.8-24.8-26-29.7-43.3s-4.2-35.7 2.2-52.5l.5-1.2l44.7-116.4c.9-2.3 2.5-4.3 4.5-5.6c1.6-1 3.4-1.6 5.2-1.8c1.3-.7 2.1-.4 3.4.1c.6.2 1.2.5 2 .7c1 .4 1.6.9 2.4 1.5c.6.4 1.2 1 2.1 1.5c1.2 1.4 2.2 3 2.7 4.8l29.2 92.2H285l30.2-92.2c.5-1.8 1.4-3.4 2.6-4.8s2.8-2.4 4.5-3.1c1.7-.6 3.6-.9 5.4-.7s3.6.8 5.2 1.8c2 1.3 3.7 3.3 4.6 5.6"/>
+            </svg>
+            <div>
+              <div class="font-semibold text-sm">GitLab</div>
+              <div class="text-xs text-base-content/70 mt-0.5 leading-relaxed">
+                Independent CNRS lab — sovereign hosting, no big platform dependency.
               </div>
             </div>
           </button>

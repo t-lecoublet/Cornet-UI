@@ -44,6 +44,7 @@ export interface DocSection {
   code: string
   script?: string
   lang?: string
+  showFor?: ('gitlab' | 'github' | 'npm')[]
 }
 
 export interface DocPageData {

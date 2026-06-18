@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import type { DocPageData } from '@/types/docs'
 import PropsTable from './PropsTable.vue'
 import PropsDocs from './PropsDocs.vue'
@@ -8,9 +8,13 @@ import LivePreview from './LivePreview.vue'
 import CodeBlock from './CodeBlock.vue'
 import { useRepoPreference } from '@/composables/useRepoPreference'
 
-defineProps<{ data: DocPageData }>()
+const props = defineProps<{ data: DocPageData }>()
 
-const { transformUrl } = useRepoPreference()
+const { transformUrl, preference } = useRepoPreference()
+
+const filteredSections = computed(() =>
+  props.data.sections.filter(s => !s.showFor || s.showFor.includes(preference.value ?? 'gitlab'))
+)
 
 const copiedIdx = ref<number | null>(null)
 const copiedAnchorIdx = ref<number | null>(null)
@@ -101,9 +105,9 @@ onMounted(async () => {
     </section>
 
     <!-- ─── Sections ─────────────────────────────────────── -->
-    <section v-if="data.sections.length" class="space-y-10">
+    <section v-if="filteredSections.length" class="space-y-10">
       <div
-        v-for="(section, idx) in data.sections"
+        v-for="(section, idx) in filteredSections"
         :key="sectionKey(data, idx)"
         :id="sectionId(section.title)"
         class="group pt-5"
