@@ -1,93 +1,99 @@
 <div align="center">
-  <img src="./public/logoLong.svg" alt="Vue + daisyUI Logo" width="300">
+  <img src="./public/logoLong.svg" alt="Cornet Logo" width="300">
 </div>
 
 # Cornet
 
-Cornet is a Vue 3 component library for daisyUI without node_modules limitations.
+A Vue 3 component library built on DaisyUI 5 and Tailwind CSS 4.
 
 > Docs: https://cornet-ui.com/
 
 ## Why
 
-DaisyUI is a Tailwind CSS component library that provides a set of pre-designed UI components. However, it is not designed to be used as a Vue component library. This project aims to provide a set of Vue components that are based on daisyUI's design principles and can be easily integrated into Vue applications.
-This library is designed to be used as components next to your own components, as a library without being in node_modules. That allows to use and modify the library without having to fork, publish it etc.
+DaisyUI provides great CSS components, but not Vue-specific ones. Cornet wraps DaisyUI into fully typed Vue 3 components with proper props, slots, and v-model support — ready to drop into any Vue or Nuxt project.
+
+Available on npm (`cornet-ui`) or as a Git submodule for full source access.
 
 ## Requirements
 
-- [Tailwind CSS](https://tailwindcss.com/docs/installation)
-- [DaisyUI](https://daisyui.com/docs/install/)
-- [Vue 3](https://vuejs.org/guide/introduction.html)
+- [Vue 3](https://vuejs.org/)
+- [Tailwind CSS 4](https://tailwindcss.com/)
+- [DaisyUI 5](https://daisyui.com/)
 
 ## Installation
 
-### Method 1: (New Vue project) Clone this vue repository
+### Method 1: npm (recommended)
+
+```bash
+npm install cornet-ui
+```
+
+### Method 2: Git submodule (existing project)
+
+Gives you full source access — modify components without forking or publishing.
+
+```bash
+git submodule add -b lib git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git lib
+git submodule update --init --recursive
+npm install ./lib
+```
+
+### Method 3: Clone (new project)
+
+A Vite + Vue project with Cornet already wired up.
 
 ```bash
 git clone --recurse-submodules git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git
 ```
 
-### Method 2: (Vue existing projects) Download only lib directory from branch lib
-
-If you want to use the library in an existing project, you can download only the `lib` directory from the [lib](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit/-/tree/lib?ref_type=heads) branch of the repository. This will allow you to use the library without having to clone the entire repository.
-
-At the source of your project, run the following command to add the `lib` as a submodule:
+### Method 4: Nuxt starter
 
 ```bash
-git submodule add -b lib git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git lib
-git submodule update --init --recursive
+git clone git@gitlab.limos.fr:hub-isima/daisyui-vue-kit-nuxt-starter.git
 ```
 
-More information about submodules can be found in the [Git documentation](https://git-scm.com/docs/git-submodule).
+See the [Nuxt starter repo](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit-nuxt-starter) for details.
 
-Install the local directory as a dependency with :
+## Setup
 
-```bash
-npm install ./lib
-```
+### 1. Add the Vite plugin (optional)
 
-OR
-Add this line to your dependency file (package.json):
+Reduces generated CSS by only scanning the Cornet components you actually use.
 
-```json
-"dependencies": {
-  "daisyui-vue-kit": "file:lib"
-}
-```
-
-Then, run your installation command with your package manager like `npm install` to install the dependencies.
-
-Finally add the vite plugin and import the lib in your css file:
-
-```javascript
+```js
 // vite.config.js
-import vueDaisyUI from 'daisyui-vue-kit/plugin-vite'
+import cornetPlugin from 'cornet-ui/plugin-vite'
 
-// ... Existing code
 export default defineConfig({
-  plugins: [
-    vueDaisyUI({
-      showOutput: true
-    }),
-  ]
+  plugins: [cornetPlugin({ showOutput: true }), vue(), tailwindcss()]
 })
 ```
 
+### 2. Import the CSS
+
 ```css
-/* your.css */
+/* your main CSS file */
 @import "tailwindcss";
-@import "daisyui-vue-kit/css";
+@import "cornet-ui/css";
 @plugin "daisyui";
 ```
 
-### Method 3: Nuxt project
+### 3. Use a component
 
-You can refer to this [Nuxt project with kit](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit-nuxt-starter/-/tree/master?ref_type=heads) for installation needs.
+```vue
+<script setup>
+import { DuButton } from 'cornet-ui'
+</script>
+
+<template>
+  <DuButton variant="primary">Hello World!</DuButton>
+</template>
+```
 
 ## Storybook
 
-Library also provide storybook stories to test components. So you can install it and run daisyui-vue-kit stories.
+The library includes Storybook stories for every component.
 
-See [storybook](https://storybook.js.org/docs/vue/get-started/install) documentation for more information.
+See the [Storybook docs](https://storybook.js.org/docs) for installation.
 
-WARNING: Storybook v9 is not compatible with Nuxt for now, so use vite storybook instead or use Storybook v8 inside Nuxt project. (Actually, Nuxt project linked above use Storybook v9 with vite)
+> Note: Storybook v9 is not compatible with Nuxt — use Vite Storybook instead, or Storybook v8 in Nuxt projects.

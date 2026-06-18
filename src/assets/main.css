@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "daisyui-vue-kit/css";
+@import "cornet-ui/css";
 @plugin "daisyui/index.js" {
   themes: all;
 }

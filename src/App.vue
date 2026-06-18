@@ -59,7 +59,7 @@ import {
   DuPagination,
   DuSteps,
   DuTabs,
-} from 'daisyui-vue-kit'
+} from 'cornet-ui'
 
 // Reactive states
 const modalRef = ref()
@@ -197,42 +197,42 @@ const drawerItems = [
 ]
 
 const themesItems = [
-  { name: 'Default', value: 'default' },
-  { name: 'Light', value: 'light' },
-  { name: 'Dark', value: 'dark' },
-  { name: 'Cupcake', value: 'cupcake' },
-  { name: 'Bumblebee', value: 'bumblebee' },
-  { name: 'Emerald', value: 'emerald' },
-  { name: 'Corporate', value: 'corporate' },
-  { name: 'Synthwave', value: 'synthwave' },
-  { name: 'Retro', value: 'retro' },
-  { name: 'Cyberpunk', value: 'cyberpunk' },
-  { name: 'Valentine', value: 'valentine' },
-  { name: 'Halloween', value: 'halloween' },
-  { name: 'Garden', value: 'garden' },
-  { name: 'Forest', value: 'forest' },
-  { name: 'Aqua', value: 'aqua' },
-  { name: 'Lofi', value: 'lofi' },
-  { name: 'Pastel', value: 'pastel' },
-  { name: 'Fantasy', value: 'fantasy' },
-  { name: 'Wireframe', value: 'wireframe' },
-  { name: 'Black', value: 'black' },
-  { name: 'Luxury', value: 'luxury' },
-  { name: 'Dracula', value: 'dracula' },
-  { name: 'CMYK', value: 'cmyk' },
-  { name: 'Autumn', value: 'autumn' },
-  { name: 'Business', value: 'business' },
-  { name: 'Acid', value: 'acid' },
-  { name: 'Lemonade', value: 'lemonade' },
-  { name: 'Night', value: 'night' },
-  { name: 'Coffee', value: 'coffee' },
-  { name: 'Winter', value: 'winter' },
-  { name: 'Dim', value: 'dim' },
-  { name: 'Nord', value: 'nord' },
-  { name: 'Sunset', value: 'sunset' },
-  { name: 'Caramel Latte', value: 'caramellatte' },
-  { name: 'Abyss', value: 'abyss' },
-  { name: 'Silk', value: 'silk' },
+  { label: 'Default', value: 'default' },
+  { label: 'Light', value: 'light' },
+  { label: 'Dark', value: 'dark' },
+  { label: 'Cupcake', value: 'cupcake' },
+  { label: 'Bumblebee', value: 'bumblebee' },
+  { label: 'Emerald', value: 'emerald' },
+  { label: 'Corporate', value: 'corporate' },
+  { label: 'Synthwave', value: 'synthwave' },
+  { label: 'Retro', value: 'retro' },
+  { label: 'Cyberpunk', value: 'cyberpunk' },
+  { label: 'Valentine', value: 'valentine' },
+  { label: 'Halloween', value: 'halloween' },
+  { label: 'Garden', value: 'garden' },
+  { label: 'Forest', value: 'forest' },
+  { label: 'Aqua', value: 'aqua' },
+  { label: 'Lofi', value: 'lofi' },
+  { label: 'Pastel', value: 'pastel' },
+  { label: 'Fantasy', value: 'fantasy' },
+  { label: 'Wireframe', value: 'wireframe' },
+  { label: 'Black', value: 'black' },
+  { label: 'Luxury', value: 'luxury' },
+  { label: 'Dracula', value: 'dracula' },
+  { label: 'CMYK', value: 'cmyk' },
+  { label: 'Autumn', value: 'autumn' },
+  { label: 'Business', value: 'business' },
+  { label: 'Acid', value: 'acid' },
+  { label: 'Lemonade', value: 'lemonade' },
+  { label: 'Night', value: 'night' },
+  { label: 'Coffee', value: 'coffee' },
+  { label: 'Winter', value: 'winter' },
+  { label: 'Dim', value: 'dim' },
+  { label: 'Nord', value: 'nord' },
+  { label: 'Sunset', value: 'sunset' },
+  { label: 'Caramel Latte', value: 'caramellatte' },
+  { label: 'Abyss', value: 'abyss' },
+  { label: 'Silk', value: 'silk' },
 ]
 </script>
 
@@ -255,7 +255,7 @@ const themesItems = [
             <template #item="{ item, index }">
               <li>
                 <input type="radio" name="theme-dropdown" :data-theme="item.value"
-                  class="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start" :aria-label="item.name"
+                  class="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start" :aria-label="item.label"
                   :value="item.value" />
               </li>
             </template>
