@@ -61,6 +61,25 @@ const AMBIGUOUS_BASES = new Set([
   'link',
 ])
 
+// useSizeMapping(props, 'X') / useVariantMapping(props, 'X') build classes like
+// `X-md` / `X-primary` at runtime. The literals are NOT in the calling
+// component when the suffix belongs to another component (e.g. DuSelect renders
+// a `menu` and calls useSizeMapping(props, 'menu'), but `menu-sm`…`menu-xl`
+// live in DuMenu). Expand those suffixes here so cross-component dynamic
+// classes are not dropped when tree-shaking. Mirrors useSizeProps/useVariantProps.
+const SIZE_MODIFIERS = ['xs', 'sm', 'md', 'lg', 'xl']
+const VARIANT_MODIFIERS = ['neutral', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error']
+const SIZE_CALL = /useSizeMapping\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
+const VARIANT_CALL = /useVariantMapping\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
+
+function dynamicMappingClasses(text) {
+  const out = []
+  let m
+  while ((m = SIZE_CALL.exec(text)) !== null) out.push(...SIZE_MODIFIERS.map((s) => `${m[1]}-${s}`))
+  while ((m = VARIANT_CALL.exec(text)) !== null) out.push(...VARIANT_MODIFIERS.map((v) => `${m[1]}-${v}`))
+  return out
+}
+
 const data = {}
 const allClasses = new Set()
 for (const [name, vuePath] of componentPaths) {
@@ -77,6 +96,7 @@ for (const [name, vuePath] of componentPaths) {
   // each shared class to whichever component is scanned first.
   const scanner = new Scanner({})
   const raw = new Set(scanner.scanFiles([{ content: text, extension: 'vue' }]))
+  dynamicMappingClasses(text).forEach((c) => raw.add(c))
   const usesModifier = (base) => [...raw].some((c) => c.startsWith(base + '-'))
   const classes = [...raw]
     .filter((c) => !AMBIGUOUS_BASES.has(c) || usesModifier(c))

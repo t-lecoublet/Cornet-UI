@@ -22,6 +22,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and the p
   a real user always styles it, a string literal does not. This keeps
   `input` for DuSelect/DuSearch (which render `class="input ..."`) while
   dropping it from DuButton.
+- Cross-component dynamic classes are no longer dropped when tree-shaking.
+  `useSizeMapping(props, 'X')` / `useVariantMapping(props, 'X')` build classes
+  like `X-md` / `X-primary` at runtime, and the literals may belong to another
+  component (DuSelect renders a `menu` and sizes it with `menu-sm`…`menu-xl`,
+  which live in DuMenu). Those calls are now parsed and their full modifier
+  sets added, so e.g. a DuSelect-only build keeps the `.menu-{size}` rules
+  that pad its dropdown list items.
 
 ## [0.1.0-beta.9] - 2026-06-15
 
