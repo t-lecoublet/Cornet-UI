@@ -1,99 +1,161 @@
 <div align="center">
-  <img src="./public/logoLong.svg" alt="Cornet Logo" width="300">
+  <img src="./public/logoLong.svg" alt="Cornet logo" width="320" />
 </div>
 
-# Cornet
+<h1 align="center">Cornet</h1>
 
-A Vue 3 component library built on DaisyUI 5 and Tailwind CSS 4.
+<p align="center">
+  Vue 3 component library built on
+  <a href="https://daisyui.com/">DaisyUI 5</a> and
+  <a href="https://tailwindcss.com/">Tailwind CSS 4</a>.
+</p>
 
-> Docs: https://cornet-ui.com/
+<p align="center">
+  <a href="https://www.npmjs.com/package/cornet-ui">
+    <img src="https://img.shields.io/npm/v/cornet-ui?color=cb3837&label=npm" alt="npm version" />
+  </a>
+  <a href="https://www.npmjs.com/package/cornet-ui">
+    <img src="https://img.shields.io/npm/dm/cornet-ui?color=informational&label=downloads" alt="npm downloads" />
+  </a>
+  <a href="https://cornet-ui.com/">
+    <img src="https://img.shields.io/badge/docs-cornet--ui.com-0ea5e9" alt="documentation" />
+  </a>
+  <a href="./LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-22c55e" alt="license MIT" />
+  </a>
+</p>
 
-## Why
+<p align="center">
+  <strong>Documentation & live previews:</strong>
+  <a href="https://cornet-ui.com/">cornet-ui.com</a>
+</p>
 
-DaisyUI provides great CSS components, but not Vue-specific ones. Cornet wraps DaisyUI into fully typed Vue 3 components with proper props, slots, and v-model support — ready to drop into any Vue or Nuxt project.
+---
 
-Available on npm (`cornet-ui`) or as a Git submodule for full source access.
+## Why Cornet?
 
-## Requirements
+**Cornet** (formerly `daisyui-vue-kit`) adds a Vue-native layer on top of DaisyUI:
 
-- [Vue 3](https://vuejs.org/)
-- [Tailwind CSS 4](https://tailwindcss.com/)
-- [DaisyUI 5](https://daisyui.com/)
+- typed props / emits / slots
+- ready-to-use Vue components (`DuButton`, `DuSelect`, `DuModal`, ...)
+- composables and centralized exports
+- optional Vite plugin to reduce shipped CSS
+- flexible distribution:
+  - **npm package mode**
+  - **embedded source mode** (local editable library in your project)
+
+---
 
 ## Installation
 
-### Method 1: npm (recommended)
+Cornet supports multiple workflows:
 
-```bash
-npm install cornet-ui
+| Mode | Command / Source | Best for |
+|------|------------------|----------|
+| **npm package** (recommended) | `npm install cornet-ui` | Standard dependency management |
+| **Git submodule (GitLab source)** | `git submodule add -b lib git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git lib` | Full local control and customization |
+| **Git submodule (GitHub mirror)** | `git submodule add -b lib https://github.com/t-lecoublet/Cornet.git lib` | GitHub-only workflows |
+| **Full clone** | `git clone --recurse-submodules <repo-url>` | Contributing / exploration |
+
+### Embedded mode (`file:lib`)
+
+If you use submodule mode, add a local dependency:
+
+```json
+{
+  "dependencies": {
+    "cornet-ui": "file:lib"
+  }
+}
 ```
 
-### Method 2: Git submodule (existing project)
+> In embedded/source mode, Cornet ships raw `.ts` / `.vue` source files.  
+> A compatible bundler setup is required (Vite + Vue plugin recommended).
 
-Gives you full source access — modify components without forking or publishing.
+---
 
-```bash
-git submodule add -b lib git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git lib
-git submodule update --init --recursive
-npm install ./lib
-```
+## Quick start
 
-### Method 3: Clone (new project)
+### 1) Configure Vite
 
-A Vite + Vue project with Cornet already wired up.
-
-```bash
-git clone --recurse-submodules git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git
-```
-
-### Method 4: Nuxt starter
-
-```bash
-git clone git@gitlab.limos.fr:hub-isima/daisyui-vue-kit-nuxt-starter.git
-```
-
-See the [Nuxt starter repo](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit-nuxt-starter) for details.
-
-## Setup
-
-### 1. Add the Vite plugin (optional)
-
-Reduces generated CSS by only scanning the Cornet components you actually use.
-
-```js
-// vite.config.js
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import tailwindcss from '@tailwindcss/vite'
 import cornetPlugin from 'cornet-ui/plugin-vite'
 
 export default defineConfig({
-  plugins: [cornetPlugin({ showOutput: true }), vue(), tailwindcss()]
+  plugins: [cornetPlugin(), vue(), tailwindcss()],
 })
 ```
 
-### 2. Import the CSS
+> `cornetPlugin()` is optional — it tree-shakes unused component CSS. Without it, Cornet still works and ships the full CSS.
+
+### 2) Import CSS
 
 ```css
-/* your main CSS file */
+/* src/main.css */
 @import "tailwindcss";
-@import "cornet-ui/css";
 @plugin "daisyui";
+@import "cornet-ui/css";
 ```
 
-### 3. Use a component
+### 3) Use a component
 
 ```vue
-<script setup>
+<script setup lang="ts">
 import { DuButton } from 'cornet-ui'
 </script>
 
 <template>
-  <DuButton variant="primary">Hello World!</DuButton>
+  <DuButton variant="primary">Hello Cornet</DuButton>
 </template>
 ```
 
-## Storybook
+---
 
-The library includes Storybook stories for every component.
+## Types
 
-See the [Storybook docs](https://storybook.js.org/docs) for installation.
+Types are available from:
 
-> Note: Storybook v9 is not compatible with Nuxt — use Vite Storybook instead, or Storybook v8 in Nuxt projects.
+- `cornet-ui`
+- `cornet-ui/types`
+
+```ts
+import type { MenuItem, SELECTProps } from 'cornet-ui/types'
+```
+
+---
+
+## Peer dependencies
+
+- `vue` >= 3.5
+- `daisyui` >= 5.5
+- `tailwindcss` >= 4.0
+- `vite` >= 6.0 (required for plugin, recommended for embedded/source mode)
+
+---
+
+## Repository model (GitLab + GitHub)
+
+Cornet is maintained across two platforms:
+
+- **Primary source (CNRS/LIMOS GitLab):**  
+  https://gitlab.limos.fr/hub-isima/daisyui-vue-kit
+- **Public mirror (GitHub):**  
+  https://github.com/t-lecoublet/Cornet
+
+### Issues and contributions
+
+- If your team uses CNRS/LIMOS workflows, open issues/MRs on GitLab.
+- If your team uses GitHub workflows, open issues/PRs on GitHub.
+- Maintainers can sync changes between both platforms depending on constraints.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
+
+---
+
+## License
+
+[MIT](./LICENSE)
