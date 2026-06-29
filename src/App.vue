@@ -85,8 +85,8 @@ const targetDate = ref(new Date(
 
 // Sample data
 const accordionItems = [
-  { title: 'What is DaisyUI Vue Kit?', content: 'A comprehensive Vue 3 component library built on top of DaisyUI and Tailwind CSS.' },
-  { title: 'How to install?', content: 'Run npm install daisyui-vue-kit and import the components you need.' },
+  { title: 'What is Cornet UI?', content: 'A comprehensive Vue 3 component library built on top of DaisyUI and Tailwind CSS.' },
+  { title: 'How to install?', content: 'Run npm install cornet-ui and import the components you need.' },
   { title: 'Is it customizable?', content: 'Yes! All components support variants, sizes, and custom classes.' },
 ]
 
@@ -267,7 +267,7 @@ const themesItems = [
     <div class="hero min-h-[50vh] bg-base-100">
       <div class="hero-content text-center">
         <div class="max-w-3xl">
-          <img src="/logoLong.svg" alt="DaisyUI Vue Kit Logo" class="h-32 mx-auto mb-6" />
+          <img src="/logoLong.svg" alt="Cornet UI Logo" class="h-32 mx-auto mb-6" />
           <p class="py-6 text-lg text-base-content/70">
             Cornet, a comprehensive Vue 3 component library built on DaisyUI & Tailwind CSS.
           </p>
@@ -353,7 +353,7 @@ const themesItems = [
           <DuButton variant="primary" @click="modalRef.showModal()">Open Modal</DuButton>
           <DuModal ref="modalRef" close-button>
             <h3 class="text-lg font-bold">Welcome!</h3>
-            <p>This is a beautiful modal dialog built with DaisyUI Vue Kit.</p>
+            <p>This is a beautiful modal dialog built with Cornet UI.</p>
             <p class="mt-2">You can add any content here including forms, images, and more.</p>
             <template #actions>
               <DuButton @click="modalRef.closeModal()">Close</DuButton>
@@ -538,11 +538,25 @@ const themesItems = [
           </DuCard>
 
           <!-- Stats -->
-          <DuCard dash class="mb-6" title="DuStats">
-            <p class="text-base-content/70 mb-4">Display statistics and metrics.</p>
+          <DuCard dash class="mb-6" title="DuStats & DuStat">
+            <p class="text-base-content/70 mb-4">Statistics via prop array (<code>DuStats</code>) or individual slots (<code>DuStat</code>).</p>
             <div class="flex flex-wrap gap-6">
               <DuStats dash :items="statsItems.slice(0, 2)" />
-              <DuStats shadow :items="statsItems.slice(2, 4)" />
+            </div>
+            <div class="stats shadow mt-4">
+              <DuStat>
+                <template #title>Revenue</template>
+                <template #value>€89K</template>
+                <template #desc>↗︎ 12% this month</template>
+              </DuStat>
+              <DuStat>
+                <template #figure>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="inline-block size-8 stroke-current" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                </template>
+                <template #title>Users</template>
+                <template #value>4,200</template>
+                <template #desc>↘︎ 90 (14%)</template>
+              </DuStat>
             </div>
           </DuCard>
         </div>
@@ -1109,7 +1123,7 @@ const themesItems = [
 
       <!-- Footer -->
       <footer class="text-center py-12 border-t border-base-300">
-        <p class="text-2xl font-bold mb-2">DaisyUI Vue Kit</p>
+        <p class="text-2xl font-bold mb-2">Cornet UI</p>
         <p class="text-base-content/60 mb-4">
           Built with ❤️ using Vue 3, DaisyUI & Tailwind CSS
         </p>
