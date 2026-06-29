@@ -5,7 +5,7 @@ Thanks for your interest in Cornet!
 ## Where to contribute
 
 - **Source of truth:** [GitLab LIMOS](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit) — merge requests and CI run here.
-- **GitHub mirror:** [t-lecoublet/Cornet](https://github.com/t-lecoublet/Cornet) — issues are welcome here; pull requests will be re-routed to GitLab by a maintainer.
+- **GitHub mirror:** [t-lecoublet/Cornet-UI](https://github.com/t-lecoublet/Cornet-UI) — issues are welcome here; pull requests will be re-routed to GitLab by a maintainer.
 
 ## Getting started
 

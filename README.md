@@ -142,7 +142,7 @@ npm run generate:types  # Regenerate types/index.ts
 When `lib` is a submodule in your project, changes you make here are **local** by default. To share them upstream:
 
 1. Work in `lib/`, commit there on its own branch
-2. Open a merge request on [GitLab](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit) or a PR on [GitHub](https://github.com/t-lecoublet/Cornet)
+2. Open a merge request on [GitLab](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit) or a PR on [GitHub](https://github.com/t-lecoublet/Cornet-UI)
 3. Once merged, update the submodule pointer in the parent project
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for conventions and the release process.
