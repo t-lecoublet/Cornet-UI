@@ -11,7 +11,7 @@ This repository (`master` branch) is the **starter/demo app** — a Vite + Vue p
 |------|-------|
 | New components, fixes, composables, types | [`lib` branch](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit/-/tree/lib) |
 | Starter app / demo improvements | This repo (`master` branch) |
-| Issues & bug reports | [GitLab](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit/-/issues) or [GitHub](https://github.com/t-lecoublet/Cornet/issues) |
+| Issues & bug reports | [GitLab](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit/-/issues) or [GitHub](https://github.com/t-lecoublet/Cornet-UI/issues) |
 
 - **Primary source (CNRS/LIMOS GitLab):** merge requests and CI run here.
 - **GitHub mirror:** issues are welcome; pull requests will be re-routed to GitLab by a maintainer.

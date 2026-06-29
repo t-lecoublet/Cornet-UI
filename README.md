@@ -2,7 +2,7 @@
   <img src="./public/logoLong.svg" alt="Cornet logo" width="320" />
 </div>
 
-<h1 align="center">Cornet</h1>
+<h1 align="center">Cornet UI</h1>
 
 <p align="center">
   Vue 3 component library built on
@@ -32,30 +32,62 @@
 
 ---
 
-## Why Cornet?
+## Why Cornet UI?
 
-**Cornet** (formerly `daisyui-vue-kit`) adds a Vue-native layer on top of DaisyUI:
+**Cornet UI** (formerly `daisyui-vue-kit`) adds a Vue-native layer on top of DaisyUI:
 
 - typed props / emits / slots
 - ready-to-use Vue components (`DuButton`, `DuSelect`, `DuModal`, ...)
 - composables and centralized exports
 - optional Vite plugin to reduce shipped CSS
 - flexible distribution:
-  - **npm package mode**
-  - **embedded source mode** (local editable library in your project)
+  - **npm package mode** — compiled distribution, standard dependency
+  - **embedded source mode** — raw `.vue` / `.ts` files, local editable library
+
+---
+
+## Repository structure
+
+This repository (`master` branch) is an **integration app and live examples** — a Vite + Vue project that consumes the library and serves as its public-facing landing page.
+
+| Where | Role |
+| ----- | ---- |
+| **`master` branch** (this repo) | Public-facing branch: examples, integration app, repo landing page |
+| **`lib` branch** | Library source: components, composables, types, build config |
+| **npm (`cornet-ui`)** | Compiled distribution built in CI — standard package consumption |
+| **GitLab** | Technical source of truth: CI, merge requests, primary development |
+| **GitHub** | Public mirror: issues, pull requests, community hub |
+
+> Cornet UI was formerly named `daisyui-vue-kit`; some historical repository URLs still contain that name.
+
+---
+
+## How Cornet UI is distributed
+
+Cornet UI supports two distinct distribution modes:
+
+- **npm mode**: compiled output built in CI, published to the npm registry. Use this for standard dependency management — you consume the built artifacts, not the raw source.
+- **embedded/source mode**: raw `.vue` / `.ts` files consumed directly via `file:lib` or a Git submodule. Use this for local control and customization — your bundler processes the source as part of your own project.
 
 ---
 
 ## Installation
 
-Cornet supports multiple workflows:
+Cornet UI supports multiple workflows:
 
 | Mode | Command / Source | Best for |
 |------|------------------|----------|
 | **npm package** (recommended) | `npm install cornet-ui` | Standard dependency management |
 | **Git submodule (GitLab source)** | `git submodule add -b lib git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git lib` | Full local control and customization |
-| **Git submodule (GitHub mirror)** | `git submodule add -b lib https://github.com/t-lecoublet/Cornet.git lib` | GitHub-only workflows |
+| **Git submodule (GitHub mirror)** | `git submodule add -b lib https://github.com/t-lecoublet/Cornet-UI.git lib` | GitHub-only workflows |
 | **Full clone** | `git clone --recurse-submodules <repo-url>` | Contributing / exploration |
+
+### Which mode should I choose?
+
+- **npm** — for most projects: install once, update with `npm update`
+- **embedded source** — when you need to customize components or use `file:lib` locally
+- **GitLab submodule** — for CNRS/LIMOS workflows where GitLab is your primary platform
+- **GitHub submodule** — for GitHub-only workflows
 
 ### Embedded mode (`file:lib`)
 
@@ -69,7 +101,7 @@ If you use submodule mode, add a local dependency:
 }
 ```
 
-> In embedded/source mode, Cornet ships raw `.ts` / `.vue` source files.  
+> In embedded/source mode, Cornet UI ships raw `.ts` / `.vue` source files.  
 > A compatible bundler setup is required (Vite + Vue plugin recommended).
 
 ---
@@ -78,19 +110,18 @@ If you use submodule mode, add a local dependency:
 
 ### 1) Configure Vite
 
+Minimal setup — just add the Vue plugin and Tailwind CSS:
+
 ```ts
 // vite.config.ts
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
-import cornetPlugin from 'cornet-ui/plugin-vite'
 
 export default defineConfig({
-  plugins: [cornetPlugin(), vue(), tailwindcss()],
+  plugins: [vue(), tailwindcss()],
 })
 ```
-
-> `cornetPlugin()` is optional — it tree-shakes unused component CSS. Without it, Cornet still works and ships the full CSS.
 
 ### 2) Import CSS
 
@@ -111,6 +142,22 @@ import { DuButton } from 'cornet-ui'
 <template>
   <DuButton variant="primary">Hello Cornet</DuButton>
 </template>
+```
+
+### 4) Optional: enable `cornetPlugin()` for smaller CSS
+
+The Vite plugin tree-shakes unused component CSS. Without it, Cornet still works and ships the full CSS.
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import tailwindcss from '@tailwindcss/vite'
+import cornetPlugin from 'cornet-ui/plugin-vite'
+
+export default defineConfig({
+  plugins: [cornetPlugin(), vue(), tailwindcss()],
+})
 ```
 
 ---
@@ -139,18 +186,18 @@ import type { MenuItem, SELECTProps } from 'cornet-ui/types'
 
 ## Repository model (GitLab + GitHub)
 
-Cornet is maintained across two platforms:
+Cornet UI is maintained across two platforms:
 
 - **Primary source (CNRS/LIMOS GitLab):**  
-  https://gitlab.limos.fr/hub-isima/daisyui-vue-kit
+  <https://gitlab.limos.fr/hub-isima/daisyui-vue-kit>
 - **Public mirror (GitHub):**  
-  https://github.com/t-lecoublet/Cornet
+  <https://github.com/t-lecoublet/Cornet-UI>
 
-### Issues and contributions
+### Where to contribute
 
-- If your team uses CNRS/LIMOS workflows, open issues/MRs on GitLab.
-- If your team uses GitHub workflows, open issues/PRs on GitHub.
-- Maintainers can sync changes between both platforms depending on constraints.
+- **Component contributions** (new components, fixes, types, tests): target the [`lib` branch on GitLab](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit/-/tree/lib)
+- **Issues and bug reports**: open on [GitLab](https://gitlab.limos.fr/hub-isima/daisyui-vue-kit/-/issues) or [GitHub](https://github.com/t-lecoublet/Cornet-UI/issues) — both are monitored
+- **Pull requests on GitHub**: welcome — maintainers sync changes between both platforms
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 

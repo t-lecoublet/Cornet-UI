@@ -1,6 +1,7 @@
 {
-  "name": "tmp",
+  "name": "cornet-ui-playground",
   "version": "0.0.0",
+  "description": "Integration app and live examples for Cornet UI — Vue 3 component library built on DaisyUI 5.",
   "private": true,
   "type": "module",
   "scripts": {
