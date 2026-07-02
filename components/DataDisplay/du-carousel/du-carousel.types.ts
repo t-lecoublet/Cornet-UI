@@ -20,4 +20,8 @@ export interface DuCarouselProps {
   center?: boolean
   end?: boolean
   vertical?: boolean
-} 
+}
+
+export interface DuCarouselItemProps {
+  id?: string
+}

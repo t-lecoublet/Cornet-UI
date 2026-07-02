@@ -20,3 +20,9 @@ export interface DuAccordionProps {
   modifier?: DuAccordionModifier
   customClass?: string
 }
+
+export interface DuAccordionItemProps {
+  checked?: boolean
+  customClass?: string
+  title?: string
+}

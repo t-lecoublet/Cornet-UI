@@ -1,27 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch, useSlots } from 'vue'
-import { type DuDrawerItem } from './du-drawer.types'
+import { type DuDrawerProps } from './du-drawer.types'
 import DuMenu from '../../Navigation/du-menu/du-menu.vue'
 
 const slots = useSlots()
 
 const props = withDefaults(
-    defineProps<{
-        id?: string
-        position?: 'start' | 'end'
-        open?: boolean
-        responsive?: boolean | 'xl' | 'lg' | 'md' | 'sm'
-        // keep alwaysOpenOnLarge due to breaking changes
-        alwaysOpenOnLarge?: boolean
-        modelValue?: boolean
-        sidebarClass?: string
-        sidebarWrapperClass?: string
-        contentClass?: string
-        overlayClass?: string
-        items?: DuDrawerItem[]
-        /** Enable icon-only collapsible mode with is-drawer-open/is-drawer-close variants */
-        iconOnly?: boolean
-    }>(),
+    defineProps<DuDrawerProps>(),
     {
         id: undefined,
         position: 'start',

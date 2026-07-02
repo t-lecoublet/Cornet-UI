@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue"
+import { type DuTimelineItemData } from './du-timeline.types'
 
 const props = withDefaults(
-  defineProps<{
-    start?: string
-    middle?: string
-    end?: string
-    customClass?: string
-    valid?: boolean | undefined
-    hrClass?: string
-  }>(),
+  defineProps<DuTimelineItemData>(),
   {
     start: "",
     middle: "",

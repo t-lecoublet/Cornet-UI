@@ -22,3 +22,14 @@ export interface DuCountdownProps {
   customClass?: string
   autoStart?: boolean
 }
+
+export interface DuCountdownGroupProps {
+  targetDate?: Date
+  showDays?: boolean
+  showHours?: boolean
+  showMinutes?: boolean
+  showSeconds?: boolean
+  labels?: DuCountdownLabels
+  separator?: string
+  customClass?: string
+}

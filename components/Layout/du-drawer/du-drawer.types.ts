@@ -14,7 +14,8 @@ export interface DuDrawerProps {
     id?: string
     position?: 'start' | 'end'
     open?: boolean
-    responsive?: boolean
+    responsive?: boolean | 'xl' | 'lg' | 'md' | 'sm'
+    // keep alwaysOpenOnLarge due to breaking changes
     alwaysOpenOnLarge?: boolean
     modelValue?: boolean
     sidebarClass?: string

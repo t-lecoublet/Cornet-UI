@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { type DuMenuItemData } from './du-menu.types';
+import { type DuMenuItemProps } from './du-menu.types';
 
-const props = defineProps<{
-  item: DuMenuItemData;
-  index: number;
-  parentIndex?: string;
-  onItemClick?: (item: DuMenuItemData) => void;
-  onSubItemClick?: (item: DuMenuItemData) => void;
-}>();
+const props = defineProps<DuMenuItemProps>();
 
 // Typed via defineSlots so the recursive slot forwarding below stays type-safe.
 const _slots = defineSlots();

@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { inject } from 'vue'
+import { type DuAccordionItemProps } from './du-accordion.types'
 
 withDefaults(
-  defineProps<{
-    checked?: boolean
-    customClass?: string
-    title?: string
-  }>(),
+  defineProps<DuAccordionItemProps>(),
   {
     checked: false,
     customClass: '',

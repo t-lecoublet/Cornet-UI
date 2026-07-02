@@ -31,3 +31,11 @@ export interface DuMenuProps {
   onItemClick?: (item: DuMenuItemData) => void;
   onSubItemClick?: (item: DuMenuItemData) => void;
 }
+
+export interface DuMenuItemProps {
+  item: DuMenuItemData;
+  index: number;
+  parentIndex?: string;
+  onItemClick?: (item: DuMenuItemData) => void;
+  onSubItemClick?: (item: DuMenuItemData) => void;
+}
