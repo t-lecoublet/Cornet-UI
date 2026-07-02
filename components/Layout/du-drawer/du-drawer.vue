@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { type DuDrawerProps, type DuDrawerEmit } from './du-drawer.types'
 import DuMenu from '../../Navigation/du-menu/du-menu.vue'
 import { useDrawerOpenState } from './composables/useDrawerOpenState'
 import { useDrawerClasses } from './composables/useDrawerClasses'
+import { useDrawerDismiss } from './composables/useDrawerDismiss'
 
 const slots = useSlots()
 
@@ -38,6 +39,9 @@ const {
 
 const { internalOpen, toggleDrawer } = useDrawerOpenState(props, emit)
 
+const sidebarRef = ref<HTMLElement | null>(null)
+useDrawerDismiss(internalOpen, sidebarRef)
+
 const menuSlots = computed(() => {
     const excludedSlots = ['default', 'content', 'sidebar', 'side']
     return Object.keys(slots).filter(name => !excludedSlots.includes(name))
@@ -63,7 +67,7 @@ defineExpose({
         <div :class="drawerSideClasses">
             <label :for="drawerId" aria-label="close sidebar" :class="drawerOverlayClasses"></label>
 
-            <div :class="sidebarWrapperClasses">
+            <div ref="sidebarRef" :class="sidebarWrapperClasses" tabindex="-1">
                 <!-- Dynamic items mode -->
                 <template v-if="items">
                     <!-- Forward menu customization slots (item, title, submenu, indexed) to DuMenu -->

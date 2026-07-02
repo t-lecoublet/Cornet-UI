@@ -164,6 +164,47 @@ export { default as DuUnused } from './components/Actions/du-unused/du-unused.vu
     await callable(plugin.closeBundle).call({} as never)
     expect(readFileSync(join(libRoot, 'index.css'), 'utf-8')).toBe(CSS_BASE_CONTENT)
   })
+
+  it('scans every configured srcDir, not just the default `src`', async () => {
+    // Default src/App.vue (from beforeEach) imports nothing; only the second
+    // source dir references DuUsed, so this only passes if both dirs are scanned.
+    writeFileSync(join(fixtureRoot, 'src/App.vue'), `<script>// no cornet imports here</script>`)
+    mkdirSync(join(fixtureRoot, 'app2'))
+    writeFileSync(join(fixtureRoot, 'app2/Widget.vue'), `<script>import { DuUsed } from 'cornet-ui'</script>`)
+
+    const plugin = cornetPlugin({ libPath: libRoot, showOutput: false, srcDirs: ['src', 'app2'] })
+    await callable(plugin.configResolved)({ root: fixtureRoot } as never)
+    await callable(plugin.buildStart).call({} as never, {} as never)
+
+    const duringBuild = readFileSync(join(libRoot, 'index.css'), 'utf-8')
+    expect(duringBuild).toContain('@source not "./components/Actions/du-unused/du-unused.vue";')
+    expect(duringBuild).not.toContain('du-used/du-used.vue')
+  })
+
+  it('detects usage through a custom packageNames specifier instead of the inferred package name', async () => {
+    writeFileSync(join(fixtureRoot, 'src/App.vue'), `<script>import { DuUsed } from '@cornet/alias'</script>`)
+
+    const plugin = cornetPlugin({ libPath: libRoot, showOutput: false, packageNames: ['@cornet/alias'] })
+    await callable(plugin.configResolved)({ root: fixtureRoot } as never)
+    await callable(plugin.buildStart).call({} as never, {} as never)
+
+    const duringBuild = readFileSync(join(libRoot, 'index.css'), 'utf-8')
+    expect(duringBuild).toContain('@source not "./components/Actions/du-unused/du-unused.vue";')
+    expect(duringBuild).not.toContain('du-used/du-used.vue')
+  })
+
+  it('ignores the default package name when a custom packageNames is set', async () => {
+    // src/App.vue (from beforeEach) imports DuUsed from 'cornet-ui' (the inferred
+    // default), but packageNames overrides detection to a different specifier —
+    // so nothing should be detected as used here.
+    const plugin = cornetPlugin({ libPath: libRoot, showOutput: false, packageNames: ['@cornet/alias'] })
+    await callable(plugin.configResolved)({ root: fixtureRoot } as never)
+    await callable(plugin.buildStart).call({} as never, {} as never)
+
+    const duringBuild = readFileSync(join(libRoot, 'index.css'), 'utf-8')
+    expect(duringBuild).toContain('@source not "./components/Actions/du-used/du-used.vue";')
+    expect(duringBuild).toContain('@source not "./components/Actions/du-unused/du-unused.vue";')
+  })
 })
 
 describe('cornetPlugin npm mode (tree-shaking via index.css)', () => {

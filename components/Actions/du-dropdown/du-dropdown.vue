@@ -32,10 +32,6 @@ const getPlacementClasses = (input: DuDropdownPlacementInput): string[] => {
   }
 
   if (typeof input === 'object') {
-    const keys = Object.keys(input)
-    if (keys.every(key => key in { start: 1, center: 1, end: 1, top: 1, bottom: 1, left: 1, right: 1 })) {
-      return keys.map(key => placementToClass(key as DuDropdownPlacementValue))
-    }
     return Object.entries(input)
       .filter(([, enabled]) => enabled)
       .map(([key]) => placementToClass(key as DuDropdownPlacementValue))

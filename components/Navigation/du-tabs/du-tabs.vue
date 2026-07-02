@@ -53,8 +53,8 @@ const typeClass = computed(() => {
 
     <template v-else-if="items">
       <template v-for="(item, index) in items" :key="index">
-        <label :class="['tab', item.class]" @click="handleTabClick(index, item)">
-          <input type="radio" :name="props.name" :checked="item.active" />
+        <label :class="['tab', item.class]">
+          <input type="radio" :name="props.name" :checked="item.active" @click="handleTabClick(index, item)" />
           <template v-if="item.label || $slots.tab">
             <slot name="tab" :item="item" :index="index">
               <slot :name="`tab-${index}`" :item="item" :index="index">

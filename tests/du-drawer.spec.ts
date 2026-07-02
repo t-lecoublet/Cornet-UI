@@ -96,4 +96,62 @@ describe('DuDrawer', () => {
     })
     expect(wrapper.text()).toContain('Manual sidebar')
   })
+
+  it('closes on Escape when open', async () => {
+    const wrapper = mountDrawer({ open: true })
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    await wrapper.vm.$nextTick()
+    const checkbox = wrapper.find('input.drawer-toggle')
+    expect((checkbox.element as HTMLInputElement).checked).toBe(false)
+    expect(wrapper.emitted('update:open')?.at(-1)).toEqual([false])
+    wrapper.unmount()
+  })
+
+  it('does nothing on Escape when already closed', async () => {
+    const wrapper = mountDrawer({ open: false })
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    await wrapper.vm.$nextTick()
+    expect(wrapper.emitted('update:open')).toBeUndefined()
+    wrapper.unmount()
+  })
+
+  it('ignores non-Escape keys', async () => {
+    const wrapper = mountDrawer({ open: true })
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+    await wrapper.vm.$nextTick()
+    const checkbox = wrapper.find('input.drawer-toggle')
+    expect((checkbox.element as HTMLInputElement).checked).toBe(true)
+    wrapper.unmount()
+  })
+
+  it('removes the Escape listener on unmount', async () => {
+    const wrapper = mountDrawer({ open: true })
+    wrapper.unmount()
+    // Should not throw and should not affect anything post-unmount.
+    expect(() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))).not.toThrow()
+  })
+
+  it('moves focus into the sidebar when opened via toggleDrawer()', async () => {
+    const wrapper = mount(DuDrawer, { attachTo: document.body })
+    await (wrapper.vm as any).toggleDrawer()
+    const sidebar = wrapper.find('.drawer-side > div').element as HTMLElement
+    expect(document.activeElement).toBe(sidebar)
+    wrapper.unmount()
+  })
+
+  it('restores focus to the previously focused element on close', async () => {
+    const button = document.createElement('button')
+    document.body.appendChild(button)
+    button.focus()
+
+    const wrapper = mount(DuDrawer, { attachTo: document.body })
+    await (wrapper.vm as any).toggleDrawer()
+    expect(document.activeElement).not.toBe(button)
+
+    await (wrapper.vm as any).toggleDrawer()
+    expect(document.activeElement).toBe(button)
+
+    wrapper.unmount()
+    button.remove()
+  })
 })

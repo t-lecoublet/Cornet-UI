@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, inject } from "vue";
+import { computed, inject, ref } from "vue";
 import { type DuMenuProps, type DuMenuItemData } from './du-menu.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
+import { useMenuKeyboardNav } from "./composables/useMenuKeyboardNav";
 import DuMenuItem from './du-menu-item.vue';
 
 const props = withDefaults(
@@ -49,11 +50,14 @@ const inDropdownClass = computed(() => {
 const ariaOrientation = computed(() => {
   return props.direction === "horizontal" || props.direction === "responsive" ? "horizontal" : "vertical";
 });
+
+const root = ref<HTMLElement | null>(null);
+const { onKeydown } = useMenuKeyboardNav(root, props);
 // Slots documentation : voir le template pour la gestion des slots indexés et globaux.
 </script>
 
 <template>
-  <ul role="listbox" :aria-orientation="ariaOrientation" :class="['menu', inDropdownClass, roundedClass, directionClass, sizeClass]">
+  <ul ref="root" role="listbox" :aria-orientation="ariaOrientation" :class="['menu', inDropdownClass, roundedClass, directionClass, sizeClass]" @keydown="onKeydown">
     <!-- Mode automatique (items) -->
     <template v-if="items && !$slots.default">
       <DuMenuItem
