@@ -2,7 +2,7 @@
 import { ref, computed, inject } from 'vue'
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { useVariantMapping } from "../../../composables/useVariantProps"
-import type { DuSelectProps } from './du-select.types'
+import type { DuSelectProps, DuSelectEmit } from './du-select.types'
 import { useSelectOptions } from './composables/useSelectOptions'
 import { useSelectSearch } from './composables/useSelectSearch'
 import { useSelectOpenState } from './composables/useSelectOpenState'
@@ -32,13 +32,7 @@ const props = withDefaults(defineProps<DuSelectProps>(), {
     removeItemLabel: 'Remove',
 })
 
-const emit = defineEmits<{
-    'update:modelValue': [value: any]
-    select: [option: any]
-    remove: [option: any]
-    open: []
-    close: []
-}>()
+const emit = defineEmits<DuSelectEmit>()
 
 const { colorClass } = useVariantMapping(props, "select")
 const { sizeClass: inputSizeClass } = useSizeMapping(props, "input")

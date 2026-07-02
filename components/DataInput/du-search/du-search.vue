@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, reactive, nextTick, onMounted, onBeforeUnmount, watch } from "vue"
+import { ref, computed, reactive } from "vue"
 import { useSizeMapping, type Size } from "../../../composables/useSizeProps"
 import { useVariantMapping } from "../../../composables/useVariantProps"
-import type { DuSearchProps, DuSearchOption } from "./du-search.types"
+import type { DuSearchProps, DuSearchEmit } from "./du-search.types"
+import { useSearchQuery } from "./composables/useSearchQuery"
+import { useSearchSelection } from "./composables/useSearchSelection"
+import { useSearchInput } from "./composables/useSearchInput"
+import { useSearchCommit } from "./composables/useSearchCommit"
+import { useSearchKeyboardNav } from "./composables/useSearchKeyboardNav"
+import { useSearchDismiss } from "./composables/useSearchDismiss"
 
 const props = withDefaults(defineProps<DuSearchProps>(), {
     size: "default",
@@ -49,28 +55,7 @@ const computedInputClass = computed(() => {
     return classes.join(' ')
 })
 
-const emit = defineEmits<{
-    'update:modelValue': [value: any]
-    select: [option: DuSearchOption]
-    remove: [option: DuSearchOption]
-    add: [option: DuSearchOption]
-    query: [query: string]
-}>()
-
-const labelField = computed(() => props.labelBy ?? "name")
-
-const selectedValues = ref<any[]>([])
-watch(
-    () => props.modelValue,
-    (val) => {
-        if (props.multiple) {
-            selectedValues.value = Array.isArray(val) ? [...val] : []
-        } else {
-            selectedValues.value = val ? [val] : []
-        }
-    },
-    { immediate: true }
-)
+const emit = defineEmits<DuSearchEmit>()
 
 const open = ref(false)
 const query = ref("")
@@ -79,307 +64,51 @@ const isEditing = ref(false)
 const root = ref<HTMLElement | null>(null)
 const listId = `du-search-list-${Math.random().toString(36).slice(2, 9)}`
 
-const queryValue = computed(() =>
-    query.value === "" ? null : { id: null, name: query.value }
+const { labelField, queryValue, filteredValues } = useSearchQuery(props, query)
+
+const { selectedValues, isSelected, updateModel, selectValue, handleOptionClick } =
+    useSearchSelection(props, emit, open, query, isEditing)
+
+const { inputValue, onInput } = useSearchInput(
+    props,
+    emit,
+    selectedValues,
+    query,
+    isEditing,
+    labelField,
+    open,
+    highlightedIndex,
+    updateModel,
 )
 
-const filteredValues = computed(() => {
-    let values = props.listValues
-    if (query.value && !props.remoteSearch) {
-        values = values.filter((el) =>
-            el.name.toLowerCase().includes(query.value.toLowerCase())
-        )
-    }
-    if (props.limit) {
-        return values.slice(0, props.limit)
-    }
-    return values
-})
+const { onBlurCleanup } = useSearchCommit(
+    props,
+    query,
+    isEditing,
+    selectedValues,
+    labelField,
+    selectValue,
+    updateModel,
+)
 
-const inputValue = computed(() => {
-    if (props.multiple) {
-        const selectedPart = selectedValues.value.map((v) => v[labelField.value]).join(", ")
-        if (selectedPart && query.value) {
-            return `${selectedPart}, ${query.value}`
-        } else if (selectedPart) {
-            return selectedPart
-        } else {
-            return query.value
-        }
-    }
-    if (isEditing.value) {
-        return query.value
-    }
-    return selectedValues.value[0]?.[labelField.value] || ""
-})
+const { onKeydown } = useSearchKeyboardNav(
+    props,
+    emit,
+    root,
+    listId,
+    open,
+    highlightedIndex,
+    query,
+    isEditing,
+    selectedValues,
+    filteredValues,
+    queryValue,
+    selectValue,
+    handleOptionClick,
+    updateModel,
+)
 
-function isSelected(option: DuSearchOption) {
-    if (props.multiple) {
-        return selectedValues.value.some((v) => v.id === option.id && v.name === option.name)
-    } else {
-        const selected = selectedValues.value[0]
-        return selected && selected.id === option.id && selected.name === option.name
-    }
-}
-
-function updateModel() {
-    if (props.multiple) {
-        emit("update:modelValue", [...selectedValues.value])
-    } else {
-        emit("update:modelValue", selectedValues.value[0] ?? null)
-    }
-}
-
-function selectValue(val: any) {
-    const isNew = props.addOption && val.id === null
-    if (props.multiple) {
-        if (!selectedValues.value.find((v) => v.id === val.id && v.name === val.name)) {
-            selectedValues.value.push(val)
-            if (isNew) emit("add", val)
-            else emit("select", val)
-            updateModel()
-        }
-        query.value = ""
-    } else {
-        selectedValues.value = [val]
-        if (isNew) emit("add", val)
-        else emit("select", val)
-        updateModel()
-        open.value = false
-        query.value = ""
-        isEditing.value = false
-    }
-}
-
-function deselectValue(val: DuSearchOption) {
-    if (props.multiple) {
-        const idx = selectedValues.value.findIndex((v) => v.id === val.id && v.name === val.name)
-        if (idx > -1) {
-            selectedValues.value.splice(idx, 1)
-            emit('remove', val)
-            updateModel()
-        }
-    } else {
-        selectedValues.value = []
-        updateModel()
-        open.value = false
-        query.value = ''
-        isEditing.value = false
-    }
-}
-
-function handleOptionClick(val: DuSearchOption) {
-    if (isSelected(val) && (props.clearable || props.multiple)) {
-        deselectValue(val)
-    } else {
-        selectValue(val)
-    }
-}
-
-function onInput(e: Event) {
-    const val = (e.target as HTMLInputElement).value
-
-    // In single mode, start editing as soon as the user types
-    if (!props.multiple) {
-        isEditing.value = true
-    }
-
-    if (props.multiple) {
-        // Rebuild the selected-values part of the input
-        const selectedPart = selectedValues.value.map((v) => v.name).join(", ")
-
-        // Extract the query by stripping the selected-values part
-        let newQuery = ""
-        if (selectedPart && val.startsWith(selectedPart)) {
-            // Strip the selected part plus the trailing comma and space
-            const remainder = val.slice(selectedPart.length)
-            if (remainder.startsWith(", ")) {
-                newQuery = remainder.slice(2) // Strip ", "
-            } else if (remainder === "") {
-                newQuery = ""
-            } else {
-                // Editing right after the selected values
-                newQuery = remainder
-            }
-        } else if (!selectedPart) {
-            // No selected value, the whole input is the query
-            newQuery = val
-        }
-
-        // A comma in the query adds a new value
-        if (newQuery.includes(",")) {
-            const parts = newQuery.split(",").map((p) => p.trim()).filter(Boolean)
-            const lastPart = parts.pop()
-
-            for (const part of parts) {
-                const match = props.listValues.find(
-                    (o) => o.name.toLowerCase() === part.toLowerCase()
-                )
-                if (match && !selectedValues.value.some((v) => v.id === match.id)) {
-                    selectedValues.value.push(match)
-                    emit("select", match)
-                }
-            }
-            updateModel()
-            query.value = lastPart ?? ""
-        } else {
-            query.value = newQuery
-        }
-    } else {
-        query.value = val
-        // In single mode, an empty input clears the selection
-        if (val === "") {
-            selectedValues.value = []
-            updateModel()
-        }
-    }
-
-    emit("query", query.value)
-    open.value = true
-    highlightedIndex.value = 0
-}
-
-function onKeydown(e: KeyboardEvent) {
-    const len =
-        filteredValues.value.length + (props.addOption && queryValue.value ? 1 : 0)
-
-    if (!open.value && ["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) {
-        open.value = true
-        e.preventDefault()
-        return
-    }
-
-    if (e.key === "ArrowDown") {
-        highlightedIndex.value = (highlightedIndex.value + 1 + len) % len
-        scrollHighlightedIntoView()
-        e.preventDefault()
-    } else if (e.key === "ArrowUp") {
-        highlightedIndex.value = (highlightedIndex.value - 1 + len) % len
-        scrollHighlightedIntoView()
-        e.preventDefault()
-    } else if (e.key === "Enter") {
-        if (highlightedIndex.value >= 0 && highlightedIndex.value < len) {
-            if (props.addOption && queryValue.value) {
-                if (highlightedIndex.value === 0) {
-                    selectValue(queryValue.value)
-                } else {
-                    const option = filteredValues.value[highlightedIndex.value - 1]
-                    if (option) handleOptionClick(option)
-                }
-            } else {
-                const option = filteredValues.value[highlightedIndex.value]
-                if (option) handleOptionClick(option)
-            }
-        }
-        e.preventDefault()
-    } else if (e.key === "Escape") {
-        open.value = false
-        highlightedIndex.value = -1
-        // In single mode, stop editing
-        if (!props.multiple && isEditing.value) {
-            // If the query is empty, keep the selection empty
-            if (query.value === "") {
-                selectedValues.value = []
-                updateModel()
-            }
-            isEditing.value = false
-            query.value = ""
-        }
-        e.preventDefault()
-    } else if (e.key === "Backspace" && props.multiple) {
-        // Only remove a selected value when the query is empty
-        if (query.value === "" && selectedValues.value.length > 0) {
-            const removed = selectedValues.value.pop()
-            emit("remove", removed)
-            updateModel()
-            e.preventDefault()
-        }
-    }
-}
-
-function scrollHighlightedIntoView() {
-    nextTick(() => {
-        const list = root.value?.querySelector(`#${listId}`)
-        const active = list?.querySelectorAll("li")[highlightedIndex.value]
-        if (active && "scrollIntoView" in active) {
-            ; (active as HTMLElement).scrollIntoView({ block: "nearest" })
-        }
-    })
-}
-
-function commitQuery() {
-    if (query.value === "") {
-        selectedValues.value = []
-        updateModel()
-        return
-    }
-    const match = props.listValues.find(
-        o => String(o[labelField.value]).toLowerCase() === query.value.toLowerCase()
-    )
-    if (match) {
-        selectValue(match)
-    } else if (props.remoteSearch && props.listValues.length > 0) {
-        // Remote search: select the best (first) result
-        selectValue(props.listValues[0])
-    } else if (props.addOption) {
-        selectValue({ id: null, name: query.value })
-    } else {
-        selectedValues.value = []
-        updateModel()
-    }
-    isEditing.value = false
-    query.value = ""
-}
-
-function onBlurCleanup() {
-    if (!props.multiple && isEditing.value) {
-        if (props.autoCommit) {
-            commitQuery()
-        } else {
-            if (query.value === "") {
-                selectedValues.value = []
-                updateModel()
-            }
-            isEditing.value = false
-            query.value = ""
-        }
-    }
-}
-
-function onClickOutside(e: MouseEvent) {
-    if (!root.value) return
-    if (!root.value.contains(e.target as Node)) {
-        open.value = false
-        onBlurCleanup()
-    }
-}
-
-function onFocusOut(_e: FocusEvent) {
-    setTimeout(() => {
-        if (!root.value) return
-
-        const activeElement = document.activeElement
-        if (!activeElement || !root.value.contains(activeElement)) {
-            open.value = false
-            onBlurCleanup()
-        }
-    }, 0)
-}
-
-function onFocus(_e: FocusEvent) {
-    if (!open.value) {
-        open.value = true
-    }
-}
-
-onMounted(() => {
-    document.addEventListener("click", onClickOutside)
-    root.value?.addEventListener('focusout', onFocusOut)
-})
-onBeforeUnmount(() => {
-    document.removeEventListener("click", onClickOutside)
-    root.value?.removeEventListener('focusout', onFocusOut)
-})
+const { onFocus } = useSearchDismiss(root, open, onBlurCleanup)
 </script>
 
 <template>

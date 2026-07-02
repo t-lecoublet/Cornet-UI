@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useSizeMapping } from '../../../composables/useSizeProps'
 import { type Variant, useVariantMapping } from '../../../composables/useVariantProps'
 import { type DuFabProps } from './du-fab.types'
 import DuButton from '../du-button/du-button.vue'
 import DuTooltip from '../../Feedback/du-tooltip/du-tooltip.vue'
+import { useFabClasses } from './composables/useFabClasses'
+import { useFabIcon } from './composables/useFabIcon'
 
 const props = withDefaults(
   defineProps<DuFabProps>(),
@@ -25,40 +26,8 @@ const props = withDefaults(
 const { sizeClass } = useSizeMapping(props, 'btn')
 const { colorClass } = useVariantMapping(props, 'btn')
 
-const modifierClass = computed(() => {
-  return props.modifier ? props.modifier : ''
-})
-
-const positionClass = computed(() => {
-  if (!props.absolute) return ''
-  
-  switch (props.position) {
-    case 'bottom-right':
-      return 'absolute bottom-4 right-4'
-    case 'bottom-left':
-      return 'absolute bottom-4 left-4'
-    case 'top-right':
-      return 'absolute top-4 right-4'
-    case 'top-left':
-      return 'absolute top-4 left-4'
-    default:
-      return 'absolute bottom-4 right-4'
-  }
-})
-
-const fabClasses = computed(() => {
-  return [
-    'fab',
-    modifierClass.value,
-    positionClass.value,
-    'z-50',
-    props.customClass,
-  ]
-})
-
-const getTooltipPosition = (position?: 'left' | 'top' | 'right' | 'bottom') => {
-  return position || 'left'
-}
+const { fabClasses } = useFabClasses(props)
+const { resolveIconKind, getTooltipPosition } = useFabIcon()
 </script>
 
 <template>
@@ -117,16 +86,16 @@ const getTooltipPosition = (position?: 'left' | 'top' | 'right' | 'bottom') => {
             <component
               class="w-6 h-6"
               :is="mainAction.icon"
-              v-if="typeof mainAction.icon === 'object' || typeof mainAction.icon === 'function'"
+              v-if="resolveIconKind(mainAction.icon) === 'component'"
             />
             <img
-              v-else-if="typeof mainAction.icon === 'string' && mainAction.icon.startsWith('http')"
+              v-else-if="resolveIconKind(mainAction.icon) === 'image'"
               :src="mainAction.icon"
               :alt="mainAction.label"
               class="w-6 h-6"
             />
             <div
-              v-else-if="typeof mainAction.icon === 'string'"
+              v-else-if="resolveIconKind(mainAction.icon) === 'html'"
               v-html="mainAction.icon"
             ></div>
             <template v-else>
@@ -156,16 +125,16 @@ const getTooltipPosition = (position?: 'left' | 'top' | 'right' | 'bottom') => {
                 <component
                   class="w-6 h-6"
                   :is="item.icon"
-                  v-if="typeof item.icon === 'object' || typeof item.icon === 'function'"
+                  v-if="resolveIconKind(item.icon) === 'component'"
                 />
                 <img
-                  v-else-if="typeof item.icon === 'string' && item.icon.startsWith('http')"
+                  v-else-if="resolveIconKind(item.icon) === 'image'"
                   :src="item.icon"
                   :alt="item.label"
                   class="w-6 h-6"
                 />
                 <div
-                  v-else-if="typeof item.icon === 'string'"
+                  v-else-if="resolveIconKind(item.icon) === 'html'"
                   v-html="item.icon"
                 ></div>
                 <template v-else>
@@ -193,16 +162,16 @@ const getTooltipPosition = (position?: 'left' | 'top' | 'right' | 'bottom') => {
                   <component
                     class="w-6 h-6"
                     :is="item.icon"
-                    v-if="typeof item.icon === 'object' || typeof item.icon === 'function'"
+                    v-if="resolveIconKind(item.icon) === 'component'"
                   />
                   <img
-                    v-else-if="typeof item.icon === 'string' && item.icon.startsWith('http')"
+                    v-else-if="resolveIconKind(item.icon) === 'image'"
                     :src="item.icon"
                     :alt="item.label"
                     class="w-6 h-6"
                   />
                   <div
-                    v-else-if="typeof item.icon === 'string'"
+                    v-else-if="resolveIconKind(item.icon) === 'html'"
                     v-html="item.icon"
                   ></div>
                   <template v-else>
@@ -227,16 +196,16 @@ const getTooltipPosition = (position?: 'left' | 'top' | 'right' | 'bottom') => {
                 <component
                   class="w-6 h-6"
                   :is="item.icon"
-                  v-if="typeof item.icon === 'object' || typeof item.icon === 'function'"
+                  v-if="resolveIconKind(item.icon) === 'component'"
                 />
                 <img
-                  v-else-if="typeof item.icon === 'string' && item.icon.startsWith('http')"
+                  v-else-if="resolveIconKind(item.icon) === 'image'"
                   :src="item.icon"
                   :alt="item.label"
                   class="w-6 h-6"
                 />
                 <div
-                  v-else-if="typeof item.icon === 'string'"
+                  v-else-if="resolveIconKind(item.icon) === 'html'"
                   v-html="item.icon"
                 ></div>
                 <template v-else>

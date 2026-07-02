@@ -4,6 +4,7 @@ import DuJoin from "../../Layout/du-join/du-join.vue";
 import { type DuPaginationProps } from './du-pagination.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
 import { useVariantMapping } from "../../../composables/useVariantProps";
+import { usePaginationPages } from "./composables/usePaginationPages";
 
 const props = withDefaults(
   defineProps<DuPaginationProps>(),
@@ -37,7 +38,6 @@ const emit = defineEmits<{
   (e: "update:modelValue", value: number): void;
 }>();
 
-const totalPages = computed(() => Math.ceil(props.total / props.perPage));
 const { sizeClass } = useSizeMapping({ size: props.size }, "btn");
 const { colorClass } = useVariantMapping({ variant: props.variant }, "btn");
 
@@ -49,50 +49,7 @@ const softClass = computed(() => {
   return props.soft ? "btn-soft" : "";
 });
 
-const pages = computed(() => {
-  const result: (number | string)[] = [];
-  const current = props.modelValue;
-
-  if (props.maxPages > 0) {
-    const maxPagesHalf = Math.floor(props.maxPages / 2);
-    let startPage = Math.max(1, current - maxPagesHalf);
-    const endPage = Math.min(totalPages.value, startPage + props.maxPages - 1);
-
-    if (endPage - startPage + 1 < props.maxPages) {
-      startPage = Math.max(1, endPage - props.maxPages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      result.push(i);
-    }
-
-    return result;
-  }
-
-  result.push(1);
-
-  if (props.showEllipsis && current > 3) {
-    result.push("...");
-  }
-
-  for (
-    let i = Math.max(2, current - 1);
-    i <= Math.min(current + 1, totalPages.value - 1);
-    i++
-  ) {
-    result.push(i);
-  }
-
-  if (props.showEllipsis && current < totalPages.value - 2) {
-    result.push("...");
-  }
-
-  if (totalPages.value > 1) {
-    result.push(totalPages.value);
-  }
-
-  return result;
-});
+const { totalPages, pages } = usePaginationPages(props);
 
 function changePage(page: number | string) {
   if (typeof page === "number") {

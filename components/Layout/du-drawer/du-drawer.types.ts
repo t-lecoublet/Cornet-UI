@@ -10,6 +10,11 @@ export interface DuDrawerItem extends DuMenuItemData {
     [key: string]: any
 }
 
+export type DuDrawerEmit = {
+    (e: 'update:modelValue', value: boolean): void
+    (e: 'update:open', value: boolean): void
+}
+
 export interface DuDrawerProps {
     id?: string
     position?: 'start' | 'end'

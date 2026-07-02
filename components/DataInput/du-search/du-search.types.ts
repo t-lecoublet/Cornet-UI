@@ -13,6 +13,14 @@ export interface DuSearchOption {
   [key: string]: any
 }
 
+export type DuSearchEmit = {
+  (e: 'update:modelValue', value: any): void
+  (e: 'select', option: DuSearchOption): void
+  (e: 'remove', option: DuSearchOption): void
+  (e: 'add', option: DuSearchOption): void
+  (e: 'query', query: string): void
+}
+
 export interface DuSearchProps {
   modelValue?: any | any[]
   name: string
