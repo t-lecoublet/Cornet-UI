@@ -4,7 +4,7 @@ export type DuFabIconKind = 'component' | 'image' | 'html'
 export function useFabIcon() {
   function resolveIconKind(icon: unknown): DuFabIconKind | null {
     if (typeof icon === 'object' || typeof icon === 'function') return 'component'
-    if (typeof icon === 'string' && icon.startsWith('http')) return 'image'
+    if (typeof icon === 'string' && (icon.startsWith('http') || icon.startsWith('/'))) return 'image'
     if (typeof icon === 'string') return 'html'
     return null
   }

@@ -64,6 +64,15 @@ describe('DuFab', () => {
     expect(img.attributes('src')).toBe('http://example.com/icon.png')
   })
 
+  it('renders a root-relative image icon (local asset) for items', () => {
+    const wrapper = mount(DuFab, {
+      props: { items: [{ icon: '/logo.svg', label: 'Pic' }] },
+    })
+    const img = wrapper.find('img')
+    expect(img.exists()).toBe(true)
+    expect(img.attributes('src')).toBe('/logo.svg')
+  })
+
   it('renders an inline svg/html string icon via v-html for items', () => {
     const wrapper = mount(DuFab, {
       props: { items: [{ icon: '<svg data-testid="inline-icon"></svg>' }] },

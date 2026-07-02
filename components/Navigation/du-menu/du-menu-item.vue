@@ -109,7 +109,7 @@ function handleClick() {
           'menu-active': isActive
         }" @click.stop="handleClick">
           <component :is="item.icon" v-if="typeof item.icon === 'object'" />
-          <img v-else-if="typeof item.icon === 'string' && item.icon.startsWith('http')" :src="item.icon"
+          <img v-else-if="typeof item.icon === 'string' && (item.icon.startsWith('http') || item.icon.startsWith('/'))" :src="item.icon"
             :alt="item.label" class="w-5 h-5" />
           <div v-else-if="typeof item.icon === 'string'" v-html="item.icon"></div>
           {{ item.label }}
@@ -142,7 +142,7 @@ function handleClick() {
           <input v-if="item.multiple && item.value !== undefined" type="checkbox"
             class="invisible w-0 h-0 overflow-clip" :checked="item.checked" disabled>
           <component :is="item.icon" v-if="typeof item.icon === 'object'" />
-          <img v-else-if="typeof item.icon === 'string' && item.icon.startsWith('http')" :src="item.icon"
+          <img v-else-if="typeof item.icon === 'string' && (item.icon.startsWith('http') || item.icon.startsWith('/'))" :src="item.icon"
             :alt="item.label" class="w-5 h-5" />
           <div v-else-if="typeof item.icon === 'string'" v-html="item.icon"></div>
           {{ item.label }}

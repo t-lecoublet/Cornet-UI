@@ -33,6 +33,26 @@ describe('DuMenu', () => {
     expect(aboutLink?.attributes('role')).toBeUndefined()
   })
 
+  it('renders an http image icon as a sized img tag', () => {
+    const wrapper = mount(DuMenu, { props: { items: [{ label: 'Pic', href: '#', icon: 'https://example.com/icon.png' }] } })
+    const img = wrapper.find('img')
+    expect(img.attributes('src')).toBe('https://example.com/icon.png')
+    expect(img.classes()).toContain('w-5')
+    expect(img.classes()).toContain('h-5')
+  })
+
+  it('renders a root-relative image icon (local asset) as an img tag', () => {
+    const wrapper = mount(DuMenu, { props: { items: [{ label: 'Pic', href: '#', icon: '/logo.svg' }] } })
+    const img = wrapper.find('img')
+    expect(img.exists()).toBe(true)
+    expect(img.attributes('src')).toBe('/logo.svg')
+  })
+
+  it('renders an inline SVG string icon via v-html', () => {
+    const wrapper = mount(DuMenu, { props: { items: [{ label: 'Pic', href: '#', icon: '<svg data-testid="inline-icon"></svg>' }] } })
+    expect(wrapper.find('[data-testid="inline-icon"]').exists()).toBe(true)
+  })
+
   it('emits itemClick when a top-level item is clicked', async () => {
     const wrapper = mount(DuMenu, { props: { items } })
     await wrapper.findAll('[role="option"]')[0].trigger('click')

@@ -75,12 +75,22 @@ describe('DuTabs', () => {
     expect(wrapper.find('.my-icon').exists()).toBe(true)
   })
 
-  it('renders an http image icon as an img tag', () => {
+  it('renders an http image icon as a sized img tag', () => {
     const withIcon: DuTabItem[] = [{ label: 'A', icon: 'https://example.com/icon.png' }]
     const wrapper = mount(DuTabs, { props: { items: withIcon } })
     const img = wrapper.find('img')
     expect(img.attributes('src')).toBe('https://example.com/icon.png')
     expect(img.attributes('alt')).toBe('A')
+    expect(img.classes()).toContain('w-5')
+    expect(img.classes()).toContain('h-5')
+  })
+
+  it('renders a root-relative image icon (local asset) as an img tag', () => {
+    const withIcon: DuTabItem[] = [{ label: 'A', icon: '/logo.svg' }]
+    const wrapper = mount(DuTabs, { props: { items: withIcon } })
+    const img = wrapper.find('img')
+    expect(img.exists()).toBe(true)
+    expect(img.attributes('src')).toBe('/logo.svg')
   })
 
   it('renders per-index content slot override', () => {

@@ -64,9 +64,10 @@ const typeClass = computed(() => {
                     v-if="typeof item.icon === 'object' || typeof item.icon === 'function'"
                   />
                   <img
+                    class="w-5 h-5"
                     v-else-if="
                       typeof item.icon === 'string' &&
-                      item.icon.startsWith('http')
+                      (item.icon.startsWith('http') || item.icon.startsWith('/'))
                     "
                     :src="item.icon"
                     :alt="item.label"
