@@ -41,5 +41,5 @@ export function useFabClasses(props: FabClassesProps) {
     ]
   })
 
-  return { modifierClass, positionClass, fabClasses }
+  return { fabClasses }
 }

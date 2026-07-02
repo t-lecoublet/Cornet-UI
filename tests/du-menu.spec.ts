@@ -113,6 +113,57 @@ describe('DuMenu', () => {
     wrapper.unmount()
   })
 
+  it('makes onClick-only items (no href) focusable and keyboard-navigable', async () => {
+    const onClickItems: DuMenuItemData[] = [
+      { label: 'Save', onClick: () => {} },
+      { label: 'Delete', onClick: () => {} },
+    ]
+    const wrapper = mount(DuMenu, { props: { items: onClickItems }, attachTo: document.body })
+    const options = wrapper.findAll('[role="option"]').map((w) => w.element as HTMLElement)
+    expect(options[0].getAttribute('tabindex')).toBe('0')
+
+    options[0].focus()
+    expect(document.activeElement).toBe(options[0])
+    await pressKey(options[0], 'ArrowDown')
+    expect(document.activeElement).toBe(options[1])
+    wrapper.unmount()
+  })
+
+  it('does not make disabled items focusable', () => {
+    const withDisabled: DuMenuItemData[] = [{ label: 'Off', disabled: true, href: '/off' }]
+    const wrapper = mount(DuMenu, { props: { items: withDisabled } })
+    const link = wrapper.find('a')
+    expect(link.attributes('tabindex')).toBeUndefined()
+  })
+
+  it('uses vertical keys inside a nested submenu even when the root menu is horizontal', async () => {
+    // Nested submenu <ul>s never get a direction class (always laid out
+    // vertically), so they must navigate with Up/Down regardless of the
+    // root menu's own (horizontal) direction.
+    const nested: DuMenuItemData[] = [
+      { label: 'Parent', subItems: [{ label: 'Child A', href: '/a' }, { label: 'Child B', href: '/b' }] },
+    ]
+    const wrapper = mount(DuMenu, {
+      props: { items: nested, direction: 'horizontal' },
+      attachTo: document.body,
+    })
+    const options = wrapper.findAll('[role="option"]').map((w) => w.element as HTMLElement)
+    // options[0] = Parent (root level, horizontal), options[1] = Child A, options[2] = Child B (submenu, vertical)
+
+    // Root level still uses horizontal keys.
+    options[0].focus()
+    await pressKey(options[0], 'ArrowDown')
+    expect(document.activeElement).toBe(options[0])
+
+    // Submenu level uses vertical keys, not horizontal ones.
+    options[1].focus()
+    await pressKey(options[1], 'ArrowRight')
+    expect(document.activeElement).toBe(options[1])
+    await pressKey(options[1], 'ArrowDown')
+    expect(document.activeElement).toBe(options[2])
+    wrapper.unmount()
+  })
+
   it('scopes ArrowDown navigation to the focused submenu level', async () => {
     const nested: DuMenuItemData[] = [
       { label: 'Parent', subItems: [{ label: 'Child A', href: '/a' }, { label: 'Child B', href: '/b' }] },

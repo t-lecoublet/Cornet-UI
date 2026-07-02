@@ -91,5 +91,5 @@ export function useSearchKeyboardNav(
     }
   }
 
-  return { onKeydown, scrollHighlightedIntoView }
+  return { onKeydown }
 }

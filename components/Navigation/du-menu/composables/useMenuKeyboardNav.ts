@@ -1,24 +1,28 @@
 import type { Ref } from 'vue'
-import type { DuMenuDirection } from '../du-menu.types'
-
-interface MenuKeyboardNavProps {
-  direction: DuMenuDirection
-}
 
 const OPTION_SELECTOR = ':scope > li > [role="option"]'
 
 /**
  * Arrow-key roving navigation between sibling `role="option"` items of the
- * nearest `role="listbox"` ancestor of the focused element. Nested submenus
- * (their own `role="listbox"`) are navigated independently, since each
- * keydown re-scopes to `event.target`'s closest listbox.
+ * nearest `role="listbox"` ancestor of the focused element.
+ *
+ * The axis (Left/Right vs Up/Down) is derived per-scope from that listbox's
+ * own `menu-horizontal` class rather than a single global direction: nested
+ * submenu `<ul role="listbox">`s never receive a direction class (they're
+ * always rendered vertically, regardless of the root menu's direction), so a
+ * horizontal root with dropdown submenus still gets correct Up/Down keys
+ * inside those submenus.
+ *
+ * Only applies to items-array mode, since `role="option"` is exclusively
+ * applied by du-menu-item.vue — manual-slot-mode menus (no `items` prop) get
+ * no keyboard navigation from this composable.
  */
-export function useMenuKeyboardNav(root: Ref<HTMLElement | null>, props: MenuKeyboardNavProps) {
-  const isHorizontal = () => props.direction === 'horizontal' || props.direction === 'responsive'
+export function useMenuKeyboardNav(root: Ref<HTMLElement | null>) {
+  function isHorizontalScope(scopeList: Element): boolean {
+    return Array.from(scopeList.classList).some((c) => c.endsWith('menu-horizontal'))
+  }
 
-  function getScopeItems(target: HTMLElement): HTMLElement[] {
-    const scopeList = target.closest('ul[role="listbox"]')
-    if (!scopeList) return []
+  function getScopeItems(scopeList: Element): HTMLElement[] {
     return Array.from(scopeList.querySelectorAll(OPTION_SELECTOR)) as HTMLElement[]
   }
 
@@ -27,12 +31,16 @@ export function useMenuKeyboardNav(root: Ref<HTMLElement | null>, props: MenuKey
     const target = event.target as HTMLElement
     if (!target?.closest) return
 
-    const nextKey = isHorizontal() ? 'ArrowRight' : 'ArrowDown'
-    const prevKey = isHorizontal() ? 'ArrowLeft' : 'ArrowUp'
+    const scopeList = target.closest('ul[role="listbox"]')
+    if (!scopeList) return
+
+    const horizontal = isHorizontalScope(scopeList)
+    const nextKey = horizontal ? 'ArrowRight' : 'ArrowDown'
+    const prevKey = horizontal ? 'ArrowLeft' : 'ArrowUp'
 
     if (![nextKey, prevKey, 'Home', 'End'].includes(event.key)) return
 
-    const items = getScopeItems(target)
+    const items = getScopeItems(scopeList)
     if (items.length === 0) return
 
     const currentIndex = items.indexOf(target)

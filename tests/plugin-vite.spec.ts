@@ -80,6 +80,14 @@ describe('scanSourceContent', () => {
     )
     expect([...result.used].sort()).toEqual(['DuAccordion', 'DuButton', 'DuDropdown'])
   })
+
+  it('ignores /* block */ comments grouping the import list, without swallowing the next name', () => {
+    const result = scanSourceContent(
+      `import { /* Actions */ DuButton, DuDropdown, /* Data Display */ DuAccordion } from 'cornet-ui'`,
+      ['cornet-ui'],
+    )
+    expect([...result.used].sort()).toEqual(['DuAccordion', 'DuButton', 'DuDropdown'])
+  })
 })
 
 describe('expandWithInternalDependencies (real library)', () => {

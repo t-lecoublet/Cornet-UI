@@ -58,5 +58,5 @@ export function useSearchCommit(
     }
   }
 
-  return { commitQuery, onBlurCleanup }
+  return { onBlurCleanup }
 }

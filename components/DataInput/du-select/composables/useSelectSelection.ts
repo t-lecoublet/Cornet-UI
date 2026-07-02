@@ -93,5 +93,5 @@ export function useSelectSelection(
 
   const selectedOption = computed(() => adapter.optionFromValue(selectedSingle.value))
 
-  return { selectedValues, selectedSingle, selectedOption, isSelected, toggleOption, removeValue }
+  return { selectedValues, selectedOption, isSelected, toggleOption, removeValue }
 }

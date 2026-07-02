@@ -93,5 +93,5 @@ export function useSearchSelection(
     }
   }
 
-  return { selectedValues, isSelected, updateModel, selectValue, deselectValue, handleOptionClick }
+  return { selectedValues, isSelected, updateModel, selectValue, handleOptionClick }
 }

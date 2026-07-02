@@ -56,5 +56,5 @@ export function useSelectKeyboardNav(
     }
   }
 
-  return { onKeydown, scrollHighlightedIntoView }
+  return { onKeydown }
 }

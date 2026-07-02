@@ -112,10 +112,10 @@ const { onFocus } = useSearchDismiss(root, open, onBlurCleanup)
 </script>
 
 <template>
-    <div ref="root" class="relative" role="combobox" :aria-expanded="open" :aria-owns="listId" @focus="onFocus">
+    <div ref="root" class="relative" role="combobox" :aria-expanded="open" :aria-owns="listId">
         <input :id="id" :name="name" :type="props.type" :required="props.required" :pattern="props.pattern"
             :placeholder="placeholder" :class="computedInputClass" :disabled="props.disabled" autocomplete="off"
-            :value="inputValue" @input="onInput" @focus="open = true" @keydown="onKeydown" aria-autocomplete="list"
+            :value="inputValue" @input="onInput" @focus="onFocus" @keydown="onKeydown" aria-autocomplete="list"
             :aria-controls="listId" />
 
         <transition enter-active-class="transition ease-out duration-100" enter-from-class="opacity-0 scale-95"

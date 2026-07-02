@@ -104,7 +104,7 @@ function handleClick() {
     </template>
     <template v-else>
       <li>
-        <component :is="linkTag" :role="item.disabled ? undefined : 'option'" v-bind="linkProps" :class="{
+        <component :is="linkTag" :role="item.disabled ? undefined : 'option'" :tabindex="item.disabled ? undefined : 0" v-bind="linkProps" :class="{
           'menu-disabled': item.disabled,
           'menu-active': isActive
         }" @click.stop="handleClick">
@@ -136,7 +136,7 @@ function handleClick() {
     </template>
     <template v-else>
       <li :class="{ 'menu-disabled': item.disabled }">
-        <component :is="linkTag" :role="item.disabled ? undefined : 'option'" v-bind="linkProps" :class="{ 'menu-active': isActive }"
+        <component :is="linkTag" :role="item.disabled ? undefined : 'option'" :tabindex="item.disabled ? undefined : 0" v-bind="linkProps" :class="{ 'menu-active': isActive }"
           @click.stop="handleClick">
           <!-- Checkbox pour sélection multiple -->
           <input v-if="item.multiple && item.value !== undefined" type="checkbox"

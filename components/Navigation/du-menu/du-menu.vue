@@ -52,7 +52,7 @@ const ariaOrientation = computed(() => {
 });
 
 const root = ref<HTMLElement | null>(null);
-const { onKeydown } = useMenuKeyboardNav(root, props);
+const { onKeydown } = useMenuKeyboardNav(root);
 // Slots documentation : voir le template pour la gestion des slots indexés et globaux.
 </script>
 
