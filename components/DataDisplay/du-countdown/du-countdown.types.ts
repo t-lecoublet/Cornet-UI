@@ -23,6 +23,10 @@ export interface DuCountdownProps {
   autoStart?: boolean
 }
 
+export type DuCountdownEmit = {
+  (e: 'end'): void
+}
+
 export interface DuCountdownGroupProps {
   targetDate?: Date
   showDays?: boolean
