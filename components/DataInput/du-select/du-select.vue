@@ -2,9 +2,9 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { useVariantMapping } from "../../../composables/useVariantProps"
-import type { SELECTProps } from './du-select.types'
+import type { DuSelectProps } from './du-select.types'
 
-const props = withDefaults(defineProps<SELECTProps>(), {
+const props = withDefaults(defineProps<DuSelectProps>(), {
     options: () => [],
     multiple: false,
     placeholder: 'Select...',

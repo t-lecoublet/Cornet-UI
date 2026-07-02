@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { type TabsProps, type TabItem } from './du-tabs.types';
+import { type DuTabsProps, type DuTabItem } from './du-tabs.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
 
 const props = withDefaults(
-  defineProps<TabsProps>(),
+  defineProps<DuTabsProps>(),
   {
     size: "default",
     items: undefined,
@@ -20,7 +20,7 @@ const emit = defineEmits<{
   'update:modelValue': [index: number]
 }>();
 
-function handleTabClick(index: number, item: TabItem) {
+function handleTabClick(index: number, item: DuTabItem) {
   emit('update:modelValue', index);
   item.onClick?.();
 }

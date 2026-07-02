@@ -17,5 +17,5 @@ export const BADGE_VARIANTS = [
   'badge-error',
 ] as const
 
-export type BADGESize = (typeof BADGE_SIZES)[number]
-export type BADGEVariant = (typeof BADGE_VARIANTS)[number] 
+export type DuBadgeSize = (typeof BADGE_SIZES)[number]
+export type DuBadgeVariant = (typeof BADGE_VARIANTS)[number] 

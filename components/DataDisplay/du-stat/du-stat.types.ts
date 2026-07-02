@@ -1,4 +1,4 @@
-export interface STATItem {
+export interface DuStatItem {
   title?: string
   value?: string | number
   description?: string

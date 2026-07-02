@@ -5,9 +5,9 @@ export const COUNTDOWN_FORMATS = [
   'seconds',
 ] as const
 
-export type COUNTDOWNFormat = (typeof COUNTDOWN_FORMATS)[number]
+export type DuCountdownFormat = (typeof COUNTDOWN_FORMATS)[number]
 
-export interface COUNTDOWNLabels {
+export interface DuCountdownLabels {
   days?: string
   hours?: string
   minutes?: string

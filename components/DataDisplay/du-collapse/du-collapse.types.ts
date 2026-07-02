@@ -5,11 +5,11 @@ export const COLLAPSE_MODIFIERS = [
   'collapse-close',
 ] as const
 
-export interface COLLAPSEItem {
+export interface DuCollapseItem {
   title?: string
   content?: string
   open?: boolean
   customClass?: string
 }
 
-export type COLLAPSEModifier = (typeof COLLAPSE_MODIFIERS)[number] 
+export type DuCollapseModifier = (typeof COLLAPSE_MODIFIERS)[number] 

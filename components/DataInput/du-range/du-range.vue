@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { type RANGEProps } from './du-range.types'
+import { type DuRangeProps } from './du-range.types'
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { ref, computed, watch } from "vue"
 
 const props = withDefaults(
-  defineProps<RANGEProps>(),
+  defineProps<DuRangeProps>(),
   {
     modelValue: 4,
     min: 0,

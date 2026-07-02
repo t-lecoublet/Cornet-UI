@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { type CarouselItem } from './du-carousel.types'
+import { type DuCarouselItemData } from './du-carousel.types'
 import DuCarouselItem from './du-carousel-item.vue'
 
 const props = withDefaults(
   defineProps<{
-    items?: CarouselItem[]
+    items?: DuCarouselItemData[]
     start?: boolean
     center?: boolean
     end?: boolean

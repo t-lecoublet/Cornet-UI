@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
-import { type COLLAPSEItem } from './du-collapse.types'
+import { type DuCollapseItem } from './du-collapse.types'
 
 withDefaults(
   defineProps<{
-    items?: COLLAPSEItem[]
+    items?: DuCollapseItem[]
     modifier?:
       | 'collapse-arrow'
       | 'collapse-plus'

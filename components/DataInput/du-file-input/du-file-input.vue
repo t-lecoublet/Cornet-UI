@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { type FILEINPUTProps } from './du-file-input.types'
+import { type DuFileInputProps } from './du-file-input.types'
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { computed } from "vue"
 
 const props = withDefaults(
-  defineProps<FILEINPUTProps>(),
+  defineProps<DuFileInputProps>(),
   {
     disabled: false,
     variant: "default",

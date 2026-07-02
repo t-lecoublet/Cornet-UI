@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, provide } from "vue"
-import { type LABELProps } from "./du-label.types"
+import { type DuLabelProps } from "./du-label.types"
 
-const props = defineProps<LABELProps>()
+const props = defineProps<DuLabelProps>()
 
 if (props.type == "input") {
   provide("isInInput", true)

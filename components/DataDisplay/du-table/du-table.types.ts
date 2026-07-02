@@ -1,25 +1,25 @@
 export const TABLE_SIZES = ['default', 'xs', 'sm', 'md', 'lg', 'xl'] as const
-export type TABLESize = (typeof TABLE_SIZES)[number]
+export type DuTableSize = (typeof TABLE_SIZES)[number]
 
-export interface TABLEColumn {
+export interface DuTableColumn {
   key: string
   label: string
   customClass?: string
 }
 
-export interface TABLERow {
+export interface DuTableRow {
   id: string | number
   [key: string]: any
   customClass?: string
 }
 
-export interface TABLEProps {
-  columns?: TABLEColumn[]
-  rows?: TABLERow[]
+export interface DuTableProps {
+  columns?: DuTableColumn[]
+  rows?: DuTableRow[]
   zebra?: boolean
   pinRows?: boolean
   pinCols?: boolean
-  size?: TABLESize
+  size?: DuTableSize
   customClass?: string
   header?: boolean
   footer?: boolean

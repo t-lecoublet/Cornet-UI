@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { type TIMELINEDirection, type TIMELINEModifier, type TIMELINEItem } from './du-timeline.types'
+import { type DuTimelineDirection, type DuTimelineModifier, type DuTimelineItemData } from './du-timeline.types'
 
 const props = withDefaults(
   defineProps<{
-    items?: TIMELINEItem[]
-    direction?: TIMELINEDirection
-    modifier?: TIMELINEModifier
+    items?: DuTimelineItemData[]
+    direction?: DuTimelineDirection
+    modifier?: DuTimelineModifier
     customClass?: string
     responsive?: boolean
     validItems?: (boolean | undefined)[]

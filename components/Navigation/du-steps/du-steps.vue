@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { type StepsProps } from './du-steps.types';
+import { type DuStepsProps } from './du-steps.types';
 
 const props = withDefaults(
-  defineProps<StepsProps>(),
+  defineProps<DuStepsProps>(),
   {
     items: undefined,
     direction: "steps-horizontal",

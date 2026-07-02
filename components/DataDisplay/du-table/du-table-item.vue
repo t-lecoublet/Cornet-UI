@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type TABLEItemProps } from './du-table-item.types'
+import { type DuTableItemProps } from './du-table-item.types'
 
 withDefaults(
-  defineProps<TABLEItemProps>(),
+  defineProps<DuTableItemProps>(),
   {
     customClass: "",
     isHeader: false,

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { type DockItem, type DockProps } from './du-dock.types';
+import { type DuDockItem, type DuDockProps } from './du-dock.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
 
 const props = withDefaults(
-  defineProps<DockProps>(),
+  defineProps<DuDockProps>(),
   {
     size: "default",
     items: undefined,
@@ -15,7 +15,7 @@ const props = withDefaults(
 const { sizeClass } = useSizeMapping(props, "dock");
 
 const emit = defineEmits<{
-  change: [item: DockItem | undefined]
+  change: [item: DuDockItem | undefined]
 }>();
 
 const firstActiveItem = props.items?.findIndex((item) => item.active) ?? 0;

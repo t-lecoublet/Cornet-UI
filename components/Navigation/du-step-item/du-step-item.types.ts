@@ -1,6 +1,6 @@
 import { type Variant } from "../../../composables/useVariantProps";
 
-export interface StepItemProps {
+export interface DuStepItemProps {
   label?: string;
   active?: boolean;
   customClass?: string;

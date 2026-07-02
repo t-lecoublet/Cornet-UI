@@ -2,10 +2,10 @@
 import { computed } from "vue";
 import { useVariantMapping } from "../../../composables/useVariantProps";
 import { useSizeMapping } from "../../../composables/useSizeProps";
-import { type LoadingProps } from "./du-loading.types";
+import { type DuLoadingProps } from "./du-loading.types";
 
 const props = withDefaults(
-  defineProps<LoadingProps>(),
+  defineProps<DuLoadingProps>(),
   {
     animation: "spinner",
     size: "default",

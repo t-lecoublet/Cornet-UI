@@ -1,3 +1,3 @@
-export interface LISTProps {
+export interface DuListProps {
   class?: string
 } 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { type TABLEProps } from './du-table.types'
+import { type DuTableProps } from './du-table.types'
 import { useSizeMapping } from "../../../composables/useSizeProps"
 
 const props = withDefaults(
-  defineProps<TABLEProps>(),
+  defineProps<DuTableProps>(),
   {
     columns: undefined,
     rows: undefined,

@@ -6,4 +6,4 @@ export const DIFF_ASPECT_RATIOS = [
   'aspect-square',
 ] as const
 
-export type DIFFAspectRatio = (typeof DIFF_ASPECT_RATIOS)[number] 
+export type DuDiffAspectRatio = (typeof DIFF_ASPECT_RATIOS)[number] 

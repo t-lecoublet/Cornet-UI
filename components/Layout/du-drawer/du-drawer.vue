@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch, useSlots } from 'vue'
-import { type DRAWERItem } from './du-drawer.types'
+import { type DuDrawerItem } from './du-drawer.types'
 import DuMenu from '../../Navigation/du-menu/du-menu.vue'
 
 const slots = useSlots()
@@ -18,7 +18,7 @@ const props = withDefaults(
         sidebarWrapperClass?: string
         contentClass?: string
         overlayClass?: string
-        items?: DRAWERItem[]
+        items?: DuDrawerItem[]
         /** Enable icon-only collapsible mode with is-drawer-open/is-drawer-close variants */
         iconOnly?: boolean
     }>(),

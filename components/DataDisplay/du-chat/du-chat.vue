@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { provide } from "vue";
-import { type ChatProps } from './du-chat.types';
+import { type DuChatProps } from './du-chat.types';
 
 const props = withDefaults(
-  defineProps<ChatProps>(),
+  defineProps<DuChatProps>(),
   {
     items: undefined,
     placement: "start",

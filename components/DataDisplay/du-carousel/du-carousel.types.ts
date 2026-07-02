@@ -4,9 +4,9 @@ export const CAROUSEL_POSITIONS = [
   'carousel-end',
 ] as const
 
-export type CAROUSELPosition = (typeof CAROUSEL_POSITIONS)[number]
+export type DuCarouselPosition = (typeof CAROUSEL_POSITIONS)[number]
 
-export interface CarouselItem {
+export interface DuCarouselItemData {
   id?: string
   src?: string
   alt?: string

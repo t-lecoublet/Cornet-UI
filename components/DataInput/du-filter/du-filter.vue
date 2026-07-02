@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, provide } from "vue";
 import DuButton from "../../Actions/du-button/du-button.vue";
-import { type FilterProps } from "./du-filter.types";
+import { type DuFilterProps } from "./du-filter.types";
 
 const props = withDefaults(
-  defineProps<FilterProps>(),
+  defineProps<DuFilterProps>(),
   {
     items: undefined,
     name: undefined,

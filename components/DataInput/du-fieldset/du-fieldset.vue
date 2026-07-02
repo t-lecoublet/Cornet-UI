@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type FIELDSETProps } from './du-fieldset.types'
+import { type DuFieldsetProps } from './du-fieldset.types'
 
 withDefaults(
-  defineProps<FIELDSETProps>(),
+  defineProps<DuFieldsetProps>(),
   {},
 )
 </script>

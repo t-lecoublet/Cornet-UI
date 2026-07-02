@@ -6,4 +6,4 @@ export const KBD_SIZES = [
   'kbd-xl',
 ] as const
 
-export type KBDSize = (typeof KBD_SIZES)[number] 
+export type DuKbdSize = (typeof KBD_SIZES)[number] 

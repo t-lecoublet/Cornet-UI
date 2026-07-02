@@ -7,4 +7,4 @@ export const MODAL_PLACEMENTS = [
   'modal-bottom sm:modal-middle'
 ] as const
 
-export type MODALPlacement = (typeof MODAL_PLACEMENTS)[number] 
+export type DuModalPlacement = (typeof MODAL_PLACEMENTS)[number] 

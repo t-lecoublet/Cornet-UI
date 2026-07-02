@@ -1,3 +1,3 @@
-export interface SkeletonProps {
+export interface DuSkeletonProps {
   class?: string;
 } 

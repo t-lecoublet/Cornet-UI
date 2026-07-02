@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { type BreadcrumbsProps } from './du-breadcrumbs.types';
+import { type DuBreadcrumbsProps } from './du-breadcrumbs.types';
 
 const ROUTER_COMPONENTS = ['RouterLink', 'router-link', 'NuxtLink', 'nuxt-link'];
 
 const props = withDefaults(
-  defineProps<BreadcrumbsProps>(),
+  defineProps<DuBreadcrumbsProps>(),
   {
     separator: undefined,
   },

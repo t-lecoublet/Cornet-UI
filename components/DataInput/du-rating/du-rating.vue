@@ -2,10 +2,10 @@
 import { computed, provide, ref, watch } from "vue";
 import { useSizeMapping } from "../../../composables/useSizeProps";
 import DuRatingItem from "./du-rating-item.vue";
-import { type RatingProps, type RatingEmits } from "./du-rating.types";
+import { type DuRatingProps, type DuRatingEmits } from "./du-rating.types";
 
 const props = withDefaults(
-  defineProps<RatingProps>(),
+  defineProps<DuRatingProps>(),
   {
     modelValue: 0,
     items: undefined,
@@ -21,7 +21,7 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits<RatingEmits>();
+const emit = defineEmits<DuRatingEmits>();
 
 const internalValue = ref(props.modelValue);
 

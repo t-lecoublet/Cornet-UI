@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import DuStat from "../du-stat/du-stat.vue"
-import { type STATSItem } from './du-stats.types'
+import { type DuStatsItem } from './du-stats.types'
 
 const props = defineProps<{
-  items?: STATSItem[]
+  items?: DuStatsItem[]
   vertical?: boolean
   shadow?: boolean
   dash?: boolean

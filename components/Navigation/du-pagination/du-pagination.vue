@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import DuJoin from "../../Layout/du-join/du-join.vue";
-import { type PaginationProps } from './du-pagination.types';
+import { type DuPaginationProps } from './du-pagination.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
 import { useVariantMapping } from "../../../composables/useVariantProps";
 
 const props = withDefaults(
-  defineProps<PaginationProps>(),
+  defineProps<DuPaginationProps>(),
   {
     modelValue: 1,
     perPage: 10,

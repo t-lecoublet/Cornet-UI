@@ -2,9 +2,9 @@
 import { ref, computed, reactive, nextTick, onMounted, onBeforeUnmount, watch } from "vue"
 import { useSizeMapping, type Size } from "../../../composables/useSizeProps"
 import { useVariantMapping } from "../../../composables/useVariantProps"
-import type { SEARCHProps, SearchOption } from "./du-search.types"
+import type { DuSearchProps, DuSearchOption } from "./du-search.types"
 
-const props = withDefaults(defineProps<SEARCHProps>(), {
+const props = withDefaults(defineProps<DuSearchProps>(), {
     size: "default",
     subSize: undefined,
     variant: "default",
@@ -51,9 +51,9 @@ const computedInputClass = computed(() => {
 
 const emit = defineEmits<{
     'update:modelValue': [value: any]
-    select: [option: SearchOption]
-    remove: [option: SearchOption]
-    add: [option: SearchOption]
+    select: [option: DuSearchOption]
+    remove: [option: DuSearchOption]
+    add: [option: DuSearchOption]
     query: [query: string]
 }>()
 
@@ -113,7 +113,7 @@ const inputValue = computed(() => {
     return selectedValues.value[0]?.[labelField.value] || ""
 })
 
-function isSelected(option: SearchOption) {
+function isSelected(option: DuSearchOption) {
     if (props.multiple) {
         return selectedValues.value.some((v) => v.id === option.id && v.name === option.name)
     } else {
@@ -151,7 +151,7 @@ function selectValue(val: any) {
     }
 }
 
-function deselectValue(val: SearchOption) {
+function deselectValue(val: DuSearchOption) {
     if (props.multiple) {
         const idx = selectedValues.value.findIndex((v) => v.id === val.id && v.name === val.name)
         if (idx > -1) {
@@ -168,7 +168,7 @@ function deselectValue(val: SearchOption) {
     }
 }
 
-function handleOptionClick(val: SearchOption) {
+function handleOptionClick(val: DuSearchOption) {
     if (isSelected(val) && (props.clearable || props.multiple)) {
         deselectValue(val)
     } else {

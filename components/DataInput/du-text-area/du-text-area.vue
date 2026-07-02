@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { type TEXTAREAProps } from './du-text-area.types'
+import { type DuTextAreaProps } from './du-text-area.types'
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { computed } from "vue"
 
 const props = withDefaults(
-  defineProps<TEXTAREAProps>(),
+  defineProps<DuTextAreaProps>(),
   {
     modelValue: "",
     placeholder: "",

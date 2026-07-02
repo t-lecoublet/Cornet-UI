@@ -9,10 +9,10 @@ export const TIMELINE_MODIFIERS = [
   'timeline-compact',
 ] as const
 
-export type TIMELINEDirection = (typeof TIMELINE_DIRECTIONS)[number]
-export type TIMELINEModifier = (typeof TIMELINE_MODIFIERS)[number]
+export type DuTimelineDirection = (typeof TIMELINE_DIRECTIONS)[number]
+export type DuTimelineModifier = (typeof TIMELINE_MODIFIERS)[number]
 
-export interface TIMELINEItem {
+export interface DuTimelineItemData {
   start?: string
   middle?: string
   end?: string

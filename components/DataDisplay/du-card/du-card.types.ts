@@ -14,5 +14,5 @@ export const CARD_PROPERTIES = [
   'image-full',
 ] as const
 
-export type CARDSize = (typeof CARD_SIZES)[number]
-export type CARDProperty = (typeof CARD_PROPERTIES)[number] 
+export type DuCardSize = (typeof CARD_SIZES)[number]
+export type DuCardProperty = (typeof CARD_PROPERTIES)[number] 

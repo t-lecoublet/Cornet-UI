@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { type AlertProps } from "./du-alert.types";
+import { type DuAlertProps } from "./du-alert.types";
 
 
 const props = withDefaults(
-  defineProps<AlertProps>(),
+  defineProps<DuAlertProps>(),
   {
     variant: "default",
     direction: "default",

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { type LinkProps } from './du-link.types';
+import { type DuLinkProps } from './du-link.types';
 import { useVariantMapping } from "../../../composables/useVariantProps";
 
 const props = withDefaults(
-  defineProps<LinkProps>(),
+  defineProps<DuLinkProps>(),
   {
     variant: "default",
     onlyUnderlineOnHover: false,

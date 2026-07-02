@@ -15,19 +15,19 @@ paths:
 - `direction?`: `'default'` | `'vertical'` | `'horizontal'` | `'responsive'`
 - `size?`: Size
 - `rounded?`: boolean
-- `items?`: MenuItem[]
+- `items?`: DuMenuItemData[]
 - `activeItem?`: string
-- `onItemClick?`: (item: MenuItem) => void
-- `onSubItemClick?`: (item: MenuItem) => void
+- `onItemClick?`: (item: DuMenuItemData) => void
+- `onSubItemClick?`: (item: DuMenuItemData) => void
 
 **Types :**
 ```typescript
-export interface MenuItem {
+export interface DuMenuItemData {
   label: string
   href?: string
   disabled?: boolean
   isTitle?: boolean
-  subItems?: MenuItem[]
+  subItems?: DuMenuItemData[]
   value?: string | number
   onClick?: () => void
   checked?: boolean
@@ -36,7 +36,7 @@ export interface MenuItem {
 }
 ```
 
-**Note:** MenuItem is also used by DuDrawer (Layout).
+**Note:** DuMenuItemData is also used by DuDrawer (Layout).
 
 ---
 
@@ -76,14 +76,14 @@ export interface MenuItem {
 
 **Props:**
 - `size?`: Size
-- `items?`: TabItem[]
+- `items?`: DuTabItem[]
 - `type?`: `'lift'` | `'border'` | `'box'`
 - `bottom?`: boolean
 - `name?`: string
 
 **Types :**
 ```typescript
-export interface TabItem {
+export interface DuTabItem {
   label?: string
   icon?: any
   class?: string
@@ -101,12 +101,12 @@ export interface TabItem {
 **Files:** `components/Navigation/du-breadcrumbs/du-breadcrumbs.vue` | `.types.ts` | `.stories.ts`
 
 **Props:**
-- `items`: BreadcrumbItem[] (required)
+- `items`: DuBreadcrumbItem[] (required)
 - `separator?`: string
 
 **Types :**
 ```typescript
-export interface BreadcrumbItem {
+export interface DuBreadcrumbItem {
   label: string
   href?: string
   icon?: string
@@ -145,12 +145,12 @@ Fixed navigation bar at the bottom (macOS dock style).
 
 **Props:**
 - `size?`: Size
-- `items?`: DockItem[]
+- `items?`: DuDockItem[]
 - `reverseTheme?`: boolean
 
 **Types :**
 ```typescript
-export interface DockItem {
+export interface DuDockItem {
   label?: string
   icon?: any
   class?: string
@@ -186,7 +186,7 @@ Navigation bar. No specific props, uses slots: `#start`, `#center`, `#end`.
 **Files:** `components/Navigation/du-steps/du-steps.vue` | `.types.ts` | `.stories.ts`
 
 **Props DuSteps:**
-- `items?`: StepItem[]
+- `items?`: DuStepsItem[]
 - `direction?`: `'steps-vertical'` | `'steps-horizontal'`
 - `customClass?`: string
 - `responsive?`: boolean
@@ -202,7 +202,7 @@ Navigation bar. No specific props, uses slots: `#start`, `#center`, `#end`.
 
 **Types :**
 ```typescript
-export interface StepItem {
+export interface DuStepsItem {
   label?: string
   active?: boolean
   customClass?: string

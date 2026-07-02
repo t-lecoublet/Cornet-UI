@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type CHECKBOXProps } from './du-checkbox.types'
+import { type DuCheckboxProps } from './du-checkbox.types'
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { onMounted, ref } from "vue"
@@ -7,7 +7,7 @@ import { onMounted, ref } from "vue"
 const model = defineModel()
 
 const props = withDefaults(
-  defineProps<CHECKBOXProps>(),
+  defineProps<DuCheckboxProps>(),
   {
     checked: false,
     disabled: false,

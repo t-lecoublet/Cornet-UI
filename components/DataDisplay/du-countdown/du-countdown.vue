@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount, watch } from "vue"
-import { type COUNTDOWNFormat } from './du-countdown.types'
+import { type DuCountdownFormat } from './du-countdown.types'
 
 const props = withDefaults(
   defineProps<{
     value?: number
     targetDate?: Date
-    format?: COUNTDOWNFormat
+    format?: DuCountdownFormat
     separator?: string
     customClass?: string
     autoStart?: boolean

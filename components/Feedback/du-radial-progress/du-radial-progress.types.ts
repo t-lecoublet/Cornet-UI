@@ -1,7 +1,7 @@
 import { type Variant } from "../../../composables/useVariantProps";
 import { type Size } from "../../../composables/useSizeProps";
 
-export interface RadialProgressProps {
+export interface DuRadialProgressProps {
   value?: number;
   variant?: Variant;
   size?: Size | string;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, inject } from "vue";
-import { type MenuProps, type MenuItem } from './du-menu.types';
+import { type DuMenuProps, type DuMenuItemData } from './du-menu.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
 import DuMenuItem from './du-menu-item.vue';
 
 const props = withDefaults(
-  defineProps<MenuProps>(),
+  defineProps<DuMenuProps>(),
   {
     direction: "vertical",
     size: "default",
@@ -14,16 +14,16 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  itemClick: [item: MenuItem];
-  subItemClick: [item: MenuItem];
+  itemClick: [item: DuMenuItemData];
+  subItemClick: [item: DuMenuItemData];
 }>();
 
-function handleItemClick(item: MenuItem) {
+function handleItemClick(item: DuMenuItemData) {
   props.onItemClick?.(item);
   emit('itemClick', item);
 }
 
-function handleSubItemClick(item: MenuItem) {
+function handleSubItemClick(item: DuMenuItemData) {
   props.onSubItemClick?.(item);
   emit('subItemClick', item);
 }

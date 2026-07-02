@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import DuCountdown from "./du-countdown.vue"
-import { type COUNTDOWNLabels } from './du-countdown.types'
+import { type DuCountdownLabels } from './du-countdown.types'
 
 withDefaults(
   defineProps<{
@@ -9,7 +9,7 @@ withDefaults(
     showHours?: boolean
     showMinutes?: boolean
     showSeconds?: boolean
-    labels?: COUNTDOWNLabels
+    labels?: DuCountdownLabels
     separator?: string
     customClass?: string
   }>(),

@@ -1,9 +1,9 @@
 import { type Size } from "../../../composables/useSizeProps";
 
 export const DU_TABS_TYPES = ["lift", "border", "box"] as const;
-export type TabsType = (typeof DU_TABS_TYPES)[number];
+export type DuTabsType = (typeof DU_TABS_TYPES)[number];
 
-export interface TabItem {
+export interface DuTabItem {
   label?: string;
   icon?: any;
   class?: string;
@@ -13,10 +13,10 @@ export interface TabItem {
   [key: string]: any;
 }
 
-export interface TabsProps {
+export interface DuTabsProps {
   size?: Size;
-  items?: TabItem[];
-  type?: TabsType;
+  items?: DuTabItem[];
+  type?: DuTabsType;
   bottom?: boolean;
   name?: string;
   modelValue?: number;

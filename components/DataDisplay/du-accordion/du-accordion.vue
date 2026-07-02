@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
-import { type ACCORDIONItem } from './du-accordion.types'
+import { type DuAccordionItemData } from './du-accordion.types'
 
 const props = withDefaults(
   defineProps<{
-    items?: ACCORDIONItem[]
+    items?: DuAccordionItemData[]
     name?: string
     modifier?:
       | 'collapse-arrow'

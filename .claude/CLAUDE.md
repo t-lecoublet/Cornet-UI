@@ -13,8 +13,8 @@ All rules are in the `./rules/` directory next to this file. Each rule has a `.m
 ## Naming conventions
 
 - All components are prefixed with `Du`: DuButton, DuModal, DuSelect
-- TypeScript types in UPPERCASE: `{COMPONENT}Props`, `{COMPONENT}Size`, `{COMPONENT}Variant`
-- Type constants in UPPERCASE: `BUTTON_SIZES`, `MODAL_PLACEMENTS`
+- Exported TypeScript types are PascalCase and component-scoped: `Du{Component}Props`, `Du{Component}Size`, `Du{Component}Variant`
+- Type constants stay UPPERCASE: `BUTTON_SIZES`, `MODAL_PLACEMENTS`
 - Files: `du-{name}.vue`, `du-{name}.types.ts`, `du-{name}.stories.ts`
 
 ## Component file structure

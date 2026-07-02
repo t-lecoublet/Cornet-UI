@@ -1,7 +1,7 @@
 import { type Variant } from "../../../composables/useVariantProps";
 import { type Size } from "../../../composables/useSizeProps";
 
-export interface ButtonLinkProps {
+export interface DuButtonLinkProps {
   size?: Size;
   variant?: Variant;
   outline?: boolean;

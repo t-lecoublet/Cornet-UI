@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { type NavbarProps } from './du-navbar.types';
+import { type DuNavbarProps } from './du-navbar.types';
 
-defineProps<NavbarProps>();
+defineProps<DuNavbarProps>();
 </script>
 
 <template>

@@ -10,5 +10,5 @@ export const BUTTON_COLORS = [
   'btn-error',
 ] as const
 
-export type BUTTONSize = (typeof BUTTON_SIZES)[number]
-export type BUTTONColor = (typeof BUTTON_COLORS)[number]
+export type DuButtonSize = (typeof BUTTON_SIZES)[number]
+export type DuButtonColor = (typeof BUTTON_COLORS)[number]

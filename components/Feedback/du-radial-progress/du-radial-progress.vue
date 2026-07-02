@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useVariantMapping } from "../../../composables/useVariantProps";
 import { AvailableSizes } from "../../../composables/useSizeProps";
-import { type RadialProgressProps } from "./du-radial-progress.types";
+import { type DuRadialProgressProps } from "./du-radial-progress.types";
 import { computed } from "vue";
 
 const props = withDefaults(
-  defineProps<RadialProgressProps>(),
+  defineProps<DuRadialProgressProps>(),
   {
     variant: "default",
     value: 0,

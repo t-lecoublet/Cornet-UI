@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, useSlots } from "vue";
 import { useVariantMapping } from "../../../composables/useVariantProps";
-import { type TooltipProps } from "./du-tooltip.types";
+import { type DuTooltipProps } from "./du-tooltip.types";
 
 const slots = useSlots();
 
 const props = withDefaults(
-  defineProps<TooltipProps>(),
+  defineProps<DuTooltipProps>(),
   {
     variant: "default",
     dataTip: undefined,
