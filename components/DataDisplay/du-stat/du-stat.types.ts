@@ -9,4 +9,11 @@ export interface DuStatItem {
   titleClass?: string
   actions?: any
   [key: string]: any
-} 
+}
+
+export interface DuStatProps {
+  figureClass?: string
+  valueClass?: string
+  descClass?: string
+  titleClass?: string
+}

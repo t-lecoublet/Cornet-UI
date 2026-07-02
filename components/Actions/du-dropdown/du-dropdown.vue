@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
-import { type DuDropdownPlacementInput, type DuDropdownPlacementValue } from './du-dropdown.types'
+import { type DuDropdownProps, type DuDropdownPlacementInput, type DuDropdownPlacementValue } from './du-dropdown.types'
 
 const props = withDefaults(
-  defineProps<{
-    hover?: boolean
-    open?: boolean
-    placement?: DuDropdownPlacementInput
-  }>(),
+  defineProps<DuDropdownProps>(),
   {
     hover: false,
     open: false,

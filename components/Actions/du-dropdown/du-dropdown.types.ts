@@ -13,3 +13,9 @@ export type DuDropdownPlacement = (typeof DROPDOWN_PLACEMENTS)[number]
 
 export type DuDropdownPlacementValue = 'start' | 'center' | 'end' | 'top' | 'bottom' | 'left' | 'right'
 export type DuDropdownPlacementInput = DuDropdownPlacementValue | string | DuDropdownPlacementValue[] | Partial<Record<DuDropdownPlacementValue, boolean>>
+
+export interface DuDropdownProps {
+  hover?: boolean
+  open?: boolean
+  placement?: DuDropdownPlacementInput
+}

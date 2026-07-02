@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { type DuSwapProps } from './du-swap.types'
 
 const props = withDefaults(
-  defineProps<{
-    modelValue?: boolean
-    rotate?: boolean
-    flip?: boolean
-    useCheckbox?: boolean
-  }>(),
+  defineProps<DuSwapProps>(),
   {
     modelValue: false,
     rotate: false,

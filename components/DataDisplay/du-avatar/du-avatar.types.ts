@@ -1,3 +1,6 @@
+import { type Size } from '../../../composables/useSizeProps'
+import { type Variant } from '../../../composables/useVariantProps'
+
 export const AVATAR_SIZES = ['avatar-xs', 'avatar-sm', 'avatar-md', 'avatar-lg', 'avatar-xl'] as const
 export const AVATAR_ROUNDED = [
   'rounded',
@@ -57,3 +60,16 @@ export const AVATAR_MASK = [
 ] as const
 
 export type DuAvatarMaskClass = (typeof AVATAR_MASK)[number]
+
+export interface DuAvatarProps {
+  size?: Size
+  variant?: Variant
+  rounded?: DuAvatarRounded
+  offline?: boolean
+  online?: boolean
+  placeholder?: boolean
+  ring?: boolean
+  ringColor?: string
+  ringOffset?: number
+  mask?: DuAvatarMask
+}

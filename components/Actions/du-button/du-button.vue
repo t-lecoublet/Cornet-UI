@@ -1,33 +1,11 @@
 <script setup lang="ts">
-import { type Size, useSizeMapping } from '../../../composables/useSizeProps'
-import { useVariantMapping, type Variant } from '../../../composables/useVariantProps'
+import { useSizeMapping } from '../../../composables/useSizeProps'
+import { useVariantMapping } from '../../../composables/useVariantProps'
 import { computed, inject } from 'vue'
-
-type ElementType = 'button' | 'a' | 'input' | 'div' | 'RouterLink' | 'NuxtLink' | string
+import { type DuButtonProps, type DuButtonElementTag } from './du-button.types'
 
 const props = withDefaults(
-  defineProps<{
-    customClass?: string
-    size?: Size
-    variant?: Variant
-    outline?: boolean
-    soft?: boolean
-    dash?: boolean
-    active?: boolean
-    ghost?: boolean
-    link?: boolean
-    wide?: boolean
-    disabled?: boolean
-    square?: boolean
-    circle?: boolean
-    block?: boolean
-    as?: ElementType
-    type?: string
-    href?: string
-    value?: string
-    inputType?: 'button' | 'submit' | 'reset' | 'radio' | 'checkbox'
-    label?: string
-  }>(),
+  defineProps<DuButtonProps>(),
   {
     customClass: undefined,
     size: 'default',
@@ -57,38 +35,8 @@ const filterName = inject('filterName', undefined)
 
 const { sizeClass } = useSizeMapping(props, 'btn')
 const { colorClass } = useVariantMapping(props, 'btn')
-const softClass = computed(() => {
-  return props.soft ? 'btn-soft' : ''
-})
-const outlineClass = computed(() => {
-  return props.outline ? 'btn-outline' : ''
-})
-const dashClass = computed(() => {
-  return props.dash ? 'btn-dash' : ''
-})
-const activeClass = computed(() => {
-  return props.active ? 'btn-active' : ''
-})
-const ghostClass = computed(() => {
-  return props.ghost ? 'btn-ghost' : ''
-})
-const linkClass = computed(() => {
-  return props.link ? 'btn-link' : ''
-})
-const wideClass = computed(() => {
-  return props.wide ? 'btn-wide' : ''
-})
-const squareClass = computed(() => {
-  return props.square ? 'btn-square' : ''
-})
-const circleClass = computed(() => {
-  return props.circle ? 'btn-circle' : ''
-})
-const blockClass = computed(() => {
-  return props.block ? 'btn-block' : ''
-})
 
-const elementTag = computed((): ElementType => {
+const elementTag = computed((): DuButtonElementTag => {
   if (props.as) return props.as
   if (isInDropdownTrigger) return 'div'
   if (filterName) return 'input'
@@ -129,16 +77,16 @@ const buttonAttributes = computed(() => {
       customClass,
       sizeClass,
       colorClass,
-      softClass,
-      outlineClass,
-      dashClass,
-      activeClass,
-      ghostClass,
-      linkClass,
-      wideClass,
-      squareClass,
-      circleClass,
-      blockClass,
+      soft && 'btn-soft',
+      outline && 'btn-outline',
+      dash && 'btn-dash',
+      active && 'btn-active',
+      ghost && 'btn-ghost',
+      link && 'btn-link',
+      wide && 'btn-wide',
+      square && 'btn-square',
+      circle && 'btn-circle',
+      block && 'btn-block',
       inJoin && 'join-item',
     ]"
     :aria-label="props.label"

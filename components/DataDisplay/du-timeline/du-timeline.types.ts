@@ -19,4 +19,14 @@ export interface DuTimelineItemData {
   customClass?: string
   valid?: boolean | undefined
   hrClass?: string
+}
+
+export interface DuTimelineProps {
+  items?: DuTimelineItemData[]
+  direction?: DuTimelineDirection
+  modifier?: DuTimelineModifier
+  customClass?: string
+  responsive?: boolean
+  validItems?: (boolean | undefined)[]
+  hrClasses?: string[]
 } 

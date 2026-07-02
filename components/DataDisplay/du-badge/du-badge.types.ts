@@ -1,3 +1,6 @@
+import { type Size } from '../../../composables/useSizeProps'
+import { type Variant } from '../../../composables/useVariantProps'
+
 export const BADGE_SIZES = [
   'badge-xs',
   'badge-sm',
@@ -18,4 +21,14 @@ export const BADGE_VARIANTS = [
 ] as const
 
 export type DuBadgeSize = (typeof BADGE_SIZES)[number]
-export type DuBadgeVariant = (typeof BADGE_VARIANTS)[number] 
+export type DuBadgeVariant = (typeof BADGE_VARIANTS)[number]
+
+export interface DuBadgeProps {
+  size?: Size
+  variant?: Variant
+  outline?: boolean
+  dash?: boolean
+  soft?: boolean
+  ghost?: boolean
+  icon?: boolean
+}

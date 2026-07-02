@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue"
 import DuStat from "../du-stat/du-stat.vue"
-import { type DuStatsItem } from './du-stats.types'
+import { type DuStatsProps } from './du-stats.types'
 
-const props = defineProps<{
-  items?: DuStatsItem[]
-  vertical?: boolean
-  shadow?: boolean
-  dash?: boolean
-}>()
+const props = defineProps<DuStatsProps>()
 
 const verticalClass = computed(() => {
   return props.vertical ? "stats-vertical" : "stats-horizontal"

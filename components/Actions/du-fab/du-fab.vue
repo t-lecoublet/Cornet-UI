@@ -1,24 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { type Size, useSizeMapping } from '../../../composables/useSizeProps'
+import { useSizeMapping } from '../../../composables/useSizeProps'
 import { type Variant, useVariantMapping } from '../../../composables/useVariantProps'
-import { type DuFabItem, type DuFabMainAction, type DuFabCloseButton } from './du-fab.types'
+import { type DuFabProps } from './du-fab.types'
 import DuButton from '../du-button/du-button.vue'
 import DuTooltip from '../../Feedback/du-tooltip/du-tooltip.vue'
 
 const props = withDefaults(
-  defineProps<{
-    items?: DuFabItem[]
-    modifier?: 'fab-flower'
-    customClass?: string
-    size?: Size
-    variant?: Variant
-    circle?: boolean
-    mainAction?: DuFabMainAction
-    closeButton?: DuFabCloseButton
-    absolute?: boolean
-    position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
-  }>(),
+  defineProps<DuFabProps>(),
   {
     items: undefined,
     modifier: undefined,

@@ -12,4 +12,12 @@ export interface DuCarouselItemData {
   alt?: string
   content?: string
   customClass?: string
+}
+
+export interface DuCarouselProps {
+  items?: DuCarouselItemData[]
+  start?: boolean
+  center?: boolean
+  end?: boolean
+  vertical?: boolean
 } 

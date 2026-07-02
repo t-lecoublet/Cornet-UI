@@ -12,4 +12,10 @@ export interface DuCollapseItem {
   customClass?: string
 }
 
-export type DuCollapseModifier = (typeof COLLAPSE_MODIFIERS)[number] 
+export type DuCollapseModifier = (typeof COLLAPSE_MODIFIERS)[number]
+
+export interface DuCollapseProps {
+  items?: DuCollapseItem[]
+  modifier?: DuCollapseModifier
+  customClass?: string
+}

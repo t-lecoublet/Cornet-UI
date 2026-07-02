@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick, inject } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import type { DuSelectProps } from './du-select.types'
+import { useSelectOptions } from './composables/useSelectOptions'
+import { useSelectSearch } from './composables/useSelectSearch'
+import { useSelectOpenState } from './composables/useSelectOpenState'
+import { useSelectSelection } from './composables/useSelectSelection'
+import { useSelectKeyboardNav } from './composables/useSelectKeyboardNav'
+import { useSelectDismiss } from './composables/useSelectDismiss'
 
 const props = withDefaults(defineProps<DuSelectProps>(), {
     options: () => [],
@@ -49,220 +55,44 @@ const query = ref('')
 const highlightedIndex = ref(-1)
 const listId = `du-select-list-${Math.random().toString(36).slice(2, 9)}`
 
-function optionValue(opt: any): any {
-    if (opt && typeof opt === 'object') return opt[props.trackBy] ?? opt.value ?? opt.id ?? opt
-    return opt
-}
-function optionLabel(opt: any): string {
-    if (opt && typeof opt === 'object') return opt[props.labelBy] ?? opt.label ?? opt.name ?? String(opt)
-    return String(opt)
-}
-function labelFromOption(opt: any): string { return optionLabel(opt) }
-function labelFromValue(val: any): string {
-    const o = props.options.find(o => optionValue(o) === val)
-    return o ? optionLabel(o) : String(val)
-}
-function keyForOption(opt: any, i: number): string {
-    const v = optionValue(opt)
-    return `${String(v)}__${i}`
-}
-function valKey(val: any, idx: number): string { return `${String(val)}__${idx}` }
+const { optionValue, optionLabel, labelFromOption, labelFromValue, keyForOption, valKey, optionFromValue } =
+    useSelectOptions(props)
 
-const selectedValues = ref<any[]>([])
-const selectedSingle = ref<any>(null)
+const { filteredOptions, onQuery, resetQuery } = useSelectSearch(props, query, highlightedIndex, optionLabel)
 
-function syncFromModel() {
-    if (props.multiple) {
-        if (Array.isArray(props.modelValue)) {
-            selectedValues.value = props.modelValue.map(v => (v && typeof v === 'object' ? optionValue(v) : v))
-        } else {
-            selectedValues.value = []
-        }
-    } else {
-        if (props.modelValue && typeof props.modelValue === 'object') {
-            selectedSingle.value = optionValue(props.modelValue)
-        } else {
-            selectedSingle.value = props.modelValue
-        }
-    }
-}
+const { openDropdown, close, toggle, focusToggle } = useSelectOpenState(
+    props,
+    emit,
+    open,
+    highlightedIndex,
+    searchInput,
+    searchInputInside,
+    resetQuery,
+)
 
-watch(() => props.modelValue, () => syncFromModel(), { immediate: true })
+const { selectedValues, selectedOption, isSelected, toggleOption, removeValue } =
+    useSelectSelection(props, emit, { optionValue, optionFromValue }, close)
 
-const filteredOptions = computed(() => {
-    const q = query.value?.toString().trim().toLowerCase()
-    if (!q) return props.options
-    return props.options.filter(o => optionLabel(o).toString().toLowerCase().includes(q))
-})
+const { onKeydown } = useSelectKeyboardNav(
+    props,
+    root,
+    listId,
+    open,
+    highlightedIndex,
+    query,
+    filteredOptions,
+    selectedValues,
+    openDropdown,
+    close,
+    toggleOption,
+    removeValue,
+)
 
-function isSelected(opt: any): boolean {
-    const v = optionValue(opt)
-    if (props.multiple) return selectedValues.value.includes(v)
-    return selectedSingle.value === v
-}
-
-function optionFromValue(v: any): any {
-    return props.options.find(o => optionValue(o) === v) ?? v
-}
-
-function emitModelForMultiple() {
-    const out = props.returnObject ? selectedValues.value.map(v => optionFromValue(v)) : [...selectedValues.value]
-    emit('update:modelValue', out)
-}
-function emitModelForSingle(val: any) {
-    const out = props.returnObject ? optionFromValue(val) : val
-    emit('update:modelValue', out)
-}
-
-function toggleOption(opt: any) {
-    const v = optionValue(opt)
-    if (props.multiple) {
-        const idx = selectedValues.value.indexOf(v)
-        if (idx === -1) {
-            selectedValues.value.push(v)
-            emit('select', optionFromValue(v))
-        } else {
-            selectedValues.value.splice(idx, 1)
-            emit('remove', optionFromValue(v))
-        }
-        emitModelForMultiple()
-    } else {
-        if (props.clearable && selectedSingle.value === v) {
-            selectedSingle.value = null
-            emit('update:modelValue', null)
-            close()
-        } else {
-            selectedSingle.value = v
-            emit('select', optionFromValue(v))
-            emitModelForSingle(v)
-            if (props.closeOnSelect) close()
-        }
-    }
-}
+const { onFocus } = useSelectDismiss(root, open, openDropdown, close)
 
 function handleOptionClick(opt: any) {
     toggleOption(opt)
 }
-
-function removeValue(val: any) {
-    if (!props.multiple) return
-    const idx = selectedValues.value.indexOf(val)
-    if (idx > -1) {
-        selectedValues.value.splice(idx, 1)
-        emit('remove', optionFromValue(val))
-        emitModelForMultiple()
-    }
-}
-
-function openDropdown() {
-    open.value = true
-    emit('open')
-    highlightedIndex.value = 0
-    nextTick(() => {
-        if (props.searchable && (props.searchableInside || props.multiple)) {
-            // focus internal search if present
-            if (searchInput.value) searchInput.value.focus()
-            if (searchInputInside.value) searchInputInside.value.focus()
-        }
-    })
-}
-function close() {
-    open.value = false
-    query.value = ''
-    highlightedIndex.value = -1
-    emit('close')
-}
-function toggle() {
-    if (open.value) close()
-    else openDropdown()
-}
-function focusToggle() {
-    if (!open.value) openDropdown()
-    else {
-        // focus search input if there
-        nextTick(() => {
-            if (searchInput.value) searchInput.value.focus()
-            if (searchInputInside.value) searchInputInside.value.focus()
-        })
-    }
-}
-
-function onQuery() {
-    highlightedIndex.value = 0
-}
-
-function onKeydown(e: KeyboardEvent) {
-    if (!open.value && ['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(e.key)) {
-        openDropdown()
-        e.preventDefault()
-        return
-    }
-    const len = filteredOptions.value.length
-    if (e.key === 'ArrowDown') {
-        highlightedIndex.value = (highlightedIndex.value + 1 + len) % len
-        scrollHighlightedIntoView()
-        e.preventDefault()
-    } else if (e.key === 'ArrowUp') {
-        highlightedIndex.value = (highlightedIndex.value - 1 + len) % len
-        scrollHighlightedIntoView()
-        e.preventDefault()
-    } else if (e.key === 'Enter') {
-        if (highlightedIndex.value >= 0 && highlightedIndex.value < len) {
-            toggleOption(filteredOptions.value[highlightedIndex.value])
-        }
-        e.preventDefault()
-    } else if (e.key === 'Escape') {
-        close()
-        e.preventDefault()
-    } else if (e.key === 'Backspace' && props.multiple && query.value === '') {
-        // remove last tag
-        const last = selectedValues.value[selectedValues.value.length - 1]
-        if (last !== undefined) removeValue(last)
-    }
-}
-
-function scrollHighlightedIntoView() {
-    nextTick(() => {
-        const list = root.value?.querySelector(`#${listId}`)
-        const active = list?.querySelectorAll('li')[highlightedIndex.value]
-        if (active && active.scrollIntoView) active.scrollIntoView({ block: 'nearest' })
-    })
-}
-
-function onClickOutside(e: Event) {
-    if (!root.value) return
-    if (!root.value.contains(e.target as Node)) close()
-}
-
-function onFocusOut(_e: FocusEvent) {
-    setTimeout(() => {
-        if (!root.value) return
-
-        // Check if the new focus target is outside our component
-        const activeElement = document.activeElement
-        if (!activeElement || !root.value.contains(activeElement)) {
-            close()
-        }
-    }, 0)
-}
-
-function onFocus(_e: FocusEvent) {
-    if (!open.value) {
-        openDropdown()
-    }
-}
-
-onMounted(() => {
-    document.addEventListener('click', onClickOutside)
-    root.value?.addEventListener('focusout', onFocusOut)
-})
-onBeforeUnmount(() => {
-    document.removeEventListener('click', onClickOutside)
-    root.value?.removeEventListener('focusout', onFocusOut)
-})
-
-const selectedOption = computed(() => optionFromValue(selectedSingle.value))
-
 </script>
 
 <template>

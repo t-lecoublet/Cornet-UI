@@ -12,4 +12,11 @@ export interface DuAccordionItemData {
   customClass?: string
 }
 
-export type DuAccordionModifier = (typeof ACCORDION_MODIFIERS)[number] 
+export type DuAccordionModifier = (typeof ACCORDION_MODIFIERS)[number]
+
+export interface DuAccordionProps {
+  items?: DuAccordionItemData[]
+  name?: string
+  modifier?: DuAccordionModifier
+  customClass?: string
+}

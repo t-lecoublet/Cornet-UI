@@ -7,6 +7,14 @@ export const SELECT_SIZES = ['default', 'select-xs', 'select-sm', 'select-md', '
 export type DuSelectVariant = (typeof SELECT_VARIANTS)[number]
 export type DuSelectSize = (typeof SELECT_SIZES)[number]
 
+export type DuSelectEmit = {
+  (e: 'update:modelValue', value: any): void
+  (e: 'select', option: any): void
+  (e: 'remove', option: any): void
+  (e: 'open'): void
+  (e: 'close'): void
+}
+
 export interface DuSelectProps {
   ghost?: boolean
   variant?: Variant

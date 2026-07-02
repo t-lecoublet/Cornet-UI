@@ -1,10 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  figureClass?: string
-  valueClass?: string
-  descClass?: string
-  titleClass?: string
-}>()
+import { type DuStatProps } from './du-stat.types'
+
+defineProps<DuStatProps>()
 </script>
 
 <template>

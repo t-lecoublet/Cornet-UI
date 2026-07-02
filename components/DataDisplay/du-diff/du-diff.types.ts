@@ -6,4 +6,10 @@ export const DIFF_ASPECT_RATIOS = [
   'aspect-square',
 ] as const
 
-export type DuDiffAspectRatio = (typeof DIFF_ASPECT_RATIOS)[number] 
+export type DuDiffAspectRatio = (typeof DIFF_ASPECT_RATIOS)[number]
+
+export interface DuDiffProps {
+  item1?: string
+  item2?: string
+  aspectRatio?: DuDiffAspectRatio | string | null
+}

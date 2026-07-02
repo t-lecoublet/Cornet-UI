@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount, watch } from "vue"
-import { type DuCountdownFormat } from './du-countdown.types'
+import { type DuCountdownProps } from './du-countdown.types'
 
 const props = withDefaults(
-  defineProps<{
-    value?: number
-    targetDate?: Date
-    format?: DuCountdownFormat
-    separator?: string
-    customClass?: string
-    autoStart?: boolean
-  }>(),
+  defineProps<DuCountdownProps>(),
   {
     value: undefined,
     targetDate: undefined,

@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
-import { type DuAccordionItemData } from './du-accordion.types'
+import { type DuAccordionProps } from './du-accordion.types'
 
 const props = withDefaults(
-  defineProps<{
-    items?: DuAccordionItemData[]
-    name?: string
-    modifier?:
-      | 'collapse-arrow'
-      | 'collapse-plus'
-      | 'collapse-open'
-      | 'collapse-close'
-    customClass?: string
-  }>(),
+  defineProps<DuAccordionProps>(),
   {
     items: undefined,
     name: 'accordion',

@@ -1,22 +1,11 @@
 <script setup lang="ts">
-import { type Size, useSizeMapping} from '../../../composables/useSizeProps'
-import { useVariantMapping, type Variant } from '../../../composables/useVariantProps'
+import { useSizeMapping} from '../../../composables/useSizeProps'
+import { useVariantMapping } from '../../../composables/useVariantProps'
 import { computed } from 'vue'
-import { type DuAvatarRoundedClass, type DuAvatarRounded, type DuAvatarMaskClass, type DuAvatarMask } from './du-avatar.types'
+import { type DuAvatarProps, type DuAvatarRoundedClass, type DuAvatarMaskClass } from './du-avatar.types'
 
 const props = withDefaults(
-  defineProps<{
-    size?: Size
-    variant?: Variant
-    rounded?: DuAvatarRounded
-    offline?: boolean
-    online?: boolean
-    placeholder?: boolean
-    ring?: boolean
-    ringColor?: string
-    ringOffset?: number
-    mask?: DuAvatarMask
-  }>(),
+  defineProps<DuAvatarProps>(),
   {
     size: 'default',
     variant: 'default',

@@ -12,4 +12,13 @@ export interface DuCountdownLabels {
   hours?: string
   minutes?: string
   seconds?: string
-} 
+}
+
+export interface DuCountdownProps {
+  value?: number
+  targetDate?: Date
+  format?: DuCountdownFormat
+  separator?: string
+  customClass?: string
+  autoStart?: boolean
+}
