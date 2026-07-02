@@ -83,7 +83,10 @@ export function scanSourceContent(content: string, packageNames: string[]): Usag
     const namedImportRegex = new RegExp(`import\\s+{([^}]+)}\\s+from\\s+['"]${escaped}['"]`, 'g')
     let match: RegExpExecArray | null
     while ((match = namedImportRegex.exec(content)) !== null) {
-      for (const item of match[1].split(',')) {
+      // Strip line comments (e.g. category headers grouping the import list)
+      // so they don't get glued onto the next identifier by the comma split.
+      const importBody = match[1].replace(/\/\/[^\n]*/g, '')
+      for (const item of importBody.split(',')) {
         const name = item.trim().split(/\s+as\s+/)[0].trim()
         if (name) used.add(name)
       }

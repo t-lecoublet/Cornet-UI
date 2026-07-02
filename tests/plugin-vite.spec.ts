@@ -66,6 +66,20 @@ describe('scanSourceContent', () => {
     const result = scanSourceContent(`import { DuButton } from 'other-lib'`, ['cornet-ui'])
     expect(result.used.size).toBe(0)
   })
+
+  it('ignores // category comments grouping the import list, without swallowing the next name', () => {
+    const result = scanSourceContent(
+      `import {
+        // Actions
+        DuButton,
+        DuDropdown,
+        // Data Display
+        DuAccordion,
+      } from 'cornet-ui'`,
+      ['cornet-ui'],
+    )
+    expect([...result.used].sort()).toEqual(['DuAccordion', 'DuButton', 'DuDropdown'])
+  })
 })
 
 describe('expandWithInternalDependencies (real library)', () => {
