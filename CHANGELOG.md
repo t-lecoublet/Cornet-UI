@@ -3,7 +3,7 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [0.1.0-beta.19] - 2026-07-06
 
 ### Removed (breaking)
 
