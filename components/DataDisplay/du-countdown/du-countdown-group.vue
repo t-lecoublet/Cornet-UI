@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import DuCountdown from "./du-countdown.vue"
-import { type COUNTDOWNLabels } from './du-countdown.types'
+import { type DuCountdownGroupProps } from './du-countdown.types'
 
 withDefaults(
-  defineProps<{
-    targetDate?: Date
-    showDays?: boolean
-    showHours?: boolean
-    showMinutes?: boolean
-    showSeconds?: boolean
-    labels?: COUNTDOWNLabels
-    separator?: string
-    customClass?: string
-  }>(),
+  defineProps<DuCountdownGroupProps>(),
   {
     targetDate: undefined,
     showDays: true,

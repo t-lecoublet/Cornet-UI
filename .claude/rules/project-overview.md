@@ -20,11 +20,11 @@ lib/
 │   ├── DataInput/              # 13 components: inputs, selects, checkboxes
 │   ├── Feedback/               # 7 components: alerts, loading, tooltips
 │   ├── Layout/                 # 2 components: drawer, join
-│   └── Navigation/             # 10 components: menus, pagination, tabs
+│   └── Navigation/             # 9 components: menus, pagination, tabs
 └── build-scripts/              # Build and generation scripts
 ```
 
-## Components by category (55 total)
+## Components by category (54 total)
 
 ### Actions (5)
 DuButton, DuDropdown, DuModal, DuSwap, DuFab
@@ -41,8 +41,8 @@ DuAlert, DuLoading, DuProgress, DuRadialProgress, DuSkeleton, DuToast, DuTooltip
 ### Layout (2)
 DuDrawer, DuJoin
 
-### Navigation (10)
-DuBreadcrumbs, DuButtonLink, DuDock, DuLink, DuMenu, DuNavbar, DuPagination, DuStepItem, DuSteps, DuTabs
+### Navigation (9)
+DuBreadcrumbs, DuDock, DuLink, DuMenu, DuNavbar, DuPagination, DuStepItem, DuSteps, DuTabs
 
 ## Key dependencies (peerDependencies)
 

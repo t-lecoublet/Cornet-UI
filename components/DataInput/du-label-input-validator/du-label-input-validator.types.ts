@@ -1,7 +1,7 @@
-import { type LABELProps } from "../du-label/du-label.types";
-import { type INPUTFIELDProps, type INPUTFIELDType } from "../du-input-field/du-input-field.types";
+import { type DuLabelProps } from "../du-label/du-label.types";
+import { type DuInputFieldProps, type DuInputFieldType } from "../du-input-field/du-input-field.types";
 
-export interface LabelInputValidatorProps extends LABELProps,
-  Omit<INPUTFIELDProps, "type"> {
-  inputType?: INPUTFIELDType;
+export interface DuLabelInputValidatorProps extends DuLabelProps,
+  Omit<DuInputFieldProps, "type"> {
+  inputType?: DuInputFieldType;
 }

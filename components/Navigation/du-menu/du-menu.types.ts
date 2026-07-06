@@ -2,18 +2,18 @@ import type { Component } from "vue";
 import { type Size } from "../../../composables/useSizeProps";
 
 export const DU_MENU_DIRECTIONS = ["default", "vertical", "horizontal", "responsive"] as const;
-export type MenuDirection = (typeof DU_MENU_DIRECTIONS)[number];
+export type DuMenuDirection = (typeof DU_MENU_DIRECTIONS)[number];
 
 export const MENU_SIZES = ['menu-xs', 'menu-sm', 'menu-md', 'menu-lg', 'menu-xl'] as const
-export type MENUSize = (typeof MENU_SIZES)[number]
+export type DuMenuSize = (typeof MENU_SIZES)[number]
 
-export interface MenuItem {
+export interface DuMenuItemData {
   label: string;
   href?: string;
   as?: string | Component;
   disabled?: boolean;
   isTitle?: boolean;
-  subItems?: MenuItem[];
+  subItems?: DuMenuItemData[];
   value?: string | number;
   onClick?: () => void;
   checked?: boolean;
@@ -22,12 +22,20 @@ export interface MenuItem {
   icon?: Component | string | object | unknown;
 }
 
-export interface MenuProps {
-  direction?: MenuDirection;
+export interface DuMenuProps {
+  direction?: DuMenuDirection;
   size?: Size;
   rounded?: boolean;
-  items?: MenuItem[];
+  items?: DuMenuItemData[];
   activeItem?: string;
-  onItemClick?: (item: MenuItem) => void;
-  onSubItemClick?: (item: MenuItem) => void;
+  onItemClick?: (item: DuMenuItemData) => void;
+  onSubItemClick?: (item: DuMenuItemData) => void;
+}
+
+export interface DuMenuItemProps {
+  item: DuMenuItemData;
+  index: number;
+  parentIndex?: string;
+  onItemClick?: (item: DuMenuItemData) => void;
+  onSubItemClick?: (item: DuMenuItemData) => void;
 }

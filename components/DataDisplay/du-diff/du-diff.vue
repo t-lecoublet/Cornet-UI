@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { type DIFFAspectRatio } from './du-diff.types'
+import { type DuDiffProps } from './du-diff.types'
 
 withDefaults(
-  defineProps<{
-    item1?: string
-    item2?: string
-    aspectRatio?: DIFFAspectRatio | string | null
-  }>(),
+  defineProps<DuDiffProps>(),
   {
     item1: undefined,
     item2: undefined,

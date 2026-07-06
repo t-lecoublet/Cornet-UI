@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { type TEXTAREAProps } from './du-text-area.types'
+import { type DuTextAreaProps } from './du-text-area.types'
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { useSizeMapping } from "../../../composables/useSizeProps"
-import { computed } from "vue"
 
 const props = withDefaults(
-  defineProps<TEXTAREAProps>(),
+  defineProps<DuTextAreaProps>(),
   {
     modelValue: "",
     placeholder: "",
@@ -20,7 +19,6 @@ const emit = defineEmits<{
   (e: "update:modelValue", value: string): void
 }>()
 
-const ghostClass = computed(() => (props.ghost ? "textarea-ghost" : ""))
 const { colorClass } = useVariantMapping(props, "textarea")
 const { sizeClass } = useSizeMapping(props, "textarea")
 
@@ -36,6 +34,6 @@ const handleInput = (event: Event) => {
     :placeholder="placeholder"
     :disabled="disabled"
     @input="handleInput"
-    :class="['textarea', ghostClass, colorClass, sizeClass]"
+    :class="['textarea', ghost && 'textarea-ghost', colorClass, sizeClass]"
   />
 </template> 

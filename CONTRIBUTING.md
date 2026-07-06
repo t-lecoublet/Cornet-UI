@@ -30,6 +30,15 @@ npm run build       # dist build (vite + declaration emit)
   `du-{name}.vue`, `du-{name}.types.ts`, `du-{name}.stories.ts`. Never skip one.
 - Components are prefixed `Du` (`DuButton`); types live in the `.types.ts`
   file, constants in `UPPER_SNAKE_CASE`, files in `kebab-case`.
+- **Rich components** (internal state + model sync + keyboard/focus/dismiss +
+  multiple modes — e.g. `DuSelect`, `DuSearch`, `DuDrawer`, `DuMenu`) extract
+  their logic into a local `composables/` folder next to the `.vue` file
+  (`components/{Category}/du-{name}/composables/use{Thing}.ts`), one
+  composable per concern (open state, keyboard nav, dismiss, …). This is
+  separate from the shared cross-cutting `composables/` at the repo root
+  (`useSizeMapping`, `useVariantMapping`). Write characterization tests
+  against the current behavior *before* extracting, so the refactor is
+  provably behavior-preserving.
 - Export every new component from `index.ts`, then run
   `npm run generate:types` to refresh `types/index.ts` (CI fails on drift).
 - Use the `useSizeMapping` / `useVariantMapping` composables for the common

@@ -1,7 +1,7 @@
 import { type Variant } from "../../../composables/useVariantProps"
 import { type Size } from "../../../composables/useSizeProps"
 
-export interface FILEINPUTProps {
+export interface DuFileInputProps {
   disabled?: boolean
   variant?: Variant
   size?: Size

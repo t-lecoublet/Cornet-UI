@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { type FILEINPUTProps } from './du-file-input.types'
+import { type DuFileInputProps } from './du-file-input.types'
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { useSizeMapping } from "../../../composables/useSizeProps"
-import { computed } from "vue"
 
 const props = withDefaults(
-  defineProps<FILEINPUTProps>(),
+  defineProps<DuFileInputProps>(),
   {
     disabled: false,
     variant: "default",
@@ -13,10 +12,6 @@ const props = withDefaults(
     ghost: false,
   },
 )
-
-const ghostClass = computed(() => {
-  return props.ghost ? "file-input-ghost" : ""
-})
 
 const { colorClass } = useVariantMapping(props, "file-input")
 const { sizeClass } = useSizeMapping(props, "file-input")
@@ -26,6 +21,6 @@ const { sizeClass } = useSizeMapping(props, "file-input")
   <input
     type="file"
     :disabled="disabled"
-    :class="['file-input', colorClass, sizeClass, ghostClass]"
+    :class="['file-input', colorClass, sizeClass, ghost && 'file-input-ghost']"
   />
 </template> 

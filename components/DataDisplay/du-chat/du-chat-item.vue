@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, inject } from "vue";
 import { type Variant, useVariantMapping } from "../../../composables/useVariantProps";
-import { type ChatPlacement } from "./du-chat.types";
+import { type DuChatPlacement } from "./du-chat.types";
 
 interface ChatItemProps {
   message?: string;
-  placement?: ChatPlacement;
+  placement?: DuChatPlacement;
   variant?: Variant;
   customClass?: string;
 }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { type ToastProps } from "./du-toast.types";
+import { type DuToastProps } from "./du-toast.types";
 
 const props = withDefaults(
-  defineProps<ToastProps>(),
+  defineProps<DuToastProps>(),
   {
     horizontalPosition: undefined,
     verticalPosition: undefined,

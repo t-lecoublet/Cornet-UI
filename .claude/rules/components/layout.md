@@ -21,20 +21,20 @@ paths:
 - `sidebarClass?`: string
 - `contentClass?`: string
 - `overlayClass?`: string
-- `items?`: DRAWERItem[]
+- `items?`: DuDrawerItem[]
 
 **Types :**
 ```typescript
-import { type MenuItem } from '../../Navigation/du-menu/du-menu.types'
+import { type DuMenuItemData } from '../../Navigation/du-menu/du-menu.types'
 
-export interface DRAWERItem extends MenuItem {
+export interface DuDrawerItem extends DuMenuItemData {
   icon?: any
   customClass?: string
   [key: string]: any
 }
 ```
 
-**Note:** DRAWERItem extends MenuItem from DuMenu. Any modification to MenuItem also impacts DuDrawer.
+**Note:** DuDrawerItem extends DuMenuItemData from DuMenu. Any modification to DuMenuItemData also impacts DuDrawer.
 
 ---
 

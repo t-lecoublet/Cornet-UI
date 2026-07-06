@@ -2,45 +2,45 @@ import { type Size } from "../../../composables/useSizeProps";
 
 
 export const RATING_SIZES = ["rating-xs", "rating-sm", "rating-md", "rating-lg", "rating-xl"] as const;
-export type RatingSize = (typeof RATING_SIZES)[number];
-export interface RatingItem {
+export type DuRatingSize = (typeof RATING_SIZES)[number];
+export interface DuRatingItemData {
   value: number;
   checked?: boolean;
 }
 
 export const DU_RATING_SHAPES = ["star", "star-2", "heart", "circle"] as const;
-export type RatingShape = (typeof DU_RATING_SHAPES)[number];
+export type DuRatingShape = (typeof DU_RATING_SHAPES)[number];
 
-export interface RatingProps {
+export interface DuRatingProps {
   modelValue?: number;
-  items?: RatingItem[];
+  items?: DuRatingItemData[];
   count?: number;
   name?: string;
   halfStar?: boolean;
   clearable?: boolean;
   disabled?: boolean;
   size?: Size;
-  shape?: RatingShape;
+  shape?: DuRatingShape;
   color?: string;
   customClass?: string;
 
 }
 
-export interface RatingItemProps {
+export interface DuRatingItemProps {
   value?: number;
   checked?: boolean;
   disabled?: boolean;
-  shape?: RatingShape;
+  shape?: DuRatingShape;
   color?: string;
   halfMask?: 1 | 2;
   customClass?: string;
 }
 
-export interface RatingEmits {
+export interface DuRatingEmits {
   (e: "update:modelValue", value: number): void;
   (e: "change", value: number): void;
 }
 
-export interface RatingItemEmits {
+export interface DuRatingItemEmits {
   (e: "change", value: number): void;
 } 

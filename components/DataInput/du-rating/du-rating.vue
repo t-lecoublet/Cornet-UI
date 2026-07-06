@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, provide, ref, watch } from "vue";
+import { computed, provide } from "vue";
 import { useSizeMapping } from "../../../composables/useSizeProps";
 import DuRatingItem from "./du-rating-item.vue";
-import { type RatingProps, type RatingEmits } from "./du-rating.types";
+import { type DuRatingProps, type DuRatingEmits } from "./du-rating.types";
+import { useRatingValue } from "./composables/useRatingValue";
 
 const props = withDefaults(
-  defineProps<RatingProps>(),
+  defineProps<DuRatingProps>(),
   {
     modelValue: 0,
     items: undefined,
@@ -21,16 +22,9 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits<RatingEmits>();
+const emit = defineEmits<DuRatingEmits>();
 
-const internalValue = ref(props.modelValue);
-
-watch(
-  () => props.modelValue,
-  (newValue) => {
-    internalValue.value = newValue;
-  },
-);
+const { internalValue, handleChange } = useRatingValue(props, emit);
 
 const ratingName = computed(() => {
   return props.name || `rating-${Math.random().toString(36).substring(2, 9)}`;
@@ -39,21 +33,6 @@ const ratingName = computed(() => {
 provide("ratingName", ratingName.value);
 
 const { sizeClass } = useSizeMapping(props, "rating");
-
-const handleChange = (value: number) => {
-  if (props.disabled) {
-    return;
-  }
-  if (value === internalValue.value && props.clearable) {
-    internalValue.value = 0;
-    emit("update:modelValue", 0);
-    emit("change", 0);
-  } else {
-    internalValue.value = value;
-    emit("update:modelValue", value);
-    emit("change", value);
-  }
-};
 
 const ratingClass = computed(() => {
   const classes = ["rating"];

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  id?: string
-}>()
+import { type DuCarouselItemProps } from './du-carousel.types'
+
+defineProps<DuCarouselItemProps>()
 </script>
 
 <template>

@@ -24,7 +24,6 @@ const meta: Meta<typeof DuCheckbox> = {
       options: ['default', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'],
       description: 'Couleur de la checkbox',
     },
-    checked: { control: "boolean" },
     disabled: { control: "boolean" },
     indeterminate: { control: "boolean" },
   },
@@ -52,13 +51,13 @@ export const Default = { ...TemplateCheckbox }
 
 const CheckboxColorsTplStr = `
 <div class="flex gap-4">
-    <DuCheckbox checked variant="primary" /> 
-    <DuCheckbox checked variant="secondary" />
-    <DuCheckbox checked variant="accent" />
-    <DuCheckbox checked variant="info" />
-    <DuCheckbox checked variant="success" />
-    <DuCheckbox checked variant="warning" />
-    <DuCheckbox checked variant="error" />
+    <DuCheckbox :modelValue="true" variant="primary" />
+    <DuCheckbox :modelValue="true" variant="secondary" />
+    <DuCheckbox :modelValue="true" variant="accent" />
+    <DuCheckbox :modelValue="true" variant="info" />
+    <DuCheckbox :modelValue="true" variant="success" />
+    <DuCheckbox :modelValue="true" variant="warning" />
+    <DuCheckbox :modelValue="true" variant="error" />
 </div>`
 
 const CheckboxColorsTemplate: Story = {
@@ -122,7 +121,7 @@ export const CheckboxSizes = { ...CheckboxSizesTemplate }
 const CheckboxStatesTplStr = `
 <div class="flex flex-col gap-4">
   <div class="flex items-center gap-2">
-    <DuCheckbox checked />
+    <DuCheckbox :modelValue="true" />
     <span>Checked</span>
   </div>
   <div class="flex items-center gap-2">
@@ -138,7 +137,7 @@ const CheckboxStatesTplStr = `
     <span>Disabled</span>
   </div>
   <div class="flex items-center gap-2">
-    <DuCheckbox checked disabled />
+    <DuCheckbox :modelValue="true" disabled />
     <span>Checked & Disabled</span>
   </div>
 </div>`

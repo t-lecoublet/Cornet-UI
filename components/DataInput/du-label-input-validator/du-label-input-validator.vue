@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import DuInputField from "../du-input-field/du-input-field.vue";
 import DuLabel from "../du-label/du-label.vue";
-import { type LabelInputValidatorProps } from "./du-label-input-validator.types";
+import { type DuLabelInputValidatorProps } from "./du-label-input-validator.types";
 
 defineOptions({ inheritAttrs: false })
 
 const model = defineModel<string>()
 
-withDefaults(defineProps<LabelInputValidatorProps>(), {
+withDefaults(defineProps<DuLabelInputValidatorProps>(), {
   type: "floating-label",
   required: false,
   placeholder: "",

@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import { type Size, useSizeMapping } from "../../../composables/useSizeProps"
-import { type Variant, useVariantMapping } from "../../../composables/useVariantProps"
+import { useSizeMapping } from "../../../composables/useSizeProps"
+import { useVariantMapping } from "../../../composables/useVariantProps"
 import { computed } from "vue"
+import { type DuStatusProps } from './du-status.types'
 
-// Définition des types pour les props
 const props = withDefaults(
-  defineProps<{
-    size?: Size
-    variant?: Variant
-    bounce?: boolean
-    ping?: boolean
-  }>(),
+  defineProps<DuStatusProps>(),
   {
     size: "default",
     variant: "default",
@@ -33,16 +28,13 @@ const ariaLabel = computed(() => {
 
 const { colorClass } = useVariantMapping(props, "status")
 const { sizeClass } = useSizeMapping(props, "status")
-const animateBounceClass = computed(() => {
-  return props.bounce ? "animate-bounce" : ""
-})
 </script>
 
 <template>
   <div
     v-if="!ping"
     :aria-label="ariaLabel"
-    :class="['status', sizeClass, colorClass, animateBounceClass]"
+    :class="['status', sizeClass, colorClass, bounce && 'animate-bounce']"
   ></div>
   <div class="inline-grid *:[grid-area:1/1]" v-else>
     <div :class="['status', sizeClass, colorClass, 'animate-ping']"></div>

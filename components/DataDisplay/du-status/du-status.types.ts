@@ -1,3 +1,6 @@
+import { type Size } from "../../../composables/useSizeProps"
+import { type Variant } from "../../../composables/useVariantProps"
+
 export const STATUS_SIZES = [
   'status-xs',
   'status-sm',
@@ -17,5 +20,12 @@ export const STATUS_VARIANTS = [
   'status-error',
 ] as const
 
-export type STATUSSize = (typeof STATUS_SIZES)[number]
-export type STATUSVariant = (typeof STATUS_VARIANTS)[number] 
+export type DuStatusSize = (typeof STATUS_SIZES)[number]
+export type DuStatusVariant = (typeof STATUS_VARIANTS)[number]
+
+export interface DuStatusProps {
+  size?: Size
+  variant?: Variant
+  bounce?: boolean
+  ping?: boolean
+}

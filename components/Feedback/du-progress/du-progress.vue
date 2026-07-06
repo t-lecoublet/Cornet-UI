@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useVariantMapping } from "../../../composables/useVariantProps";
-import { type ProgressProps } from "./du-progress.types";
+import { type DuProgressProps } from "./du-progress.types";
 
 const props = withDefaults(
-  defineProps<ProgressProps>(),
+  defineProps<DuProgressProps>(),
   {
     variant: "default",
     value: 0,

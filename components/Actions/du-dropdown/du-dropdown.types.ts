@@ -8,8 +8,14 @@ export const DROPDOWN_PLACEMENTS = [
   'dropdown-right',
 ] as const
 
-export type DROPDOWNPlacement = (typeof DROPDOWN_PLACEMENTS)[number] 
+export type DuDropdownPlacement = (typeof DROPDOWN_PLACEMENTS)[number] 
 
 
-export type PlacementValue = 'start' | 'center' | 'end' | 'top' | 'bottom' | 'left' | 'right'
-export type PlacementInput = PlacementValue | string | PlacementValue[] | Partial<Record<PlacementValue, boolean>>
+export type DuDropdownPlacementValue = 'start' | 'center' | 'end' | 'top' | 'bottom' | 'left' | 'right'
+export type DuDropdownPlacementInput = DuDropdownPlacementValue | string | DuDropdownPlacementValue[] | Partial<Record<DuDropdownPlacementValue, boolean>>
+
+export interface DuDropdownProps {
+  hover?: boolean
+  open?: boolean
+  placement?: DuDropdownPlacementInput
+}

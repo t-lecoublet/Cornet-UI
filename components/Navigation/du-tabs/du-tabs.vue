@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { type TabsProps, type TabItem } from './du-tabs.types';
+import { type DuTabsProps, type DuTabItem } from './du-tabs.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
 
 const props = withDefaults(
-  defineProps<TabsProps>(),
+  defineProps<DuTabsProps>(),
   {
     size: "default",
     items: undefined,
@@ -20,7 +20,7 @@ const emit = defineEmits<{
   'update:modelValue': [index: number]
 }>();
 
-function handleTabClick(index: number, item: TabItem) {
+function handleTabClick(index: number, item: DuTabItem) {
   emit('update:modelValue', index);
   item.onClick?.();
 }
@@ -53,8 +53,8 @@ const typeClass = computed(() => {
 
     <template v-else-if="items">
       <template v-for="(item, index) in items" :key="index">
-        <label :class="['tab', item.class]" @click="handleTabClick(index, item)">
-          <input type="radio" :name="props.name" :checked="item.active" />
+        <label :class="['tab', item.class]">
+          <input type="radio" :name="props.name" :checked="item.active" @click="handleTabClick(index, item)" />
           <template v-if="item.label || $slots.tab">
             <slot name="tab" :item="item" :index="index">
               <slot :name="`tab-${index}`" :item="item" :index="index">
@@ -64,9 +64,10 @@ const typeClass = computed(() => {
                     v-if="typeof item.icon === 'object' || typeof item.icon === 'function'"
                   />
                   <img
+                    class="w-5 h-5"
                     v-else-if="
                       typeof item.icon === 'string' &&
-                      item.icon.startsWith('http')
+                      (item.icon.startsWith('http') || item.icon.startsWith('/'))
                     "
                     :src="item.icon"
                     :alt="item.label"

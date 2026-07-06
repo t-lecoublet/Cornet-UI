@@ -1,13 +1,15 @@
 import type { Component } from "vue";
 
-export interface BreadcrumbItem {
+export interface DuBreadcrumbItem {
   label: string;
   href?: string;
   icon?: string;
 }
 
-export interface BreadcrumbsProps {
-  items: BreadcrumbItem[];
+export interface DuBreadcrumbsProps {
+  items: DuBreadcrumbItem[];
   separator?: string;
   as?: string | Component;
-} 
+  /** Accessible name of the breadcrumb navigation landmark. */
+  ariaLabel?: string;
+}

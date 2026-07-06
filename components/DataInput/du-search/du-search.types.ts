@@ -4,21 +4,29 @@ import { type Variant } from "../../../composables/useVariantProps"
 export const SEARCH_VARIANTS = ['default', 'input-primary', 'input-secondary', 'input-accent', 'input-info', 'input-success', 'input-warning', 'input-error'] as const
 export const SEARCH_SIZES = ['default', 'input-xs', 'input-sm', 'input-md', 'input-lg', 'input-xl'] as const
 
-export type SEARCHVariant = (typeof SEARCH_VARIANTS)[number]
-export type SEARCHSize = (typeof SEARCH_SIZES)[number]
+export type DuSearchVariant = (typeof SEARCH_VARIANTS)[number]
+export type DuSearchSize = (typeof SEARCH_SIZES)[number]
 
-export interface SearchOption {
+export interface DuSearchOption {
   id: any
   name: string
   [key: string]: any
 }
 
-export interface SEARCHProps {
+export type DuSearchEmit = {
+  (e: 'update:modelValue', value: any): void
+  (e: 'select', option: DuSearchOption): void
+  (e: 'remove', option: DuSearchOption): void
+  (e: 'add', option: DuSearchOption): void
+  (e: 'query', query: string): void
+}
+
+export interface DuSearchProps {
   modelValue?: any | any[]
   name: string
   id: string
   placeholder?: string
-  listValues: SearchOption[]
+  listValues: DuSearchOption[]
   limit?: number
   addOption?: boolean
   /** Label prefix shown before the query in the "add option" entry (default: 'Add') */

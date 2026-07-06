@@ -4,10 +4,10 @@ import { type Variant } from "../../../composables/useVariantProps"
 export const INPUTFIELD_VARIANTS = ['default', 'input-primary', 'input-secondary', 'input-accent', 'input-info', 'input-success', 'input-warning', 'input-error'] as const
 export const INPUTFIELD_SIZES = ['default', 'input-xs', 'input-sm', 'input-md', 'input-lg', 'input-xl'] as const
 
-export type INPUTFIELDVariant = (typeof INPUTFIELD_VARIANTS)[number]
-export type INPUTFIELDSize = (typeof INPUTFIELD_SIZES)[number]
+export type DuInputFieldVariant = (typeof INPUTFIELD_VARIANTS)[number]
+export type DuInputFieldSize = (typeof INPUTFIELD_SIZES)[number]
 
-export type INPUTFIELDType =
+export type DuInputFieldType =
   | "text"
   | "password"
   | "email"
@@ -21,15 +21,15 @@ export type INPUTFIELDType =
   | "search"
   | "time"
 
-export type INPUTFIELDValidatorProps = {
+export type DuInputFieldValidatorProps = {
   pattern?: string
   minlength?: number
   maxlength?: number
   title?: string
 }
 
-export type INPUTFIELDProps = {
-  type?: INPUTFIELDType
+export type DuInputFieldProps = {
+  type?: DuInputFieldType
   placeholder?: string
   size?: Size
   ghost?: boolean
@@ -40,4 +40,4 @@ export type INPUTFIELDProps = {
   suggestionList?: string[]
   required?: boolean
   class?: string
-} & INPUTFIELDValidatorProps 
+} & DuInputFieldValidatorProps 

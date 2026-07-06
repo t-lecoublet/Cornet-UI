@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { type StepItemProps } from './du-step-item.types';
+import { type DuStepItemProps } from './du-step-item.types';
 
 const props = withDefaults(
-  defineProps<StepItemProps>(),
+  defineProps<DuStepItemProps>(),
   {
     label: "",
     active: false,

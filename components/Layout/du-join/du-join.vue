@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed, provide } from "vue";
-import { type JoinProps } from "./du-join.types";
+import { type DuJoinProps } from "./du-join.types";
 
 const props = withDefaults(
-  defineProps<JoinProps>(),
+  defineProps<DuJoinProps>(),
   {
     as: "div",
     direction: undefined,

@@ -42,9 +42,11 @@ pkg.exports = {
     import: './dist/plugin-vite.js',
   },
   './css': './index.css',
+  // types/index.ts only ever re-exports `export type`/`export interface` —
+  // no runtime value to execute, so this subpath has no `import` condition
+  // (there is no dist/types/index.js; only the .d.ts is emitted).
   './types': {
     types: './dist/types/index.d.ts',
-    import: './dist/types/index.js',
   },
   './package.json': './package.json',
 }

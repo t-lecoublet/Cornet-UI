@@ -5,11 +5,24 @@ export const ACCORDION_MODIFIERS = [
   'collapse-close',
 ] as const
 
-export interface ACCORDIONItem {
+export interface DuAccordionItemData {
   title?: string
   content?: string
   checked?: boolean
   customClass?: string
 }
 
-export type ACCORDIONModifier = (typeof ACCORDION_MODIFIERS)[number] 
+export type DuAccordionModifier = (typeof ACCORDION_MODIFIERS)[number]
+
+export interface DuAccordionProps {
+  items?: DuAccordionItemData[]
+  name?: string
+  modifier?: DuAccordionModifier
+  customClass?: string
+}
+
+export interface DuAccordionItemProps {
+  checked?: boolean
+  customClass?: string
+  title?: string
+}
