@@ -6,7 +6,7 @@ You are reading this because you either:
 - added `lib` as a **Git submodule** and want to understand or modify the source
 - are **contributing** to the library
 
-For installation instructions and usage examples, see the [main README](../README.md) or [cornet-ui.com](https://cornet-ui.com).
+For installation instructions and usage examples, see the [main README](https://github.com/t-lecoublet/Cornet-UI/blob/master/README.md) or [cornet-ui.com](https://cornet-ui.com).
 
 ---
 

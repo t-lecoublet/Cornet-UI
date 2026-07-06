@@ -3,6 +3,29 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Removed (breaking)
+
+- `DuFab`: the `position` prop has been removed. A FAB is now always positioned in the bottom-right corner (standard FAB placement) when `absolute` is `true`.
+
+### Changed (breaking)
+
+- Public type names across all `.types.ts` files have been normalized to the `Du{Component}{Name}` PascalCase convention (e.g. `MenuItem` → `DuMenuItemData`, `SELECTProps` → `DuSelectProps`, `BUTTONSize` → `DuButtonSize`, `PlacementValue` → `DuDropdownPlacementValue`). Update any type imports from `cornet-ui` / `cornet-ui/types` accordingly.
+
+### Added
+
+- `DuMenu`: arrow-key and Home/End keyboard navigation between sibling items, correctly scoped per nesting level (a horizontal root with vertical submenus now uses the right axis at each level). Items without `href` (driven purely by `onClick`) are now focusable.
+- `DuDrawer`: pressing Escape now closes an open drawer; opening moves focus into the sidebar, and closing restores focus to whatever was focused before.
+- `DuDropdown` / `DuMenu` / `DuTabs` / `DuFab`: icon/image props now also accept root-relative local asset paths (e.g. `/logo.svg`), not just absolute `http(s)` URLs.
+- `DuDropdown`: `.dropdown-content` now has a default `bg-base-100 rounded-box shadow-sm`, and `DuMenu` always keeps its own background regardless of dropdown context (previously `DuMenu` suppressed its own background when nested in a dropdown, assuming the dropdown supplied one — it never did).
+
+### Fixed
+
+- `DuDropdown`: the object form of `placement` (e.g. `{ top: true, end: false }`) now correctly applies only the keys set to `true` (previously applied every key present regardless of its value).
+- `DuTabs`: clicking a tab no longer fires `onClick` / `update:modelValue` twice (native label→radio-input click forwarding was double-firing it).
+- `plugin-vite`: `scanSourceContent` no longer mis-parses `//` or `/* */` comments inside a named-import block as part of the next component's name.
+
 ## [0.1.0-beta.10] - 2026-06-15
 
 ### Fixed

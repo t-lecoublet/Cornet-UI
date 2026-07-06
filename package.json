@@ -6,6 +6,9 @@
   "license": "MIT",
   "type": "module",
   "main": "./index.ts",
+  "engines": {
+    "node": "^18.0.0 || >=20.0.0"
+  },
   "scripts": {
     "build": "vite build && vue-tsc -p tsconfig.build.json && node scripts/generate-candidates.mjs",
     "type-check": "vue-tsc --noEmit -p tsconfig.json",
