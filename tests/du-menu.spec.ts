@@ -21,6 +21,11 @@ const items: DuMenuItemData[] = [
 ]
 
 describe('DuMenu', () => {
+  it('always applies its own background (no longer conditional on dropdown context)', () => {
+    const wrapper = mount(DuMenu, { props: { items } })
+    expect(wrapper.find('ul').classes()).toContain('bg-base-200')
+  })
+
   it('renders one option per item', () => {
     const wrapper = mount(DuMenu, { props: { items } })
     expect(wrapper.findAll('[role="option"]')).toHaveLength(3)

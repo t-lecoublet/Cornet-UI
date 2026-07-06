@@ -10,21 +10,12 @@ describe('DuFab', () => {
     expect(wrapper.find('.fab').exists()).toBe(true)
   })
 
-  it('applies the corner-specific position classes', () => {
-    const corners: Array<[string, string[]]> = [
-      ['bottom-right', ['bottom-4', 'right-4']],
-      ['bottom-left', ['bottom-4', 'left-4']],
-      ['top-right', ['top-4', 'right-4']],
-      ['top-left', ['top-4', 'left-4']],
-    ]
-    for (const [position, expectedClasses] of corners) {
-      const wrapper = mount(DuFab, { props: { position: position as any } })
-      const classes = wrapper.find('.fab').classes()
-      expect(classes).toContain('absolute')
-      for (const expected of expectedClasses) {
-        expect(classes).toContain(expected)
-      }
-    }
+  it('always positions in the bottom-right corner when absolute', () => {
+    const wrapper = mount(DuFab)
+    const classes = wrapper.find('.fab').classes()
+    expect(classes).toContain('absolute')
+    expect(classes).toContain('bottom-4')
+    expect(classes).toContain('right-4')
   })
 
   it('does not apply absolute classes when absolute is false', () => {

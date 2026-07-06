@@ -63,4 +63,12 @@ describe('DuDropdown', () => {
     const wrapper = mount(DuDropdown, { slots: { default: '<p class="body">Hi</p>' } })
     expect(wrapper.find('.dropdown-content .body').exists()).toBe(true)
   })
+
+  it('applies a default background/rounding/shadow to dropdown-content', () => {
+    const wrapper = mount(DuDropdown, { slots: { default: '<p>Hi</p>' } })
+    const content = wrapper.find('.dropdown-content')
+    expect(content.classes()).toContain('bg-base-100')
+    expect(content.classes()).toContain('rounded-box')
+    expect(content.classes()).toContain('shadow-sm')
+  })
 })

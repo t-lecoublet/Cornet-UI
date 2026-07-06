@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref } from "vue";
+import { computed, ref } from "vue";
 import { type DuMenuProps, type DuMenuItemData } from './du-menu.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
 import { useMenuKeyboardNav } from "./composables/useMenuKeyboardNav";
@@ -29,8 +29,6 @@ function handleSubItemClick(item: DuMenuItemData) {
   emit('subItemClick', item);
 }
 
-const isInDropdownTrigger = inject("isDropdownTrigger", false);
-
 const directionClass = computed(() => {
   return {
     default: "",
@@ -43,9 +41,6 @@ const { sizeClass } = useSizeMapping(props, "menu");
 const roundedClass = computed(() => {
   return props.rounded ? "rounded-box" : "[&_li>*]:rounded-none p-0";
 });
-const inDropdownClass = computed(() => {
-  return isInDropdownTrigger ? "" : "bg-base-200";
-});
 
 const ariaOrientation = computed(() => {
   return props.direction === "horizontal" || props.direction === "responsive" ? "horizontal" : "vertical";
@@ -57,7 +52,7 @@ const { onKeydown } = useMenuKeyboardNav(root);
 </script>
 
 <template>
-  <ul ref="root" role="listbox" :aria-orientation="ariaOrientation" :class="['menu', inDropdownClass, roundedClass, directionClass, sizeClass]" @keydown="onKeydown">
+  <ul ref="root" role="listbox" :aria-orientation="ariaOrientation" :class="['menu', 'bg-base-200', roundedClass, directionClass, sizeClass]" @keydown="onKeydown">
     <!-- Mode automatique (items) -->
     <template v-if="items && !$slots.default">
       <DuMenuItem

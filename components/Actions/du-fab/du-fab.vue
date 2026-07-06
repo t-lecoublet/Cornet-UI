@@ -19,7 +19,6 @@ const props = withDefaults(
     mainAction: undefined,
     closeButton: undefined,
     absolute: true,
-    position: 'bottom-right',
   },
 )
 

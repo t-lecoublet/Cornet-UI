@@ -4,7 +4,6 @@ import type { DuFabModifier } from '../du-fab.types'
 interface FabClassesProps {
   modifier?: DuFabModifier
   absolute?: boolean
-  position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
   customClass?: string
 }
 
@@ -14,21 +13,9 @@ export function useFabClasses(props: FabClassesProps) {
     return props.modifier ? props.modifier : ''
   })
 
+  // FABs only ever sit in the bottom-right corner (standard FAB placement).
   const positionClass = computed(() => {
-    if (!props.absolute) return ''
-
-    switch (props.position) {
-      case 'bottom-right':
-        return 'absolute bottom-4 right-4'
-      case 'bottom-left':
-        return 'absolute bottom-4 left-4'
-      case 'top-right':
-        return 'absolute top-4 right-4'
-      case 'top-left':
-        return 'absolute top-4 left-4'
-      default:
-        return 'absolute bottom-4 right-4'
-    }
+    return props.absolute ? 'absolute bottom-4 right-4' : ''
   })
 
   const fabClasses = computed(() => {

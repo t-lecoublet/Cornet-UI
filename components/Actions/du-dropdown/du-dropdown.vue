@@ -59,7 +59,7 @@ const openClass = computed(() => {
     <!-- Bind triggerProps on your trigger element (v-bind="triggerProps")
          to get the expected role/tabindex/aria attributes for free. -->
     <slot name="trigger" :trigger-props="{ role: 'button', tabindex: 0, 'aria-haspopup': 'true' }"></slot>
-    <div class="dropdown-content" tabindex="0">
+    <div class="dropdown-content bg-base-100 rounded-box shadow-sm" tabindex="0">
       <slot name="content"></slot>
       <slot></slot>
     </div>

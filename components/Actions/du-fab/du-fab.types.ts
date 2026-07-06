@@ -40,5 +40,4 @@ export interface DuFabProps {
   mainAction?: DuFabMainAction
   closeButton?: DuFabCloseButton
   absolute?: boolean
-  position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
 }
