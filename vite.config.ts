@@ -10,7 +10,7 @@ import cornetPlugin from 'cornet-ui/plugin-vite'
 export default defineConfig({
   plugins: [
     cornetPlugin({
-      showOutput: false
+      showOutput: true
     }),
     vue(),
     tailwindcss()

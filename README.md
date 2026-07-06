@@ -170,7 +170,7 @@ Types are available from:
 - `cornet-ui/types`
 
 ```ts
-import type { MenuItem, SELECTProps } from 'cornet-ui/types'
+import type { DuMenuItemData, DuSelectProps } from 'cornet-ui/types'
 ```
 
 ---

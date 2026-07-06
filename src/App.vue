@@ -51,7 +51,6 @@ import {
   DuDrawer,
   // Navigation
   DuBreadcrumbs,
-  DuButtonLink,
   DuDock,
   DuLink,
   DuMenu,
@@ -98,7 +97,7 @@ const collapseItems = [
 const chatItems = [
   { message: 'Hello! How can I help you today?', placement: 'start' as const, header: 'Support Bot', footer: '12:45' },
   { message: 'I need help with the components!', placement: 'end' as const, header: 'You', footer: '12:46' },
-  { message: 'Sure! Check out our documentation below.', placement: 'start' as const, variant: 'chat-bubble-primary' as const },
+  { message: 'Sure! Check out our documentation below.', placement: 'start' as const, variant: 'primary' as const },
 ]
 
 const tableColumns = [
@@ -688,7 +687,7 @@ const themesItems = [
                 <span>Primary</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
-                <DuCheckbox variant="secondary" checked />
+                <DuCheckbox :modelValue="true" variant="secondary" />
                 <span>Secondary</span>
               </label>
               <label class="flex items-center gap-2 cursor-pointer">
@@ -1101,12 +1100,12 @@ const themesItems = [
             </div>
           </DuCard>
 
-          <DuCard dash title="DuButtonLink">
-            <p class="text-base-content/70 mb-4">Button-styled links.</p>
+          <DuCard dash title="DuButton (as=&quot;a&quot;)">
+            <p class="text-base-content/70 mb-4">Button-styled links — use DuButton's `as` prop instead of a dedicated component.</p>
             <div class="flex flex-wrap gap-2">
-              <DuButtonLink variant="primary">Primary</DuButtonLink>
-              <DuButtonLink variant="secondary" outline>Outline</DuButtonLink>
-              <DuButtonLink variant="accent" soft>Soft</DuButtonLink>
+              <DuButton as="a" href="#" variant="primary">Primary</DuButton>
+              <DuButton as="a" href="#" variant="secondary" outline>Outline</DuButton>
+              <DuButton as="a" href="#" variant="accent" soft>Soft</DuButton>
             </div>
           </DuCard>
         </div>
