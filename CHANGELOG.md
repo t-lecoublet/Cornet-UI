@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and the p
 - `DuFilter`: per-item `buttonsArgs` now correctly takes priority over the shared component-level ones (the precedence was inverted); fixed every `DuFilter` instance's radio group sharing the literal name `"[object Object]"` instead of a real per-instance name (a `provide()` was passing a ref instead of its value).
 - `DuTimeline`: the `timeline-box` class was unconditionally applied to the end box regardless of any prop (a dead `|| true`); the connecting-line/icon color for `valid` now consistently uses `success`/`error` in both dynamic items mode and manual (`DuTimelineItem`) mode (was `primary`/`error` in manual mode).
 - `DuFieldset`: an empty `<legend>` is no longer rendered when no `legend` prop is given.
+- `DuFab`: `mainAction.variant`/`closeButton.variant` are now typed as `Variant` instead of a raw `string` (the code already treated them as `Variant` via an internal cast, so an invalid value could previously slip past type-checking and silently produce no color class).
 
 ## [0.1.0-beta.10] - 2026-06-15
 

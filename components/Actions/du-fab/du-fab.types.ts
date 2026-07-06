@@ -19,7 +19,7 @@ export interface DuFabMainAction {
   label?: string
   icon?: any
   customClass?: string
-  variant?: string
+  variant?: Variant
   onClick?: () => void
 }
 
@@ -27,7 +27,7 @@ export interface DuFabCloseButton {
   label?: string
   icon?: string
   customClass?: string
-  variant?: string
+  variant?: Variant
 }
 
 export interface DuFabProps {
