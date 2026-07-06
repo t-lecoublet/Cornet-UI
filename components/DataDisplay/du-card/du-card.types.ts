@@ -1,3 +1,5 @@
+import { type Size } from '../../../composables/useSizeProps'
+
 export const CARD_SIZES = [
   'card-xs',
   'card-sm',
@@ -14,5 +16,15 @@ export const CARD_PROPERTIES = [
   'image-full',
 ] as const
 
-export type CARDSize = (typeof CARD_SIZES)[number]
-export type CARDProperty = (typeof CARD_PROPERTIES)[number] 
+export type DuCardSize = (typeof CARD_SIZES)[number]
+export type DuCardProperty = (typeof CARD_PROPERTIES)[number]
+
+export interface DuCardProps {
+  size?: Size
+  bordered?: boolean
+  dash?: boolean
+  side?: boolean
+  imageFull?: boolean
+  responsive?: boolean
+  title?: string
+}

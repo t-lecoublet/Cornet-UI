@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, inject } from "vue";
-import { type MenuProps, type MenuItem } from './du-menu.types';
+import { computed, ref } from "vue";
+import { type DuMenuProps, type DuMenuItemData } from './du-menu.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
+import { useMenuKeyboardNav } from "./composables/useMenuKeyboardNav";
 import DuMenuItem from './du-menu-item.vue';
 
 const props = withDefaults(
-  defineProps<MenuProps>(),
+  defineProps<DuMenuProps>(),
   {
     direction: "vertical",
     size: "default",
@@ -14,21 +15,19 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  itemClick: [item: MenuItem];
-  subItemClick: [item: MenuItem];
+  itemClick: [item: DuMenuItemData];
+  subItemClick: [item: DuMenuItemData];
 }>();
 
-function handleItemClick(item: MenuItem) {
+function handleItemClick(item: DuMenuItemData) {
   props.onItemClick?.(item);
   emit('itemClick', item);
 }
 
-function handleSubItemClick(item: MenuItem) {
+function handleSubItemClick(item: DuMenuItemData) {
   props.onSubItemClick?.(item);
   emit('subItemClick', item);
 }
-
-const isInDropdownTrigger = inject("isDropdownTrigger", false);
 
 const directionClass = computed(() => {
   return {
@@ -42,18 +41,18 @@ const { sizeClass } = useSizeMapping(props, "menu");
 const roundedClass = computed(() => {
   return props.rounded ? "rounded-box" : "[&_li>*]:rounded-none p-0";
 });
-const inDropdownClass = computed(() => {
-  return isInDropdownTrigger ? "" : "bg-base-200";
-});
 
 const ariaOrientation = computed(() => {
   return props.direction === "horizontal" || props.direction === "responsive" ? "horizontal" : "vertical";
 });
+
+const root = ref<HTMLElement | null>(null);
+const { onKeydown } = useMenuKeyboardNav(root);
 // Slots documentation : voir le template pour la gestion des slots indexés et globaux.
 </script>
 
 <template>
-  <ul role="listbox" :aria-orientation="ariaOrientation" :class="['menu', inDropdownClass, roundedClass, directionClass, sizeClass]">
+  <ul ref="root" role="listbox" :aria-orientation="ariaOrientation" :class="['menu', 'bg-base-200', roundedClass, directionClass, sizeClass]" @keydown="onKeydown">
     <!-- Mode automatique (items) -->
     <template v-if="items && !$slots.default">
       <DuMenuItem

@@ -11,19 +11,19 @@ paths:
 
 **Props:**
 - `customClass?`: string
-- `items?`: ACCORDIONItem[]
+- `items?`: DuAccordionItemData[]
 - `modifier?`: `'collapse-arrow'` | `'collapse-plus'` | `'collapse-open'` | `'collapse-close'`
 - `name?`: string - Group name for exclusive behavior
 
 **Types :**
 ```typescript
-export interface ACCORDIONItem {
+export interface DuAccordionItemData {
   title?: string
   content?: string
   checked?: boolean
   customClass?: string
 }
-export type ACCORDIONModifier = (typeof ACCORDION_MODIFIERS)[number]
+export type DuAccordionModifier = (typeof ACCORDION_MODIFIERS)[number]
 ```
 
 ---
@@ -35,8 +35,8 @@ export type ACCORDIONModifier = (typeof ACCORDION_MODIFIERS)[number]
 **Props:**
 - `size?`: Size
 - `variant?`: Variant
-- `rounded?`: Rounded (`'default'` | `'rounded'` | `'full'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'`)
-- `mask?`: Mask (`'default'` | `'heart'` | `'squircle'` | `'hexagon'` | `'hexagon-2'` | `'decagon'` | `'pentagon'` | `'diamond'` | `'square'` | `'circle'` | `'parallelogram'` | `'parallelogram-2'` | `'star'` | `'star-2'`)
+- `rounded?`: DuAvatarRounded (`'default'` | `'rounded'` | `'full'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'`)
+- `mask?`: DuAvatarMask (`'default'` | `'heart'` | `'squircle'` | `'hexagon'` | `'hexagon-2'` | `'decagon'` | `'pentagon'` | `'diamond'` | `'square'` | `'circle'` | `'parallelogram'` | `'parallelogram-2'` | `'star'` | `'star-2'`)
 - `ring?`: boolean
 - `ringColor?`: string
 - `ringOffset?`: number
@@ -93,19 +93,19 @@ export type ACCORDIONModifier = (typeof ACCORDION_MODIFIERS)[number]
 **Files:** `components/DataDisplay/du-chat/du-chat.vue` | `.types.ts` | `.stories.ts`
 
 **Props:**
-- `items?`: ChatItem[]
+- `items?`: DuChatItemData[]
 - `placement?`: `'start'` | `'end'`
 - `customClass?`: string
 
 **Types :**
 ```typescript
-export interface ChatItem {
+export interface DuChatItemData {
   message?: string
   image?: string
   header?: string
   footer?: string
   placement?: 'start' | 'end'
-  variant?: CHATColor
+  variant?: DuChatColor
   customClass?: string
 }
 ```
@@ -120,12 +120,12 @@ Similar to DuAccordion but for individual items.
 
 **Props:**
 - `customClass?`: string
-- `items?`: COLLAPSEItem[]
+- `items?`: DuCollapseItem[]
 - `modifier?`: `'collapse-arrow'` | `'collapse-plus'` | `'collapse-open'` | `'collapse-close'`
 
 **Types :**
 ```typescript
-export interface COLLAPSEItem {
+export interface DuCollapseItem {
   title?: string
   content?: string
   open?: boolean
@@ -196,7 +196,7 @@ Individual statistic.
 
 **Types :**
 ```typescript
-export interface STATItem {
+export interface DuStatItem {
   title?: string
   value?: string | number
   description?: string
@@ -218,7 +218,7 @@ export interface STATItem {
 Statistics group.
 
 **Props:**
-- `items?`: STATSItem[]
+- `items?`: DuStatsItem[]
 - `vertical?`: boolean
 - `shadow?`: boolean
 
@@ -245,25 +245,25 @@ Status indicator (colored dot).
 > **Complex component**: Supports custom slots per cell (`#cell-{columnKey}="{ row }"`).
 
 **Props:**
-- `columns?`: TABLEColumn[]
-- `rows?`: TABLERow[]
+- `columns?`: DuTableColumn[]
+- `rows?`: DuTableRow[]
 - `zebra?`: boolean
 - `pinRows?`: boolean
 - `pinCols?`: boolean
-- `size?`: TABLESize
+- `size?`: DuTableSize
 - `customClass?`: string
 - `header?`: boolean
 - `footer?`: boolean
 
 **Types :**
 ```typescript
-export interface TABLEColumn {
+export interface DuTableColumn {
   key: string
   label: string
   customClass?: string
 }
 
-export interface TABLERow {
+export interface DuTableRow {
   id: string | number
   [key: string]: any
   customClass?: string
@@ -277,7 +277,7 @@ export interface TABLERow {
 **Files:** `components/DataDisplay/du-timeline/du-timeline.vue` | `.types.ts` | `.stories.ts`
 
 **Props:**
-- `items?`: TIMELINEItem[]
+- `items?`: DuTimelineItemData[]
 - `direction?`: `'timeline-vertical'` | `'timeline-horizontal'`
 - `modifier?`: `'timeline-snap-icon'` | `'timeline-box'` | `'timeline-compact'`
 - `customClass?`: string
@@ -287,7 +287,7 @@ export interface TABLERow {
 
 **Types :**
 ```typescript
-export interface TIMELINEItem {
+export interface DuTimelineItemData {
   start?: string
   middle?: string
   end?: string

@@ -1,6 +1,6 @@
 import { type Variant } from "../../../composables/useVariantProps";
 
-export interface LinkProps {
+export interface DuLinkProps {
   variant?: Variant;
   onlyUnderlineOnHover?: boolean;
   ghost?: boolean;

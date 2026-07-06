@@ -3,7 +3,7 @@ import DuStepItem from './du-step-item.vue'
 import { useVariantStoriesControl } from '../../../composables/useVariantProps'
 
 const meta = {
-  title: 'Components/Navigation/StepItem',
+  title: 'Components/Navigation/DuStepsItem',
   component: DuStepItem,
   tags: ['autodocs'],
   argTypes: {

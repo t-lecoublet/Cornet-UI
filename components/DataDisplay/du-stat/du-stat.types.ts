@@ -1,4 +1,4 @@
-export interface STATItem {
+export interface DuStatItem {
   title?: string
   value?: string | number
   description?: string
@@ -9,4 +9,11 @@ export interface STATItem {
   titleClass?: string
   actions?: any
   [key: string]: any
-} 
+}
+
+export interface DuStatProps {
+  figureClass?: string
+  valueClass?: string
+  descClass?: string
+  titleClass?: string
+}

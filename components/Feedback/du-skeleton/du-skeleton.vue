@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { type SkeletonProps } from "./du-skeleton.types";
+import { type DuSkeletonProps } from "./du-skeleton.types";
 
-const props = defineProps<SkeletonProps>();
+const props = defineProps<DuSkeletonProps>();
 </script>
 
 <template>

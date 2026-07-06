@@ -1,8 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{
-  class?: string
-  as?: string
-}>()
+import { type DuListRowProps } from './du-list.types'
+
+const props = defineProps<DuListRowProps>()
 </script>
 
 <template>

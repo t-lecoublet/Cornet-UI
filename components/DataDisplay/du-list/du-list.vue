@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { type LISTProps } from './du-list.types'
+import { type DuListProps } from './du-list.types'
 
-const props = defineProps<LISTProps>()
+const props = defineProps<DuListProps>()
 </script>
 
 <template>

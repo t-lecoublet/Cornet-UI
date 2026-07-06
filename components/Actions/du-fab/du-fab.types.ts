@@ -1,8 +1,11 @@
+import { type Size } from '../../../composables/useSizeProps'
+import { type Variant } from '../../../composables/useVariantProps'
+
 export const FAB_MODIFIERS = ['fab-flower'] as const
 
-export type FABModifier = (typeof FAB_MODIFIERS)[number]
+export type DuFabModifier = (typeof FAB_MODIFIERS)[number]
 
-export interface FABItem {
+export interface DuFabItem {
   label?: string
   icon?: any
   customClass?: string
@@ -12,17 +15,29 @@ export interface FABItem {
   [key: string]: any
 }
 
-export interface FABMainAction {
+export interface DuFabMainAction {
   label?: string
   icon?: any
   customClass?: string
-  variant?: string
+  variant?: Variant
   onClick?: () => void
 }
 
-export interface FABCloseButton {
+export interface DuFabCloseButton {
   label?: string
   icon?: string
   customClass?: string
-  variant?: string
+  variant?: Variant
+}
+
+export interface DuFabProps {
+  items?: DuFabItem[]
+  modifier?: DuFabModifier
+  customClass?: string
+  size?: Size
+  variant?: Variant
+  circle?: boolean
+  mainAction?: DuFabMainAction
+  closeButton?: DuFabCloseButton
+  absolute?: boolean
 }

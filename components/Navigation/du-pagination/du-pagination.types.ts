@@ -1,7 +1,7 @@
 import { type Size } from "../../../composables/useSizeProps";
 import { type Variant } from "../../../composables/useVariantProps";
 
-export interface PaginationProps {
+export interface DuPaginationProps {
   modelValue?: number;
   total: number;
   perPage?: number;

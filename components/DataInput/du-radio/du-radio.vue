@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { type RADIOProps } from './du-radio.types'
+import { type DuRadioProps } from './du-radio.types'
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { useSizeMapping } from "../../../composables/useSizeProps"
 
 const props = withDefaults(
-  defineProps<RADIOProps>(),
+  defineProps<DuRadioProps>(),
   {
     checked: false,
     disabled: false,

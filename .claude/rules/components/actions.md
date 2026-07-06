@@ -35,8 +35,8 @@ paths:
 ```typescript
 export const BUTTON_SIZES = ['btn-xs', 'btn-sm', 'btn-md', 'btn-lg', 'btn-xl'] as const
 export const BUTTON_COLORS = ['btn-primary', 'btn-secondary', 'btn-accent', 'btn-neutral', 'btn-info', 'btn-success', 'btn-warning', 'btn-error'] as const
-export type BUTTONSize = (typeof BUTTON_SIZES)[number]
-export type BUTTONColor = (typeof BUTTON_COLORS)[number]
+export type DuButtonSize = (typeof BUTTON_SIZES)[number]
+export type DuButtonColor = (typeof BUTTON_COLORS)[number]
 ```
 
 ---
@@ -53,7 +53,7 @@ export type BUTTONColor = (typeof BUTTON_COLORS)[number]
 **Types :**
 ```typescript
 export const DROPDOWN_PLACEMENTS = ['dropdown-start', 'dropdown-center', 'dropdown-end', 'dropdown-top', 'dropdown-bottom', 'dropdown-left', 'dropdown-right'] as const
-export type DROPDOWNPlacement = (typeof DROPDOWN_PLACEMENTS)[number]
+export type DuDropdownPlacement = (typeof DROPDOWN_PLACEMENTS)[number]
 ```
 
 ---
@@ -74,7 +74,7 @@ export type DROPDOWNPlacement = (typeof DROPDOWN_PLACEMENTS)[number]
 **Types :**
 ```typescript
 export const MODAL_PLACEMENTS = ['modal-top', 'modal-middle', 'modal-bottom', 'modal-start', 'modal-end', 'modal-bottom sm:modal-middle'] as const
-export type MODALPlacement = (typeof MODAL_PLACEMENTS)[number]
+export type DuModalPlacement = (typeof MODAL_PLACEMENTS)[number]
 ```
 
 ---
@@ -94,7 +94,7 @@ Toggle between two states with animations.
 **Types :**
 ```typescript
 export const SWAP_PROPERTIES = ['swap-rotate', 'swap-flip', 'swap-active'] as const
-export type SWAPProperty = (typeof SWAP_PROPERTIES)[number]
+export type DuSwapProperty = (typeof SWAP_PROPERTIES)[number]
 ```
 
 ---
@@ -106,19 +106,19 @@ export type SWAPProperty = (typeof SWAP_PROPERTIES)[number]
 Floating Action Button.
 
 **Props:**
-- `items?`: FABItem[]
+- `items?`: DuFabItem[]
 - `modifier?`: `'fab-flower'`
 - `customClass?`: string
 - `size?`: Size
 - `variant?`: Variant
 - `circle?`: boolean
-- `mainAction?`: FABMainAction
-- `closeButton?`: FABCloseButton
+- `mainAction?`: DuFabMainAction
+- `closeButton?`: DuFabCloseButton
 - `absolute?`: boolean
 
 **Types :**
 ```typescript
-export interface FABItem {
+export interface DuFabItem {
   label?: string
   icon?: any
   customClass?: string
@@ -127,7 +127,7 @@ export interface FABItem {
   tooltipPosition?: 'left' | 'top' | 'right' | 'bottom'
 }
 
-export interface FABMainAction {
+export interface DuFabMainAction {
   label?: string
   icon?: any
   customClass?: string
@@ -135,7 +135,7 @@ export interface FABMainAction {
   onClick?: () => void
 }
 
-export interface FABCloseButton {
+export interface DuFabCloseButton {
   label?: string
   icon?: string
   customClass?: string

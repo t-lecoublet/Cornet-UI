@@ -88,8 +88,8 @@ export const BUTTON_COLORS = [
   'btn-info', 'btn-success', 'btn-warning', 'btn-error'
 ] as const
 
-export type BUTTONSize = (typeof BUTTON_SIZES)[number]
-export type BUTTONColor = (typeof BUTTON_COLORS)[number]
+export type DuButtonSize = (typeof BUTTON_SIZES)[number]
+export type DuButtonColor = (typeof BUTTON_COLORS)[number]
 ```
 
 ### DuDropdown
@@ -108,7 +108,7 @@ export const DROPDOWN_PLACEMENTS = [
   'dropdown-top', 'dropdown-bottom', 'dropdown-left', 'dropdown-right'
 ] as const
 
-export type DROPDOWNPlacement = (typeof DROPDOWN_PLACEMENTS)[number]
+export type DuDropdownPlacement = (typeof DROPDOWN_PLACEMENTS)[number]
 ```
 
 ### DuModal
@@ -131,7 +131,7 @@ export const MODAL_PLACEMENTS = [
   'modal-start', 'modal-end', 'modal-bottom sm:modal-middle'
 ] as const
 
-export type MODALPlacement = (typeof MODAL_PLACEMENTS)[number]
+export type DuModalPlacement = (typeof MODAL_PLACEMENTS)[number]
 ```
 
 ### DuSwap
@@ -147,7 +147,7 @@ export type MODALPlacement = (typeof MODAL_PLACEMENTS)[number]
 **Types (du-swap.types.ts):**
 ```typescript
 export const SWAP_PROPERTIES = ['swap-rotate', 'swap-flip', 'swap-active'] as const
-export type SWAPProperty = (typeof SWAP_PROPERTIES)[number]
+export type DuSwapProperty = (typeof SWAP_PROPERTIES)[number]
 ```
 
 ### DuFab
@@ -155,23 +155,23 @@ export type SWAPProperty = (typeof SWAP_PROPERTIES)[number]
 <!-- @see-if-needed: components/Actions/du-fab/du-fab.vue -->
 
 **Props:**
-- items?: FABItem[]
+- items?: DuFabItem[]
 - modifier?: 'fab-flower'
 - customClass?: string
 - size?: Size
 - variant?: Variant
 - circle?: boolean
-- mainAction?: FABMainAction
-- closeButton?: FABCloseButton
+- mainAction?: DuFabMainAction
+- closeButton?: DuFabCloseButton
 - absolute?: boolean
 
 **Types (du-fab.types.ts):**
 ```typescript
 export const FAB_MODIFIERS = ['fab-flower'] as const
 
-export type FABModifier = (typeof FAB_MODIFIERS)[number]
+export type DuFabModifier = (typeof FAB_MODIFIERS)[number]
 
-export interface FABItem {
+export interface DuFabItem {
   label?: string
   icon?: any
   customClass?: string
@@ -181,7 +181,7 @@ export interface FABItem {
   [key: string]: any
 }
 
-export interface FABMainAction {
+export interface DuFabMainAction {
   label?: string
   icon?: any
   customClass?: string
@@ -189,7 +189,7 @@ export interface FABMainAction {
   onClick?: () => void
 }
 
-export interface FABCloseButton {
+export interface DuFabCloseButton {
   label?: string
   icon?: string
   customClass?: string
@@ -207,8 +207,8 @@ export interface FABCloseButton {
 
 **Props:**
 - customClass?: string
-- items?: ACCORDIONItem[]
-- modifier?: ACCORDIONModifier
+- items?: DuAccordionItemData[]
+- modifier?: DuAccordionModifier
 - name?: string
 
 **Types (du-accordion.types.ts):**
@@ -217,14 +217,14 @@ export const ACCORDION_MODIFIERS = [
   'collapse-arrow', 'collapse-plus', 'collapse-open', 'collapse-close'
 ] as const
 
-export interface ACCORDIONItem {
+export interface DuAccordionItemData {
   title?: string
   content?: string
   checked?: boolean
   customClass?: string
 }
 
-export type ACCORDIONModifier = (typeof ACCORDION_MODIFIERS)[number]
+export type DuAccordionModifier = (typeof ACCORDION_MODIFIERS)[number]
 ```
 
 ### DuAvatar
@@ -234,8 +234,8 @@ export type ACCORDIONModifier = (typeof ACCORDION_MODIFIERS)[number]
 **Props:**
 - size?: Size
 - variant?: Variant
-- rounded?: Rounded
-- mask?: Mask
+- rounded?: DuAvatarRounded
+- mask?: DuAvatarMask
 - ring?: boolean
 - ringColor?: string
 - ringOffset?: number
@@ -250,11 +250,11 @@ export const AVATAR_ROUNDED = [
   'rounded', 'rounded-full', 'rounded-xs', 'rounded-sm', 'rounded-md', 'rounded-lg', 'rounded-xl'
 ] as const
 
-export type Rounded = 'default' | 'rounded' | 'full' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-export type Mask = 'default' | 'heart' | 'squircle' | 'hexagon' | 'hexagon-2' | 'decagon' | 'pentagon' | 'diamond' | 'square' | 'circle' | 'parallelogram' | 'parallelogram-2' | 'star' | 'star-2'
+export type DuAvatarRounded = 'default' | 'rounded' | 'full' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type DuAvatarMask = 'default' | 'heart' | 'squircle' | 'hexagon' | 'hexagon-2' | 'decagon' | 'pentagon' | 'diamond' | 'square' | 'circle' | 'parallelogram' | 'parallelogram-2' | 'star' | 'star-2'
 
-export type AVATARSize = (typeof AVATAR_SIZES)[number]
-export type AVATARRounded = (typeof AVATAR_ROUNDED)[number]
+export type DuAvatarSize = (typeof AVATAR_SIZES)[number]
+export type DuAvatarRoundedClass = (typeof AVATAR_ROUNDED)[number]
 ```
 
 ### DuBadge
@@ -278,8 +278,8 @@ export const BADGE_VARIANTS = [
   'badge-info', 'badge-success', 'badge-warning', 'badge-error'
 ] as const
 
-export type BADGESize = (typeof BADGE_SIZES)[number]
-export type BADGEVariant = (typeof BADGE_VARIANTS)[number]
+export type DuBadgeSize = (typeof BADGE_SIZES)[number]
+export type DuBadgeVariant = (typeof BADGE_VARIANTS)[number]
 ```
 
 ### DuCard
@@ -302,8 +302,8 @@ export const CARD_PROPERTIES = [
   'card-border', 'card-dash', 'card-side', 'lg:card-side', 'image-full'
 ] as const
 
-export type CARDSize = (typeof CARD_SIZES)[number]
-export type CARDProperty = (typeof CARD_PROPERTIES)[number]
+export type DuCardSize = (typeof CARD_SIZES)[number]
+export type DuCardProperty = (typeof CARD_PROPERTIES)[number]
 ```
 
 ### DuCarousel
@@ -321,7 +321,7 @@ export type CARDProperty = (typeof CARD_PROPERTIES)[number]
 export const CAROUSEL_POSITIONS = ['carousel-start', 'carousel-center', 'carousel-end'] as const
 export const CAROUSEL_DIRECTIONS = ['carousel-horizontal', 'carousel-vertical'] as const
 
-export type CAROUSELPosition = (typeof CAROUSEL_POSITIONS)[number]
+export type DuCarouselPosition = (typeof CAROUSEL_POSITIONS)[number]
 export type CAROUSELDirection = (typeof CAROUSEL_DIRECTIONS)[number]
 ```
 
@@ -330,8 +330,8 @@ export type CAROUSELDirection = (typeof CAROUSEL_DIRECTIONS)[number]
 <!-- @see-if-needed: components/DataDisplay/du-chat/du-chat.vue -->
 
 **Props:**
-- items?: ChatItem[]
-- placement?: ChatPlacement
+- items?: DuChatItemData[]
+- placement?: DuChatPlacement
 - customClass?: string
 
 **Types (du-chat.types.ts):**
@@ -341,24 +341,24 @@ export const CHAT_COLORS = [
   'chat-bubble-info', 'chat-bubble-success', 'chat-bubble-warning', 'chat-bubble-error'
 ] as const
 
-export type CHATColor = (typeof CHAT_COLORS)[number]
+export type DuChatColor = (typeof CHAT_COLORS)[number]
 
 export const DU_CHAT_PLACEMENTS = ["start", "end"] as const
-export type ChatPlacement = (typeof DU_CHAT_PLACEMENTS)[number]
+export type DuChatPlacement = (typeof DU_CHAT_PLACEMENTS)[number]
 
-export interface ChatItem {
+export interface DuChatItemData {
   message?: string
   image?: string
   header?: string
   footer?: string
-  placement?: ChatPlacement
-  variant?: CHATColor
+  placement?: DuChatPlacement
+  variant?: DuChatColor
   customClass?: string
 }
 
-export interface ChatProps {
-  items?: ChatItem[]
-  placement?: ChatPlacement
+export interface DuChatProps {
+  items?: DuChatItemData[]
+  placement?: DuChatPlacement
   customClass?: string
 }
 ```
@@ -369,8 +369,8 @@ export interface ChatProps {
 
 **Props:**
 - customClass?: string
-- items?: COLLAPSEItem[]
-- modifier?: COLLAPSEModifier
+- items?: DuCollapseItem[]
+- modifier?: DuCollapseModifier
 
 **Types (du-collapse.types.ts):**
 ```typescript
@@ -378,14 +378,14 @@ export const COLLAPSE_MODIFIERS = [
   'collapse-arrow', 'collapse-plus', 'collapse-open', 'collapse-close'
 ] as const
 
-export interface COLLAPSEItem {
+export interface DuCollapseItem {
   title?: string
   content?: string
   open?: boolean
   customClass?: string
 }
 
-export type COLLAPSEModifier = (typeof COLLAPSE_MODIFIERS)[number]
+export type DuCollapseModifier = (typeof COLLAPSE_MODIFIERS)[number]
 ```
 
 ### DuCountdown
@@ -395,7 +395,7 @@ export type COLLAPSEModifier = (typeof COLLAPSE_MODIFIERS)[number]
 **Props:**
 - value?: number
 - targetDate?: Date
-- format?: COUNTDOWNFormat
+- format?: DuCountdownFormat
 - separator?: string
 - customClass?: string
 - autoStart?: boolean
@@ -404,9 +404,9 @@ export type COLLAPSEModifier = (typeof COLLAPSE_MODIFIERS)[number]
 ```typescript
 export const COUNTDOWN_FORMATS = ['days', 'hours', 'minutes', 'seconds'] as const
 
-export type COUNTDOWNFormat = (typeof COUNTDOWN_FORMATS)[number]
+export type DuCountdownFormat = (typeof COUNTDOWN_FORMATS)[number]
 
-export interface COUNTDOWNLabels {
+export interface DuCountdownLabels {
   days?: string
   hours?: string
   minutes?: string
@@ -421,7 +421,7 @@ export interface COUNTDOWNLabels {
 **Props:**
 - item1?: string
 - item2?: string
-- aspectRatio?: DIFFAspectRatio | string | null
+- aspectRatio?: DuDiffAspectRatio | string | null
 
 **Types (du-diff.types.ts):**
 ```typescript
@@ -429,7 +429,7 @@ export const DIFF_ASPECT_RATIOS = [
   'aspect-16/9', 'aspect-4/3', 'aspect-1/1', 'aspect-video', 'aspect-square'
 ] as const
 
-export type DIFFAspectRatio = (typeof DIFF_ASPECT_RATIOS)[number]
+export type DuDiffAspectRatio = (typeof DIFF_ASPECT_RATIOS)[number]
 ```
 
 ### DuKbd
@@ -442,7 +442,7 @@ export type DIFFAspectRatio = (typeof DIFF_ASPECT_RATIOS)[number]
 **Types (du-kbd.types.ts):**
 ```typescript
 export const KBD_SIZES = ['kbd-xs', 'kbd-sm', 'kbd-md', 'kbd-lg', 'kbd-xl'] as const
-export type KBDSize = (typeof KBD_SIZES)[number]
+export type DuKbdSize = (typeof KBD_SIZES)[number]
 ```
 
 ### DuList
@@ -454,7 +454,7 @@ export type KBDSize = (typeof KBD_SIZES)[number]
 
 **Types (du-list.types.ts):**
 ```typescript
-export interface LISTProps {
+export interface DuListProps {
   class?: string
 }
 ```
@@ -471,7 +471,7 @@ export interface LISTProps {
 
 **Types (du-stat.types.ts):**
 ```typescript
-export interface STATItem {
+export interface DuStatItem {
   title?: string
   value?: string | number
   description?: string
@@ -490,13 +490,13 @@ export interface STATItem {
 <!-- @see-if-needed: components/DataDisplay/du-stats/du-stats.vue -->
 
 **Props:**
-- items?: STATSItem[]
+- items?: DuStatsItem[]
 - vertical?: boolean
 - shadow?: boolean
 
 **Types (du-stats.types.ts):**
 ```typescript
-export interface STATSItem extends STATItem {}
+export interface DuStatsItem extends DuStatItem {}
 ```
 
 ### DuStatus
@@ -517,8 +517,8 @@ export const STATUS_VARIANTS = [
   'status-info', 'status-success', 'status-warning', 'status-error'
 ] as const
 
-export type STATUSSize = (typeof STATUS_SIZES)[number]
-export type STATUSVariant = (typeof STATUS_VARIANTS)[number]
+export type DuStatusSize = (typeof STATUS_SIZES)[number]
+export type DuStatusVariant = (typeof STATUS_VARIANTS)[number]
 ```
 
 ### DuTable
@@ -526,12 +526,12 @@ export type STATUSVariant = (typeof STATUS_VARIANTS)[number]
 <!-- @see-if-needed: components/DataDisplay/du-table/du-table.vue (slots pour cellules personnalisées) -->
 
 **Props:**
-- columns?: TABLEColumn[]
-- rows?: TABLERow[]
+- columns?: DuTableColumn[]
+- rows?: DuTableRow[]
 - zebra?: boolean
 - pinRows?: boolean
 - pinCols?: boolean
-- size?: TABLESize
+- size?: DuTableSize
 - customClass?: string
 - header?: boolean
 - footer?: boolean
@@ -539,15 +539,15 @@ export type STATUSVariant = (typeof STATUS_VARIANTS)[number]
 **Types (du-table.types.ts):**
 ```typescript
 export const TABLE_SIZES = ['default', 'xs', 'sm', 'md', 'lg', 'xl'] as const
-export type TABLESize = (typeof TABLE_SIZES)[number]
+export type DuTableSize = (typeof TABLE_SIZES)[number]
 
-export interface TABLEColumn {
+export interface DuTableColumn {
   key: string
   label: string
   customClass?: string
 }
 
-export interface TABLERow {
+export interface DuTableRow {
   id: string | number
   [key: string]: any
   customClass?: string
@@ -559,9 +559,9 @@ export interface TABLERow {
 <!-- @see-if-needed: components/DataDisplay/du-timeline/du-timeline.vue -->
 
 **Props:**
-- items?: TIMELINEItem[]
-- direction?: TIMELINEDirection
-- modifier?: TIMELINEModifier
+- items?: DuTimelineItemData[]
+- direction?: DuTimelineDirection
+- modifier?: DuTimelineModifier
 - customClass?: string
 - responsive?: boolean
 - validItems?: (boolean | undefined)[]
@@ -572,10 +572,10 @@ export interface TABLERow {
 export const TIMELINE_DIRECTIONS = ['timeline-vertical', 'timeline-horizontal'] as const
 export const TIMELINE_MODIFIERS = ['timeline-snap-icon', 'timeline-box', 'timeline-compact'] as const
 
-export type TIMELINEDirection = (typeof TIMELINE_DIRECTIONS)[number]
-export type TIMELINEModifier = (typeof TIMELINE_MODIFIERS)[number]
+export type DuTimelineDirection = (typeof TIMELINE_DIRECTIONS)[number]
+export type DuTimelineModifier = (typeof TIMELINE_MODIFIERS)[number]
 
-export interface TIMELINEItem {
+export interface DuTimelineItemData {
   start?: string
   middle?: string
   end?: string
@@ -594,8 +594,7 @@ export interface TIMELINEItem {
 <!-- @see-if-needed: components/DataInput/du-checkbox/du-checkbox.vue -->
 
 **Props:**
-- modelValue?: boolean
-- checked?: boolean
+- modelValue?: boolean (via defineModel())
 - disabled?: boolean
 - indeterminate?: boolean
 - variant?: Variant
@@ -606,10 +605,10 @@ export interface TIMELINEItem {
 export const CHECKBOX_VARIANTS = ['default', 'checkbox-primary', 'checkbox-secondary', 'checkbox-accent', 'checkbox-info', 'checkbox-success', 'checkbox-warning', 'checkbox-error'] as const
 export const CHECKBOX_SIZES = ['default', 'checkbox-xs', 'checkbox-sm', 'checkbox-md', 'checkbox-lg', 'checkbox-xl'] as const
 
-export type CHECKBOXVariant = (typeof CHECKBOX_VARIANTS)[number]
-export type CHECKBOXSize = (typeof CHECKBOX_SIZES)[number]
+export type DuCheckboxVariant = (typeof CHECKBOX_VARIANTS)[number]
+export type DuCheckboxSize = (typeof CHECKBOX_SIZES)[number]
 
-export interface CHECKBOXProps {
+export interface DuCheckboxProps {
   modelValue?: boolean
   checked?: boolean
   disabled?: boolean
@@ -629,7 +628,7 @@ export interface CHECKBOXProps {
 
 **Types (du-fieldset.types.ts):**
 ```typescript
-export interface FIELDSETProps {
+export interface DuFieldsetProps {
   legend?: string
   label?: string
 }
@@ -647,7 +646,7 @@ export interface FIELDSETProps {
 
 **Types (du-file-input.types.ts):**
 ```typescript
-export interface FILEINPUTProps {
+export interface DuFileInputProps {
   disabled?: boolean
   variant?: Variant
   size?: Size
@@ -660,13 +659,13 @@ export interface FILEINPUTProps {
 <!-- @see-if-needed: components/DataInput/du-filter/du-filter.vue -->
 
 **Props:**
-- items?: FilterItem[]
+- items?: DuFilterItem[]
 - name?: string
-- buttonsArgs?: FilterButtonArgs
+- buttonsArgs?: DuFilterButtonArgs
 
 **Types (du-filter.types.ts):**
 ```typescript
-export interface FilterButtonArgs {
+export interface DuFilterButtonArgs {
   variant?: Variant
   size?: Size
   outline?: boolean
@@ -681,17 +680,17 @@ export interface FilterButtonArgs {
   circle?: boolean
 }
 
-export interface FilterItem {
+export interface DuFilterItem {
   title?: string
   checked?: boolean
   customClass?: string
-  buttonsArgs?: FilterButtonArgs
+  buttonsArgs?: DuFilterButtonArgs
 }
 
-export interface FilterProps {
-  items?: FilterItem[]
+export interface DuFilterProps {
+  items?: DuFilterItem[]
   name?: string
-  buttonsArgs?: FilterButtonArgs
+  buttonsArgs?: DuFilterButtonArgs
 }
 ```
 
@@ -700,7 +699,7 @@ export interface FilterProps {
 <!-- @see-if-needed: components/DataInput/du-input-field/du-input-field.vue -->
 
 **Props:**
-- type?: INPUTFIELDType
+- type?: DuInputFieldType
 - placeholder?: string
 - size?: Size
 - ghost?: boolean
@@ -721,10 +720,10 @@ export interface FilterProps {
 export const INPUTFIELD_VARIANTS = ['default', 'input-primary', 'input-secondary', 'input-accent', 'input-info', 'input-success', 'input-warning', 'input-error'] as const
 export const INPUTFIELD_SIZES = ['default', 'input-xs', 'input-sm', 'input-md', 'input-lg', 'input-xl'] as const
 
-export type INPUTFIELDVariant = (typeof INPUTFIELD_VARIANTS)[number]
-export type INPUTFIELDSize = (typeof INPUTFIELD_SIZES)[number]
+export type DuInputFieldVariant = (typeof INPUTFIELD_VARIANTS)[number]
+export type DuInputFieldSize = (typeof INPUTFIELD_SIZES)[number]
 
-export type INPUTFIELDType = "text" | "password" | "email" | "number" | "date" | "datetime-local" | "week" | "month" | "tel" | "url" | "search" | "time"
+export type DuInputFieldType = "text" | "password" | "email" | "number" | "date" | "datetime-local" | "week" | "month" | "tel" | "url" | "search" | "time"
 ```
 
 ### DuLabel
@@ -736,7 +735,7 @@ export type INPUTFIELDType = "text" | "password" | "email" | "number" | "date" |
 
 **Types (du-label.types.ts):**
 ```typescript
-export type LABELProps = {
+export type DuLabelProps = {
   type?: "label" | "input" | "select" | "floating-label" | "fieldset-label"
 }
 ```
@@ -746,31 +745,31 @@ export type LABELProps = {
 <!-- @see-if-needed: components/DataInput/du-label-input-validator/du-label-input-validator.vue -->
 
 **Props:**
-- type?: LABELProps["type"]
+- type?: DuLabelProps["type"]
 - pattern?: string
 - minlength?: number
 - maxlength?: number
 - title?: string
 - required?: boolean
 - placeholder?: string
-- inputType?: INPUTFIELDType
+- inputType?: DuInputFieldType
 - disabled?: boolean
 - suggestionName?: string
 - suggestionList?: string[]
 
 **Types (du-label-input-validator.types.ts):**
 ```typescript
-import { type LABELProps } from "../du-label/du-label.types"
-import { type INPUTFIELDProps, type INPUTFIELDType } from "../du-input-field/du-input-field.types"
+import { type DuLabelProps } from "../du-label/du-label.types"
+import { type DuInputFieldProps, type DuInputFieldType } from "../du-input-field/du-input-field.types"
 
-export interface LabelInputValidatorProps extends LABELProps, 
-  Omit<INPUTFIELDProps, "type" | "size" | "ghost" | "variant"> {
+export interface DuLabelInputValidatorProps extends DuLabelProps, 
+  Omit<DuInputFieldProps, "type" | "size" | "ghost" | "variant"> {
   pattern?: string
   minlength?: number
   maxlength?: number
   title?: string
   required?: boolean
-  inputType?: INPUTFIELDType
+  inputType?: DuInputFieldType
 }
 ```
 
@@ -789,10 +788,10 @@ export interface LabelInputValidatorProps extends LABELProps,
 export const RADIO_VARIANTS = ['default', 'radio-primary', 'radio-secondary', 'radio-accent', 'radio-info', 'radio-success', 'radio-warning', 'radio-error'] as const
 export const RADIO_SIZES = ['default', 'radio-xs', 'radio-sm', 'radio-md', 'radio-lg', 'radio-xl'] as const
 
-export type RADIOVariant = (typeof RADIO_VARIANTS)[number]
-export type RADIOSize = (typeof RADIO_SIZES)[number]
+export type DuRadioVariant = (typeof RADIO_VARIANTS)[number]
+export type DuRadioSize = (typeof RADIO_SIZES)[number]
 
-export interface RADIOProps {
+export interface DuRadioProps {
   checked?: boolean
   disabled?: boolean
   variant?: Variant
@@ -818,10 +817,10 @@ export interface RADIOProps {
 export const RANGE_VARIANTS = ['default', 'range-primary', 'range-secondary', 'range-accent', 'range-info', 'range-success', 'range-warning', 'range-error'] as const
 export const RANGE_SIZES = ['default', 'range-xs', 'range-sm', 'range-md', 'range-lg', 'range-xl'] as const
 
-export type RANGEVariant = (typeof RANGE_VARIANTS)[number]
-export type RANGESize = (typeof RANGE_SIZES)[number]
+export type DuRangeVariant = (typeof RANGE_VARIANTS)[number]
+export type DuRangeSize = (typeof RANGE_SIZES)[number]
 
-export interface RANGEProps {
+export interface DuRangeProps {
   modelValue?: number
   min?: number
   max?: number
@@ -838,37 +837,37 @@ export interface RANGEProps {
 
 **Props:**
 - modelValue?: number
-- items?: RatingItem[]
+- items?: DuRatingItemData[]
 - count?: number
 - name?: string
 - halfStar?: boolean
 - clearable?: boolean
 - disabled?: boolean
 - size?: Size
-- shape?: RatingShape
+- shape?: DuRatingShape
 - color?: string
 - customClass?: string
 
 **Types (du-rating.types.ts):**
 ```typescript
 export const DU_RATING_SHAPES = ["star", "star-2", "heart", "circle"] as const
-export type RatingShape = (typeof DU_RATING_SHAPES)[number]
+export type DuRatingShape = (typeof DU_RATING_SHAPES)[number]
 
-export interface RatingItem {
+export interface DuRatingItemData {
   value: number
   checked?: boolean
 }
 
-export interface RatingProps {
+export interface DuRatingProps {
   modelValue?: number
-  items?: RatingItem[]
+  items?: DuRatingItemData[]
   count?: number
   name?: string
   halfStar?: boolean
   clearable?: boolean
   disabled?: boolean
   size?: Size
-  shape?: RatingShape
+  shape?: DuRatingShape
   color?: string
   customClass?: string
 }
@@ -903,10 +902,10 @@ export interface RatingProps {
 export const SELECT_VARIANTS = ['default', 'select-primary', 'select-secondary', 'select-accent', 'select-info', 'select-success', 'select-warning', 'select-error'] as const
 export const SELECT_SIZES = ['default', 'select-xs', 'select-sm', 'select-md', 'select-lg', 'select-xl'] as const
 
-export type SELECTVariant = (typeof SELECT_VARIANTS)[number]
-export type SELECTSize = (typeof SELECT_SIZES)[number]
+export type DuSelectVariant = (typeof SELECT_VARIANTS)[number]
+export type DuSelectSize = (typeof SELECT_SIZES)[number]
 
-export interface SELECTProps {
+export interface DuSelectProps {
   ghost?: boolean
   variant?: Variant
   size?: Size
@@ -937,7 +936,7 @@ export interface SELECTProps {
 - name: string
 - id: string
 - placeholder?: string
-- listValues: SearchOption[]
+- listValues: DuSearchOption[]
 - limit?: number
 - addOption?: boolean
 - type?: string
@@ -955,20 +954,20 @@ export interface SELECTProps {
 export const SEARCH_VARIANTS = ['default', 'input-primary', 'input-secondary', 'input-accent', 'input-info', 'input-success', 'input-warning', 'input-error'] as const
 export const SEARCH_SIZES = ['default', 'input-xs', 'input-sm', 'input-md', 'input-lg', 'input-xl'] as const
 
-export type SEARCHVariant = (typeof SEARCH_VARIANTS)[number]
-export type SEARCHSize = (typeof SEARCH_SIZES)[number]
+export type DuSearchVariant = (typeof SEARCH_VARIANTS)[number]
+export type DuSearchSize = (typeof SEARCH_SIZES)[number]
 
-export interface SearchOption {
+export interface DuSearchOption {
   id: any
   name: string
 }
 
-export interface SEARCHProps {
+export interface DuSearchProps {
   modelValue?: any | any[]
   name: string
   id: string
   placeholder?: string
-  listValues: SearchOption[]
+  listValues: DuSearchOption[]
   limit?: number
   addOption?: boolean
   type?: string
@@ -997,7 +996,7 @@ export interface SEARCHProps {
 
 **Types (du-text-area.types.ts):**
 ```typescript
-export interface TEXTAREAProps {
+export interface DuTextAreaProps {
   modelValue?: string
   placeholder?: string
   disabled?: boolean
@@ -1016,8 +1015,8 @@ export interface TEXTAREAProps {
 <!-- @see-if-needed: components/Feedback/du-alert/du-alert.vue -->
 
 **Props:**
-- variant?: AlertVariant
-- direction?: AlertDirection
+- variant?: DuAlertVariant
+- direction?: DuAlertDirection
 - soft?: boolean
 - outline?: boolean
 - dash?: boolean
@@ -1028,14 +1027,14 @@ export interface TEXTAREAProps {
 **Types (du-alert.types.ts):**
 ```typescript
 export const DU_ALERT_VARIANTS = ["default", "success", "error", "warning", "info"] as const
-export type AlertVariant = (typeof DU_ALERT_VARIANTS)[number]
+export type DuAlertVariant = (typeof DU_ALERT_VARIANTS)[number]
 
 export const DU_ALERT_DIRECTIONS = ["default", "vertical", "horizontal", "responsive"] as const
-export type AlertDirection = (typeof DU_ALERT_DIRECTIONS)[number]
+export type DuAlertDirection = (typeof DU_ALERT_DIRECTIONS)[number]
 
-export interface AlertProps {
-  variant?: AlertVariant
-  direction?: AlertDirection
+export interface DuAlertProps {
+  variant?: DuAlertVariant
+  direction?: DuAlertDirection
   soft?: boolean
   outline?: boolean
   dash?: boolean
@@ -1050,17 +1049,17 @@ export interface AlertProps {
 <!-- @see-if-needed: components/Feedback/du-loading/du-loading.vue -->
 
 **Props:**
-- animation?: LoadingAnimation
+- animation?: DuLoadingAnimation
 - size?: Size
 - variant?: Variant
 
 **Types (du-loading.types.ts):**
 ```typescript
 export const DU_LOADING_ANIMATIONS = ["spinner", "dots", "ring", "ball", "bars", "infinity"] as const
-export type LoadingAnimation = (typeof DU_LOADING_ANIMATIONS)[number]
+export type DuLoadingAnimation = (typeof DU_LOADING_ANIMATIONS)[number]
 
-export interface LoadingProps {
-  animation?: LoadingAnimation
+export interface DuLoadingProps {
+  animation?: DuLoadingAnimation
   size?: Size
   variant?: Variant
 }
@@ -1078,7 +1077,7 @@ export interface LoadingProps {
 
 **Types (du-progress.types.ts):**
 ```typescript
-export interface ProgressProps {
+export interface DuProgressProps {
   value?: number
   max?: number
   indeterminate?: boolean
@@ -1098,7 +1097,7 @@ export interface ProgressProps {
 
 **Types (du-radial-progress.types.ts):**
 ```typescript
-export interface RadialProgressProps {
+export interface DuRadialProgressProps {
   value?: number
   variant?: Variant
   size?: Size | string
@@ -1115,7 +1114,7 @@ export interface RadialProgressProps {
 
 **Types (du-skeleton.types.ts):**
 ```typescript
-export interface SkeletonProps {
+export interface DuSkeletonProps {
   class?: string
 }
 ```
@@ -1125,21 +1124,21 @@ export interface SkeletonProps {
 <!-- @see-if-needed: components/Feedback/du-toast/du-toast.vue -->
 
 **Props:**
-- horizontalPosition?: ToastHorizontalPosition
-- verticalPosition?: ToastVerticalPosition
+- horizontalPosition?: DuToastHorizontalPosition
+- verticalPosition?: DuToastVerticalPosition
 - to?: string
 
 **Types (du-toast.types.ts):**
 ```typescript
 export const DU_TOAST_HORIZONTAL_POSITIONS = ["start", "center", "end"] as const
-export type ToastHorizontalPosition = (typeof DU_TOAST_HORIZONTAL_POSITIONS)[number]
+export type DuToastHorizontalPosition = (typeof DU_TOAST_HORIZONTAL_POSITIONS)[number]
 
 export const DU_TOAST_VERTICAL_POSITIONS = ["top", "middle", "bottom"] as const
-export type ToastVerticalPosition = (typeof DU_TOAST_VERTICAL_POSITIONS)[number]
+export type DuToastVerticalPosition = (typeof DU_TOAST_VERTICAL_POSITIONS)[number]
 
-export interface ToastProps {
-  horizontalPosition?: ToastHorizontalPosition
-  verticalPosition?: ToastVerticalPosition
+export interface DuToastProps {
+  horizontalPosition?: DuToastHorizontalPosition
+  verticalPosition?: DuToastVerticalPosition
   to?: string
 }
 ```
@@ -1152,19 +1151,19 @@ export interface ToastProps {
 - variant?: Variant
 - dataTip?: string
 - open?: boolean
-- position?: TooltipPosition
+- position?: DuTooltipPosition
 - responsive?: boolean
 
 **Types (du-tooltip.types.ts):**
 ```typescript
 export const DU_TOOLTIP_POSITIONS = ["top", "right", "bottom", "left"] as const
-export type TooltipPosition = (typeof DU_TOOLTIP_POSITIONS)[number]
+export type DuTooltipPosition = (typeof DU_TOOLTIP_POSITIONS)[number]
 
-export interface TooltipProps {
+export interface DuTooltipProps {
   variant?: Variant
   dataTip?: string
   open?: boolean
-  position?: TooltipPosition
+  position?: DuTooltipPosition
   responsive?: boolean
 }
 ```
@@ -1179,16 +1178,16 @@ export interface TooltipProps {
 
 **Props:**
 - as?: string
-- direction?: JoinDirection
+- direction?: DuJoinDirection
 
 **Types (du-join.types.ts):**
 ```typescript
 export const DU_JOIN_DIRECTIONS = ["horizontal", "vertical"] as const
-export type JoinDirection = (typeof DU_JOIN_DIRECTIONS)[number]
+export type DuJoinDirection = (typeof DU_JOIN_DIRECTIONS)[number]
 
-export interface JoinProps {
+export interface DuJoinProps {
   as?: string
-  direction?: JoinDirection
+  direction?: DuJoinDirection
 }
 ```
 
@@ -1206,23 +1205,23 @@ export interface JoinProps {
 - sidebarClass?: string
 - contentClass?: string
 - overlayClass?: string
-- items?: DRAWERItem[]
+- items?: DuDrawerItem[]
 
 **Types (du-drawer.types.ts):**
 ```typescript
-import { type MenuItem } from '../../Navigation/du-menu/du-menu.types'
+import { type DuMenuItemData } from '../../Navigation/du-menu/du-menu.types'
 
 export const DRAWER_POSITIONS = ['start', 'end'] as const
 
-export type DRAWERPosition = (typeof DRAWER_POSITIONS)[number]
+export type DuDrawerPosition = (typeof DRAWER_POSITIONS)[number]
 
-export interface DRAWERItem extends MenuItem {
+export interface DuDrawerItem extends DuMenuItemData {
   icon?: any
   customClass?: string
   [key: string]: any
 }
 
-export interface DRAWERProps {
+export interface DuDrawerProps {
   id?: string
   position?: 'start' | 'end'
   open?: boolean
@@ -1232,7 +1231,7 @@ export interface DRAWERProps {
   sidebarClass?: string
   contentClass?: string
   overlayClass?: string
-  items?: DRAWERItem[]
+  items?: DuDrawerItem[]
 }
 ```
 
@@ -1245,56 +1244,20 @@ export interface DRAWERProps {
 <!-- @see-if-needed: components/Navigation/du-breadcrumbs/du-breadcrumbs.vue -->
 
 **Props:**
-- items: BreadcrumbItem[]
+- items: DuBreadcrumbItem[]
 - separator?: string
 
 **Types (du-breadcrumbs.types.ts):**
 ```typescript
-export interface BreadcrumbItem {
+export interface DuBreadcrumbItem {
   label: string
   href?: string
   icon?: string
 }
 
-export interface BreadcrumbsProps {
-  items: BreadcrumbItem[]
+export interface DuBreadcrumbsProps {
+  items: DuBreadcrumbItem[]
   separator?: string
-}
-```
-
-### DuButtonLink
-**File:** components/Navigation/du-button-link/du-button-link.vue
-<!-- @see-if-needed: components/Navigation/du-button-link/du-button-link.vue -->
-
-**Props:**
-- size?: Size
-- variant?: Variant
-- outline?: boolean
-- soft?: boolean
-- dash?: boolean
-- active?: boolean
-- ghost?: boolean
-- link?: boolean
-- wide?: boolean
-- square?: boolean
-- circle?: boolean
-- block?: boolean
-
-**Types (du-button-link.types.ts):**
-```typescript
-export interface ButtonLinkProps {
-  size?: Size
-  variant?: Variant
-  outline?: boolean
-  soft?: boolean
-  dash?: boolean
-  active?: boolean
-  ghost?: boolean
-  link?: boolean
-  wide?: boolean
-  square?: boolean
-  circle?: boolean
-  block?: boolean
 }
 ```
 
@@ -1304,12 +1267,12 @@ export interface ButtonLinkProps {
 
 **Props:**
 - size?: Size
-- items?: DockItem[]
+- items?: DuDockItem[]
 - reverseTheme?: boolean
 
 **Types (du-dock.types.ts):**
 ```typescript
-export interface DockItem {
+export interface DuDockItem {
   label?: string
   icon?: any
   class?: string
@@ -1318,9 +1281,9 @@ export interface DockItem {
   [key: string]: any
 }
 
-export interface DockProps {
+export interface DuDockProps {
   size?: Size
-  items?: DockItem[]
+  items?: DuDockItem[]
   reverseTheme?: boolean
 }
 ```
@@ -1336,7 +1299,7 @@ export interface DockProps {
 
 **Types (du-link.types.ts):**
 ```typescript
-export interface LinkProps {
+export interface DuLinkProps {
   variant?: Variant
   onlyUnderlineOnHover?: boolean
   ghost?: boolean
@@ -1349,25 +1312,25 @@ export interface LinkProps {
 <!-- @see-if-needed: components/Navigation/du-menu/du-menu-item.vue (composant item interne) -->
 
 **Props:**
-- direction?: MenuDirection
+- direction?: DuMenuDirection
 - size?: Size
 - rounded?: boolean
-- items?: MenuItem[]
+- items?: DuMenuItemData[]
 - activeItem?: string
-- onItemClick?: (item: MenuItem) => void
-- onSubItemClick?: (item: MenuItem) => void
+- onItemClick?: (item: DuMenuItemData) => void
+- onSubItemClick?: (item: DuMenuItemData) => void
 
 **Types (du-menu.types.ts):**
 ```typescript
 export const DU_MENU_DIRECTIONS = ["default", "vertical", "horizontal", "responsive"] as const
-export type MenuDirection = (typeof DU_MENU_DIRECTIONS)[number]
+export type DuMenuDirection = (typeof DU_MENU_DIRECTIONS)[number]
 
-export interface MenuItem {
+export interface DuMenuItemData {
   label: string
   href?: string
   disabled?: boolean
   isTitle?: boolean
-  subItems?: MenuItem[]
+  subItems?: DuMenuItemData[]
   value?: string | number
   onClick?: () => void
   checked?: boolean
@@ -1375,14 +1338,14 @@ export interface MenuItem {
   active?: boolean
 }
 
-export interface MenuProps {
-  direction?: MenuDirection
+export interface DuMenuProps {
+  direction?: DuMenuDirection
   size?: Size
   rounded?: boolean
-  items?: MenuItem[]
+  items?: DuMenuItemData[]
   activeItem?: string
-  onItemClick?: (item: MenuItem) => void
-  onSubItemClick?: (item: MenuItem) => void
+  onItemClick?: (item: DuMenuItemData) => void
+  onSubItemClick?: (item: DuMenuItemData) => void
 }
 ```
 
@@ -1395,7 +1358,7 @@ export interface MenuProps {
 
 **Types (du-navbar.types.ts):**
 ```typescript
-export interface NavbarProps {
+export interface DuNavbarProps {
   // Le composant Navbar n'a pas de propriétés spécifiques pour l'instant
 }
 ```
@@ -1425,7 +1388,7 @@ export interface NavbarProps {
 
 **Types (du-pagination.types.ts):**
 ```typescript
-export interface PaginationProps {
+export interface DuPaginationProps {
   modelValue?: number
   total: number
   perPage?: number
@@ -1459,7 +1422,7 @@ export interface PaginationProps {
 
 **Types (du-step-item.types.ts):**
 ```typescript
-export interface StepItemProps {
+export interface DuStepItemProps {
   label?: string
   active?: boolean
   customClass?: string
@@ -1473,8 +1436,8 @@ export interface StepItemProps {
 <!-- @see-if-needed: components/Navigation/du-steps/du-steps.vue -->
 
 **Props:**
-- items?: StepItem[]
-- direction?: StepsDirection
+- items?: DuStepsItem[]
+- direction?: DuStepsDirection
 - customClass?: string
 - responsive?: boolean
 - activeSteps?: number[]
@@ -1483,18 +1446,18 @@ export interface StepItemProps {
 **Types (du-steps.types.ts):**
 ```typescript
 export const DU_STEPS_DIRECTIONS = ["steps-vertical", "steps-horizontal"] as const
-export type StepsDirection = (typeof DU_STEPS_DIRECTIONS)[number]
+export type DuStepsDirection = (typeof DU_STEPS_DIRECTIONS)[number]
 
-export interface StepItem {
+export interface DuStepsItem {
   label?: string
   active?: boolean
   customClass?: string
   dataContent?: string
 }
 
-export interface StepsProps {
-  items?: StepItem[]
-  direction?: StepsDirection
+export interface DuStepsProps {
+  items?: DuStepsItem[]
+  direction?: DuStepsDirection
   customClass?: string
   responsive?: boolean
   activeSteps?: number[]
@@ -1508,17 +1471,17 @@ export interface StepsProps {
 
 **Props:**
 - size?: Size
-- items?: TabItem[]
-- type?: TabsType
+- items?: DuTabItem[]
+- type?: DuTabsType
 - bottom?: boolean
 - name?: string
 
 **Types (du-tabs.types.ts):**
 ```typescript
 export const DU_TABS_TYPES = ["lift", "border", "box"] as const
-export type TabsType = (typeof DU_TABS_TYPES)[number]
+export type DuTabsType = (typeof DU_TABS_TYPES)[number]
 
-export interface TabItem {
+export interface DuTabItem {
   label?: string
   icon?: any
   class?: string
@@ -1528,10 +1491,10 @@ export interface TabItem {
   [key: string]: any
 }
 
-export interface TabsProps {
+export interface DuTabsProps {
   size?: Size
-  items?: TabItem[]
-  type?: TabsType
+  items?: DuTabItem[]
+  type?: DuTabsType
   bottom?: boolean
   name?: string
 }

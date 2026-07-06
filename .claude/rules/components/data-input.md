@@ -10,7 +10,7 @@ paths:
 **Files:** `components/DataInput/du-input-field/du-input-field.vue` | `.types.ts` | `.stories.ts`
 
 **Props:**
-- `type?`: INPUTFIELDType (`'text'` | `'password'` | `'email'` | `'number'` | `'date'` | `'datetime-local'` | `'week'` | `'month'` | `'tel'` | `'url'` | `'search'` | `'time'`)
+- `type?`: DuInputFieldType (`'text'` | `'password'` | `'email'` | `'number'` | `'date'` | `'datetime-local'` | `'week'` | `'month'` | `'tel'` | `'url'` | `'search'` | `'time'`)
 - `placeholder?`: string
 - `size?`: Size
 - `ghost?`: boolean
@@ -67,7 +67,7 @@ paths:
 - `name`: string (required)
 - `id`: string (required)
 - `placeholder?`: string
-- `listValues`: SearchOption[] (required)
+- `listValues`: DuSearchOption[] (required)
 - `limit?`: number
 - `addOption?`: boolean
 - `type?`: string
@@ -82,7 +82,7 @@ paths:
 
 **Types :**
 ```typescript
-export interface SearchOption {
+export interface DuSearchOption {
   id: any
   name: string
 }
@@ -95,8 +95,7 @@ export interface SearchOption {
 **Fichiers :** `components/DataInput/du-checkbox/du-checkbox.vue` | `.types.ts` | `.stories.ts`
 
 **Props :**
-- `modelValue?`: boolean (v-model)
-- `checked?`: boolean
+- `modelValue?`: boolean (v-model, via `defineModel()`)
 - `disabled?`: boolean
 - `indeterminate?`: boolean
 - `variant?`: Variant
@@ -137,7 +136,7 @@ export interface SearchOption {
 
 **Props :**
 - `modelValue?`: number (v-model)
-- `items?`: RatingItem[]
+- `items?`: DuRatingItemData[]
 - `count?`: number - Nombre d'étoiles (si pas d'items)
 - `name?`: string
 - `halfStar?`: boolean
@@ -150,7 +149,7 @@ export interface SearchOption {
 
 **Types :**
 ```typescript
-export interface RatingItem {
+export interface DuRatingItemData {
   value: number
   checked?: boolean
 }
@@ -179,20 +178,20 @@ export interface RatingItem {
 Filter button group.
 
 **Props:**
-- `items?`: FilterItem[]
+- `items?`: DuFilterItem[]
 - `name?`: string
-- `buttonsArgs?`: FilterButtonArgs
+- `buttonsArgs?`: DuFilterButtonArgs
 
 **Types :**
 ```typescript
-export interface FilterItem {
+export interface DuFilterItem {
   title?: string
   checked?: boolean
   customClass?: string
-  buttonsArgs?: FilterButtonArgs
+  buttonsArgs?: DuFilterButtonArgs
 }
 
-export interface FilterButtonArgs {
+export interface DuFilterButtonArgs {
   variant?: Variant
   size?: Size
   outline?: boolean
@@ -248,14 +247,14 @@ export interface FilterButtonArgs {
 Label + input combo with built-in HTML5 validation.
 
 **Props:**
-- `type?`: LABELProps["type"]
+- `type?`: DuLabelProps["type"]
 - `pattern?`: string
 - `minlength?`: number
 - `maxlength?`: number
 - `title?`: string
 - `required?`: boolean
 - `placeholder?`: string
-- `inputType?`: INPUTFIELDType
+- `inputType?`: DuInputFieldType
 - `disabled?`: boolean
 - `suggestionName?`: string
 - `suggestionList?`: string[]

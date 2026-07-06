@@ -1,17 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { type Size, useSizeMapping } from '../../../composables/useSizeProps'
+import { useSizeMapping } from '../../../composables/useSizeProps'
+import { type DuCardProps } from './du-card.types'
 
 const props = withDefaults(
-  defineProps<{
-    size?: Size
-    bordered?: boolean
-    dash?: boolean
-    side?: boolean
-    imageFull?: boolean
-    responsive?: boolean
-    title?: string
-  }>(),
+  defineProps<DuCardProps>(),
   {
     size: 'default',
     bordered: false,
@@ -24,26 +16,6 @@ const props = withDefaults(
 )
 
 const { sizeClass } = useSizeMapping(props, 'card')
-
-const borderedClass = computed(() => {
-  return props.bordered ? 'card-border' : ''
-})
-
-const dashClass = computed(() => {
-  return props.dash ? 'card-dash' : ''
-})
-
-const sideClass = computed(() => {
-  return props.side ? 'card-side' : ''
-})
-
-const responsiveClass = computed(() => {
-  return props.responsive ? 'card-compact sm:card-normal' : ''
-})
-
-const imageFullClass = computed(() => {
-  return props.imageFull ? 'image-full' : ''
-})
 </script>
 
 <template>
@@ -51,11 +23,11 @@ const imageFullClass = computed(() => {
     :class="[
       'card',
       sizeClass,
-      borderedClass,
-      dashClass,
-      sideClass,
-      responsiveClass,
-      imageFullClass,
+      bordered && 'card-border',
+      dash && 'card-dash',
+      side && 'card-side',
+      responsive && 'card-compact sm:card-normal',
+      imageFull && 'image-full',
     ]"
   >
     <slot name="figure"></slot>

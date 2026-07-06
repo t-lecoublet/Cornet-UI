@@ -2,11 +2,11 @@
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { computed, inject } from "vue"
-import { type INPUTFIELDProps } from "./du-input-field.types"
+import { type DuInputFieldProps } from "./du-input-field.types"
 
 const model = defineModel()
 
-const props = withDefaults(defineProps<INPUTFIELDProps>(), {
+const props = withDefaults(defineProps<DuInputFieldProps>(), {
   placeholder: "",
   type: "text",
   size: "default",

@@ -1,3 +1,6 @@
+import { type Size } from '../../../composables/useSizeProps'
+import { type Variant } from '../../../composables/useVariantProps'
+
 export const AVATAR_SIZES = ['avatar-xs', 'avatar-sm', 'avatar-md', 'avatar-lg', 'avatar-xl'] as const
 export const AVATAR_ROUNDED = [
   'rounded',
@@ -31,13 +34,13 @@ export const AVATAR_COLORS = [
   'avatar-error',
 ]
 
-export type Rounded = 'default' | 'rounded' | 'full' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-export type Mask = 'default' | 'heart' | 'squircle' | 'hexagon' | 'hexagon-2' | 'decagon' | 'pentagon' | 'diamond' | 'square' | 'circle' | 'parallelogram' | 'parallelogram-2' | 'star' | 'star-2'
+export type DuAvatarRounded = 'default' | 'rounded' | 'full' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type DuAvatarMask = 'default' | 'heart' | 'squircle' | 'hexagon' | 'hexagon-2' | 'decagon' | 'pentagon' | 'diamond' | 'square' | 'circle' | 'parallelogram' | 'parallelogram-2' | 'star' | 'star-2'
 
-export type AVATARSize = (typeof AVATAR_SIZES)[number]
-export type AVATARRounded = (typeof AVATAR_ROUNDED)[number]
-export type AVATARRingColor = (typeof AVATAR_RING_COLORS)[number]
-export type AVATARColor = (typeof AVATAR_COLORS)[number]
+export type DuAvatarSize = (typeof AVATAR_SIZES)[number]
+export type DuAvatarRoundedClass = (typeof AVATAR_ROUNDED)[number]
+export type DuAvatarRingColor = (typeof AVATAR_RING_COLORS)[number]
+export type DuAvatarColor = (typeof AVATAR_COLORS)[number]
 
 // Types pour les masques
 export const AVATAR_MASK = [
@@ -56,4 +59,17 @@ export const AVATAR_MASK = [
   'mask-star-2',
 ] as const
 
-export type AVATARMask = (typeof AVATAR_MASK)[number]
+export type DuAvatarMaskClass = (typeof AVATAR_MASK)[number]
+
+export interface DuAvatarProps {
+  size?: Size
+  variant?: Variant
+  rounded?: DuAvatarRounded
+  offline?: boolean
+  online?: boolean
+  placeholder?: boolean
+  ring?: boolean
+  ringColor?: string
+  ringOffset?: number
+  mask?: DuAvatarMask
+}

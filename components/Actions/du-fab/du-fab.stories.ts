@@ -37,12 +37,7 @@ const meta = {
     },
     absolute: {
       control: 'boolean',
-      description: 'Whether FAB should be absolutely positioned',
-    },
-    position: {
-      control: { type: 'select' },
-      options: ['bottom-right', 'bottom-left', 'top-right', 'top-left'],
-      description: 'Position of the FAB when absolute',
+      description: 'Whether FAB should be absolutely positioned (bottom-right corner)',
     },
   },
   args: {
@@ -55,7 +50,6 @@ const meta = {
     variant: 'primary',
     circle: true,
     absolute: true,
-    position: 'bottom-right',
   },
 } satisfies Meta<typeof DuFab>
 
@@ -288,31 +282,6 @@ export const WithClickHandlers: Story = {
       <div class="relative h-96 border border-base-300 rounded-lg">
         <DuFab v-bind="args">
           <template #trigger-icon>📱</template>
-        </DuFab>
-      </div>
-    `,
-  }),
-}
-
-export const CustomPosition: Story = {
-  args: {
-    items: [
-      { icon: 'A' },
-      { icon: 'B' },
-      { icon: 'C' },
-    ],
-    variant: 'secondary',
-    position: 'bottom-left',
-  },
-  render: (args) => ({
-    components: { DuFab },
-    setup() {
-      return { args }
-    },
-    template: `
-      <div class="relative h-96 border border-base-300 rounded-lg">
-        <DuFab v-bind="args">
-          <template #trigger-icon>F</template>
         </DuFab>
       </div>
     `,

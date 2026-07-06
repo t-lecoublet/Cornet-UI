@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { type Size, useSizeMapping } from "../../../composables/useSizeProps"
+import { useSizeMapping } from "../../../composables/useSizeProps"
+import { type DuKbdProps } from './du-kbd.types'
 
-// Définition des types pour les props
 const props = withDefaults(
-  defineProps<{
-    size?: Size
-  }>(),
+  defineProps<DuKbdProps>(),
   {
     size: "default",
   },

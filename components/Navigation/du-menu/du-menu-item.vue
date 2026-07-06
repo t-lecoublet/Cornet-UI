@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { type MenuItem } from './du-menu.types';
+import { type DuMenuItemProps } from './du-menu.types';
 
-const props = defineProps<{
-  item: MenuItem;
-  index: number;
-  parentIndex?: string;
-  onItemClick?: (item: MenuItem) => void;
-  onSubItemClick?: (item: MenuItem) => void;
-}>();
+const props = defineProps<DuMenuItemProps>();
 
 // Typed via defineSlots so the recursive slot forwarding below stays type-safe.
 const _slots = defineSlots();
@@ -110,12 +104,12 @@ function handleClick() {
     </template>
     <template v-else>
       <li>
-        <component :is="linkTag" :role="item.disabled ? undefined : 'option'" v-bind="linkProps" :class="{
+        <component :is="linkTag" :role="item.disabled ? undefined : 'option'" :tabindex="item.disabled ? undefined : 0" v-bind="linkProps" :class="{
           'menu-disabled': item.disabled,
           'menu-active': isActive
         }" @click.stop="handleClick">
           <component :is="item.icon" v-if="typeof item.icon === 'object'" />
-          <img v-else-if="typeof item.icon === 'string' && item.icon.startsWith('http')" :src="item.icon"
+          <img v-else-if="typeof item.icon === 'string' && (item.icon.startsWith('http') || item.icon.startsWith('/'))" :src="item.icon"
             :alt="item.label" class="w-5 h-5" />
           <div v-else-if="typeof item.icon === 'string'" v-html="item.icon"></div>
           {{ item.label }}
@@ -142,13 +136,13 @@ function handleClick() {
     </template>
     <template v-else>
       <li :class="{ 'menu-disabled': item.disabled }">
-        <component :is="linkTag" :role="item.disabled ? undefined : 'option'" v-bind="linkProps" :class="{ 'menu-active': isActive }"
+        <component :is="linkTag" :role="item.disabled ? undefined : 'option'" :tabindex="item.disabled ? undefined : 0" v-bind="linkProps" :class="{ 'menu-active': isActive }"
           @click.stop="handleClick">
           <!-- Checkbox pour sélection multiple -->
           <input v-if="item.multiple && item.value !== undefined" type="checkbox"
             class="invisible w-0 h-0 overflow-clip" :checked="item.checked" disabled>
           <component :is="item.icon" v-if="typeof item.icon === 'object'" />
-          <img v-else-if="typeof item.icon === 'string' && item.icon.startsWith('http')" :src="item.icon"
+          <img v-else-if="typeof item.icon === 'string' && (item.icon.startsWith('http') || item.icon.startsWith('/'))" :src="item.icon"
             :alt="item.label" class="w-5 h-5" />
           <div v-else-if="typeof item.icon === 'string'" v-html="item.icon"></div>
           {{ item.label }}

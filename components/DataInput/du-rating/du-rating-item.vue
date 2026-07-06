@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { inject, computed } from "vue";
-import { type RatingItemProps, type RatingItemEmits } from "./du-rating.types";
+import { type DuRatingItemProps, type DuRatingItemEmits } from "./du-rating.types";
 
 const props = withDefaults(
-  defineProps<RatingItemProps>(),
+  defineProps<DuRatingItemProps>(),
   {
     value: 0,
     checked: false,
@@ -14,7 +14,7 @@ const props = withDefaults(
   },
 );
 
-const emit = defineEmits<RatingItemEmits>();
+const emit = defineEmits<DuRatingItemEmits>();
 
 const ratingName = inject("ratingName", "");
 

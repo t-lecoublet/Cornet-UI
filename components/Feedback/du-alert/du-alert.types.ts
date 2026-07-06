@@ -1,12 +1,12 @@
 export const DU_ALERT_VARIANTS = ["default", "success", "error", "warning", "info"] as const;
-export type AlertVariant = (typeof DU_ALERT_VARIANTS)[number];
+export type DuAlertVariant = (typeof DU_ALERT_VARIANTS)[number];
 
 export const DU_ALERT_DIRECTIONS = ["default", "vertical", "horizontal", "responsive"] as const;
-export type AlertDirection = (typeof DU_ALERT_DIRECTIONS)[number];
+export type DuAlertDirection = (typeof DU_ALERT_DIRECTIONS)[number];
 
-export interface AlertProps {
-  variant?: AlertVariant;
-  direction?: AlertDirection;
+export interface DuAlertProps {
+  variant?: DuAlertVariant;
+  direction?: DuAlertDirection;
   soft?: boolean;
   outline?: boolean;
   dash?: boolean;

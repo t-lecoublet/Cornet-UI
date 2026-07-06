@@ -1,7 +1,7 @@
 import { type Variant } from "../../../composables/useVariantProps";
 import { type Size } from "../../../composables/useSizeProps";
 
-export interface FilterButtonArgs {
+export interface DuFilterButtonArgs {
   variant?: Variant;
   size?: Size;
   outline?: boolean;
@@ -16,15 +16,15 @@ export interface FilterButtonArgs {
   circle?: boolean;
 }
 
-export interface FilterItem {
+export interface DuFilterItem {
   title?: string;
   checked?: boolean;
   customClass?: string;
-  buttonsArgs?: FilterButtonArgs;
+  buttonsArgs?: DuFilterButtonArgs;
 }
 
-export interface FilterProps {
-  items?: FilterItem[];
+export interface DuFilterProps {
+  items?: DuFilterItem[];
   name?: string;
-  buttonsArgs?: FilterButtonArgs;
+  buttonsArgs?: DuFilterButtonArgs;
 } 

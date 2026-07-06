@@ -1,22 +1,11 @@
 <script setup lang="ts">
-import { type Size, useSizeMapping} from '../../../composables/useSizeProps'
-import { useVariantMapping, type Variant } from '../../../composables/useVariantProps'
+import { useSizeMapping} from '../../../composables/useSizeProps'
+import { useVariantMapping } from '../../../composables/useVariantProps'
 import { computed } from 'vue'
-import { type AVATARRounded, type Rounded, type AVATARMask, type Mask } from './du-avatar.types'
+import { type DuAvatarProps, type DuAvatarRoundedClass, type DuAvatarMaskClass } from './du-avatar.types'
 
 const props = withDefaults(
-  defineProps<{
-    size?: Size
-    variant?: Variant
-    rounded?: Rounded
-    offline?: boolean
-    online?: boolean
-    placeholder?: boolean
-    ring?: boolean
-    ringColor?: string
-    ringOffset?: number
-    mask?: Mask
-  }>(),
+  defineProps<DuAvatarProps>(),
   {
     size: 'default',
     variant: 'default',
@@ -43,12 +32,12 @@ const roundedClass = computed(() => {
     md: 'rounded-md',
     lg: 'rounded-lg',
     xl: 'rounded-xl',
-  }[props.rounded] as AVATARRounded
+  }[props.rounded] as DuAvatarRoundedClass
 })
 
 const maskClass = computed(() => {
   if (!props.mask) return ''
-  return 'mask ' + `mask-${props.mask}` as AVATARMask
+  return 'mask ' + `mask-${props.mask}` as DuAvatarMaskClass
 })
 
 const ringClass = computed(() => {

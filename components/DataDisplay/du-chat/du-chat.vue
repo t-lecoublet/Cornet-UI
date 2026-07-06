@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { provide } from "vue";
-import { type ChatProps } from './du-chat.types';
+import { type DuChatProps } from './du-chat.types';
+import { type Variant } from '../../../composables/useVariantProps';
 
 const props = withDefaults(
-  defineProps<ChatProps>(),
+  defineProps<DuChatProps>(),
   {
     items: undefined,
     placement: "start",
@@ -16,6 +17,12 @@ provide("defaultChatPlacement", props.placement);
 const getPlacementClass = (itemPlacement: string | undefined) => {
   const finalPlacement = itemPlacement || props.placement;
   return finalPlacement === "end" ? "chat-end" : "chat-start";
+};
+
+// Mirrors useVariantMapping's convention (props.variant here is a plain,
+// unprefixed Variant like du-chat-item.vue's — not already-prefixed).
+const getBubbleClass = (variant: Variant | undefined) => {
+  return variant && variant !== "default" ? `chat-bubble-${variant}` : "";
 };
 </script>
 
@@ -49,7 +56,7 @@ const getPlacementClass = (itemPlacement: string | undefined) => {
       </div>
 
       <div
-        :class="['chat-bubble', item.variant ? `chat-bubble-${item.variant}` : '']"
+        :class="['chat-bubble', getBubbleClass(item.variant)]"
       >
         <slot :name="`message-${index}`" :item="item" :index="index">
           {{ item.message }}

@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { computed, provide } from 'vue'
-import { type PlacementInput, type PlacementValue } from './du-dropdown.types'
+import { type DuDropdownProps, type DuDropdownPlacementInput, type DuDropdownPlacementValue } from './du-dropdown.types'
 
 const props = withDefaults(
-  defineProps<{
-    hover?: boolean
-    open?: boolean
-    placement?: PlacementInput
-  }>(),
+  defineProps<DuDropdownProps>(),
   {
     hover: false,
     open: false,
@@ -17,18 +13,18 @@ const props = withDefaults(
 
 provide('isDropdownTrigger', true)
 
-const placementToClass = (value: PlacementValue): string => {
+const placementToClass = (value: DuDropdownPlacementValue): string => {
   return `dropdown-${value}`
 }
 
-const getPlacementClasses = (input: PlacementInput): string[] => {
+const getPlacementClasses = (input: DuDropdownPlacementInput): string[] => {
   if (!input) return []
 
   if (typeof input === 'string') {
     if (input.includes(',')) {
-      return input.split(',').map(s => s.trim()).filter(Boolean).map(s => placementToClass(s as PlacementValue))
+      return input.split(',').map(s => s.trim()).filter(Boolean).map(s => placementToClass(s as DuDropdownPlacementValue))
     }
-    return [placementToClass(input as PlacementValue)]
+    return [placementToClass(input as DuDropdownPlacementValue)]
   }
 
   if (Array.isArray(input)) {
@@ -36,13 +32,9 @@ const getPlacementClasses = (input: PlacementInput): string[] => {
   }
 
   if (typeof input === 'object') {
-    const keys = Object.keys(input)
-    if (keys.every(key => key in { start: 1, center: 1, end: 1, top: 1, bottom: 1, left: 1, right: 1 })) {
-      return keys.map(key => placementToClass(key as PlacementValue))
-    }
     return Object.entries(input)
       .filter(([, enabled]) => enabled)
-      .map(([key]) => placementToClass(key as PlacementValue))
+      .map(([key]) => placementToClass(key as DuDropdownPlacementValue))
   }
 
   return []
@@ -67,7 +59,7 @@ const openClass = computed(() => {
     <!-- Bind triggerProps on your trigger element (v-bind="triggerProps")
          to get the expected role/tabindex/aria attributes for free. -->
     <slot name="trigger" :trigger-props="{ role: 'button', tabindex: 0, 'aria-haspopup': 'true' }"></slot>
-    <div class="dropdown-content" tabindex="0">
+    <div class="dropdown-content bg-base-100 rounded-box shadow-sm" tabindex="0">
       <slot name="content"></slot>
       <slot></slot>
     </div>
