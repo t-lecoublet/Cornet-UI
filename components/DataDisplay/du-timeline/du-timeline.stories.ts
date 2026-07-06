@@ -23,10 +23,13 @@ const meta = {
       options: [
         undefined,
         'timeline-snap-icon',
-        'timeline-box',
         'timeline-compact',
       ],
-      description: 'Optional modifier class for the timeline',
+      description: 'Optional root-level layout modifier for the timeline',
+    },
+    boxed: {
+      control: 'boolean',
+      description: 'Applies timeline-box to every item\'s start/end boxes (overridable per-item via item.boxed)',
     },
     customClass: {
       control: 'text',
@@ -110,7 +113,7 @@ export const WithSnapIcon: Story = {
 
 export const WithBox: Story = {
   args: {
-    modifier: 'timeline-box',
+    boxed: true,
   },
 }
 
@@ -391,13 +394,13 @@ const manualModeTplStr = `
 import DuButton from '../../Actions/du-button/du-button.vue'
 import DuTimelineItem from './du-timeline-item.vue'
 </script>
-<DuTimeline modifier="timeline-box">
-  <DuTimelineItem start="1984" end="First Macintosh">
+<DuTimeline>
+  <DuTimelineItem start="1984" end="First Macintosh" boxed>
     <template #middle>
       <span class="text-xl">🍎</span>
     </template>
   </DuTimelineItem>
-  <DuTimelineItem start="1998">
+  <DuTimelineItem start="1998" boxed>
     <template #middle>
       <span class="text-xl">💻</span>
     </template>
@@ -409,15 +412,17 @@ import DuTimelineItem from './du-timeline-item.vue'
       </div>
     </template>
   </DuTimelineItem>
-  <DuTimelineItem 
-    start="2001" 
+  <DuTimelineItem
+    start="2001"
     end="iPod"
     valid="true"
+    boxed
   />
-  <DuTimelineItem 
-    start="2007" 
+  <DuTimelineItem
+    start="2007"
     end="iPhone"
     valid="false"
+    boxed
   />
 </DuTimeline>
 `

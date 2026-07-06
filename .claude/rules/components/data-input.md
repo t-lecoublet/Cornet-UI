@@ -95,8 +95,7 @@ export interface DuSearchOption {
 **Fichiers :** `components/DataInput/du-checkbox/du-checkbox.vue` | `.types.ts` | `.stories.ts`
 
 **Props :**
-- `modelValue?`: boolean (v-model)
-- `checked?`: boolean
+- `modelValue?`: boolean (v-model, via `defineModel()`)
 - `disabled?`: boolean
 - `indeterminate?`: boolean
 - `variant?`: Variant

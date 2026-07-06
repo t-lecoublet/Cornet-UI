@@ -594,8 +594,7 @@ export interface DuTimelineItemData {
 <!-- @see-if-needed: components/DataInput/du-checkbox/du-checkbox.vue -->
 
 **Props:**
-- modelValue?: boolean
-- checked?: boolean
+- modelValue?: boolean (via defineModel())
 - disabled?: boolean
 - indeterminate?: boolean
 - variant?: Variant
@@ -1259,42 +1258,6 @@ export interface DuBreadcrumbItem {
 export interface DuBreadcrumbsProps {
   items: DuBreadcrumbItem[]
   separator?: string
-}
-```
-
-### DuButtonLink
-**File:** components/Navigation/du-button-link/du-button-link.vue
-<!-- @see-if-needed: components/Navigation/du-button-link/du-button-link.vue -->
-
-**Props:**
-- size?: Size
-- variant?: Variant
-- outline?: boolean
-- soft?: boolean
-- dash?: boolean
-- active?: boolean
-- ghost?: boolean
-- link?: boolean
-- wide?: boolean
-- square?: boolean
-- circle?: boolean
-- block?: boolean
-
-**Types (du-button-link.types.ts):**
-```typescript
-export interface DuButtonLinkProps {
-  size?: Size
-  variant?: Variant
-  outline?: boolean
-  soft?: boolean
-  dash?: boolean
-  active?: boolean
-  ghost?: boolean
-  link?: boolean
-  wide?: boolean
-  square?: boolean
-  circle?: boolean
-  block?: boolean
 }
 ```
 

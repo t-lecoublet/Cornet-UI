@@ -10,4 +10,6 @@ export interface DuBreadcrumbsProps {
   items: DuBreadcrumbItem[];
   separator?: string;
   as?: string | Component;
-} 
+  /** Accessible name of the breadcrumb navigation landmark. */
+  ariaLabel?: string;
+}

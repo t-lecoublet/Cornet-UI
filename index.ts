@@ -68,7 +68,6 @@ export { default as DuJoin } from './components/Layout/du-join/du-join.vue'
 
 // Navigation
 export { default as DuBreadcrumbs } from './components/Navigation/du-breadcrumbs/du-breadcrumbs.vue'
-export { default as DuButtonLink } from './components/Navigation/du-button-link/du-button-link.vue'
 export { default as DuDock } from './components/Navigation/du-dock/du-dock.vue'
 export { default as DuLink } from './components/Navigation/du-link/du-link.vue'
 export { default as DuMenu } from './components/Navigation/du-menu/du-menu.vue'

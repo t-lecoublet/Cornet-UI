@@ -16,6 +16,10 @@ const shadowClass = computed(() => {
 const dashClass = computed(() => {
   return props.dash ? "stats-dash" : ""
 })
+
+// item.value is string | number — a plain truthy check would hide a
+// legitimate 0.
+const hasValue = (value: string | number | undefined) => value != null && value !== ""
 </script>
 
 <template>
@@ -36,7 +40,7 @@ const dashClass = computed(() => {
           <slot name="figure" :item="item">
             <component
               :is="item.figure"
-              v-if="typeof item.figure === 'object'"
+              v-if="item.figure && typeof item.figure === 'object'"
             />
             <img
               v-else-if="
@@ -57,7 +61,7 @@ const dashClass = computed(() => {
           <slot name="title" :item="item">{{ item.title }}</slot>
         </template>
 
-        <template v-if="item.value || $slots.value" #value>
+        <template v-if="hasValue(item.value) || $slots.value" #value>
           <slot name="value" :item="item">{{ item.value }}</slot>
         </template>
 
@@ -69,7 +73,7 @@ const dashClass = computed(() => {
           <slot name="actions" :item="item">
             <component
               :is="item.actions"
-              v-if="typeof item.actions === 'object'"
+              v-if="item.actions && typeof item.actions === 'object'"
             />
           </slot>
         </template>

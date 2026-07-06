@@ -9,7 +9,7 @@ withDefaults(
 
 <template>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend">{{ legend }}</legend>
+    <legend class="fieldset-legend" v-if="legend">{{ legend }}</legend>
     <slot />
     <p class="fieldset-label" v-if="label">{{ label }}</p>
   </fieldset>

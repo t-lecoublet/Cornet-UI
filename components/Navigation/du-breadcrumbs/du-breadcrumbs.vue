@@ -8,6 +8,7 @@ const props = withDefaults(
   defineProps<DuBreadcrumbsProps>(),
   {
     separator: undefined,
+    ariaLabel: "Breadcrumb",
   },
 );
 
@@ -37,24 +38,30 @@ function linkProps(href: string) {
 </script>
 
 <template>
-  <div
+  <nav
     class="breadcrumbs"
     :class="[separatorClass]"
     :style="cssVars"
+    :aria-label="ariaLabel"
   >
     <ul>
       <li v-for="(item, index) in items" :key="index">
-        <component :is="linkTag" v-if="item.href" v-bind="linkProps(item.href)">
+        <component
+          :is="linkTag"
+          v-if="item.href"
+          v-bind="linkProps(item.href)"
+          :aria-current="index === items.length - 1 ? 'page' : undefined"
+        >
           <span v-if="item.icon" class="mr-1">{{ item.icon }}</span>
           {{ item.label }}
         </component>
-        <span v-else>
+        <span v-else :aria-current="index === items.length - 1 ? 'page' : undefined">
           <span v-if="item.icon" class="mr-1">{{ item.icon }}</span>
           {{ item.label }}
         </span>
       </li>
     </ul>
-  </div>
+  </nav>
 </template>
 
 <style scoped>

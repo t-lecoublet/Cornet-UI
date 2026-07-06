@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { type DuTimelineProps } from './du-timeline.types'
+import { type DuTimelineProps, type DuTimelineItemData } from './du-timeline.types'
 
 const props = withDefaults(
   defineProps<DuTimelineProps>(),
@@ -12,6 +12,7 @@ const props = withDefaults(
     responsive: false,
     validItems: undefined,
     hrClasses: undefined,
+    boxed: false,
   },
 )
 
@@ -32,6 +33,10 @@ const timelineClasses = computed(() => {
 
   return classes
 })
+
+const isBoxed = (item: DuTimelineItemData): boolean => {
+  return item.boxed ?? props.boxed
+}
 
 const getLineClass = (index: number): string => {
   if (props.items && props.items[index] && props.items[index].hrClass) {
@@ -68,6 +73,7 @@ const getLineClass = (index: number): string => {
         <div
           v-if="item.start || $slots[`start-${index}`]"
           class="timeline-start"
+          :class="{ 'timeline-box': isBoxed(item) }"
         >
           <slot :name="`start-${index}`" :item="item" :index="index">
             <slot name="start" :item="item" :index="index">
@@ -110,7 +116,7 @@ const getLineClass = (index: number): string => {
         <div
           v-if="item.end || $slots[`end-${index}`]"
           class="timeline-end"
-          :class="{ 'timeline-box': modifier === 'timeline-box' || true }"
+          :class="{ 'timeline-box': isBoxed(item) }"
         >
           <slot :name="`end-${index}`" :item="item" :index="index">
             <slot name="end" :item="item" :index="index">

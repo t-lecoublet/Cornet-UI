@@ -2,14 +2,13 @@
 import { type DuCheckboxProps } from './du-checkbox.types'
 import { useVariantMapping } from "../../../composables/useVariantProps"
 import { useSizeMapping } from "../../../composables/useSizeProps"
-import { onMounted, ref } from "vue"
+import { onMounted, ref, watch } from "vue"
 
-const model = defineModel()
+const model = defineModel<boolean>()
 
 const props = withDefaults(
   defineProps<DuCheckboxProps>(),
   {
-    checked: false,
     disabled: false,
     indeterminate: false,
     variant: "default",
@@ -23,9 +22,13 @@ const { colorClass } = useVariantMapping(props, "checkbox")
 const { sizeClass } = useSizeMapping(props, "checkbox")
 
 onMounted(() => {
-  if (props.indeterminate) {
-    currentCheckbox.value.indeterminate = true
-  }
+  currentCheckbox.value.indeterminate = props.indeterminate
+})
+
+// Keeps the DOM's indeterminate state in sync with later prop changes —
+// onMounted above only covers the initial render.
+watch(() => props.indeterminate, (indeterminate) => {
+  currentCheckbox.value.indeterminate = indeterminate
 })
 </script>
 

@@ -11,6 +11,7 @@ const props = withDefaults(
     customClass: "",
     valid: undefined,
     hrClass: "",
+    boxed: false,
   },
 )
 
@@ -20,7 +21,7 @@ const lineClass = computed(() => {
   }
 
   if (props.valid === true) {
-    return "bg-primary"
+    return "bg-success"
   } else if (props.valid === false) {
     return "bg-error"
   }
@@ -33,7 +34,7 @@ const lineClass = computed(() => {
   <li :class="customClass">
     <hr v-if="$parent?.$slots?.default" :class="lineClass" />
 
-    <div v-if="start || $slots.start" class="timeline-start">
+    <div v-if="start || $slots.start" class="timeline-start" :class="{ 'timeline-box': boxed }">
       <slot name="start">
         {{ start }}
       </slot>
@@ -49,7 +50,7 @@ const lineClass = computed(() => {
             :class="[
               'w-5 h-5',
               valid === true
-                ? 'text-primary'
+                ? 'text-success'
                 : valid === false
                   ? 'text-error'
                   : '',
@@ -67,7 +68,7 @@ const lineClass = computed(() => {
     <div
       v-if="end || $slots.end"
       class="timeline-end"
-      :class="{ 'timeline-box': $slots.end || end }"
+      :class="{ 'timeline-box': boxed }"
     >
       <slot name="end">
         {{ end }}

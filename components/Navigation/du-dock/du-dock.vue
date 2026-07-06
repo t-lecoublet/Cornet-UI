@@ -52,7 +52,7 @@ defineExpose({
         :class="[item.class, isActive(index) && 'dock-active']">
         <slot name="icon" :item="item" :index="index">
           <slot :name="`icon-${index}`" :item="item" :index="index">
-            <component :is="item.icon" v-if="typeof item.icon === 'object'" />
+            <component :is="item.icon" v-if="item.icon && typeof item.icon === 'object'" />
             <img v-else-if="
               typeof item.icon === 'string' && item.icon.startsWith('http')
             " :src="item.icon" :alt="item.label" />

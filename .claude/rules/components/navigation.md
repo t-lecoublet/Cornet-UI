@@ -115,28 +115,6 @@ export interface DuBreadcrumbItem {
 
 ---
 
-## DuButtonLink
-
-**Files:** `components/Navigation/du-button-link/du-button-link.vue` | `.types.ts` | `.stories.ts`
-
-Button styled as navigation link (uses `<a>` or `<RouterLink>`).
-
-**Props:**
-- `size?`: Size
-- `variant?`: Variant
-- `outline?`: boolean
-- `soft?`: boolean
-- `dash?`: boolean
-- `active?`: boolean
-- `ghost?`: boolean
-- `link?`: boolean
-- `wide?`: boolean
-- `square?`: boolean
-- `circle?`: boolean
-- `block?`: boolean
-
----
-
 ## DuDock
 
 **Files:** `components/Navigation/du-dock/du-dock.vue` | `.types.ts` | `.stories.ts`

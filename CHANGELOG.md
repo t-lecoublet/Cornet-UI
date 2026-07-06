@@ -8,10 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and the p
 ### Removed (breaking)
 
 - `DuFab`: the `position` prop has been removed. A FAB is now always positioned in the bottom-right corner (standard FAB placement) when `absolute` is `true`.
+- `DuButtonLink` has been removed entirely. It duplicated `DuButton`'s class logic without `customClass`/`disabled`/RouterLink-NuxtLink support — use `<DuButton as="a" href="...">` (or `as="RouterLink"`/`as="NuxtLink"`) instead.
+- `DuCheckbox`: the `checked` prop has been removed — it was never wired to the template and had no effect. Use `v-model`/`modelValue` (via `defineModel()`).
 
 ### Changed (breaking)
 
 - Public type names across all `.types.ts` files have been normalized to the `Du{Component}{Name}` PascalCase convention (e.g. `MenuItem` → `DuMenuItemData`, `SELECTProps` → `DuSelectProps`, `BUTTONSize` → `DuButtonSize`, `PlacementValue` → `DuDropdownPlacementValue`). Update any type imports from `cornet-ui` / `cornet-ui/types` accordingly.
+- `DuChat`: `DuChatItemData.variant` now takes a plain variant (`'primary'`, `'secondary'`, …) like the rest of the library, instead of an already-prefixed `'chat-bubble-primary'` string.
+- `DuTimeline`: `modifier` no longer accepts `'timeline-box'` — DaisyUI applies that class per start/end box, not on the root `<ul>`. Use the new `boxed` prop (or per-item `item.boxed`) instead.
 
 ### Added
 
@@ -19,12 +23,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and the p
 - `DuDrawer`: pressing Escape now closes an open drawer; opening moves focus into the sidebar, and closing restores focus to whatever was focused before.
 - `DuDropdown` / `DuMenu` / `DuTabs` / `DuFab`: icon/image props now also accept root-relative local asset paths (e.g. `/logo.svg`), not just absolute `http(s)` URLs.
 - `DuDropdown`: `.dropdown-content` now has a default `bg-base-100 rounded-box shadow-sm`, and `DuMenu` always keeps its own background regardless of dropdown context (previously `DuMenu` suppressed its own background when nested in a dropdown, assuming the dropdown supplied one — it never did).
+- `DuTimeline`: new `boxed` prop (and per-item `item.boxed` override) applying `timeline-box` to the start/end boxes.
+- `DuFilter`: new `change` emit, fired with the clicked item (or `undefined` for the reset button).
+- `DuAlert`: new `close` emit, fired on manual dismiss and on auto-dismiss.
+- `DuBreadcrumbs`: new `ariaLabel` prop (default `"Breadcrumb"`); the root element is now a `<nav>` and the last item gets `aria-current="page"`.
 
 ### Fixed
 
 - `DuDropdown`: the object form of `placement` (e.g. `{ top: true, end: false }`) now correctly applies only the keys set to `true` (previously applied every key present regardless of its value).
 - `DuTabs`: clicking a tab no longer fires `onClick` / `update:modelValue` twice (native label→radio-input click forwarding was double-firing it).
 - `plugin-vite`: `scanSourceContent` no longer mis-parses `//` or `/* */` comments inside a named-import block as part of the next component's name.
+- `DuChat`: dynamic `items` mode double-prefixed the bubble color class (`chat-bubble-chat-bubble-primary`), so a bubble's `variant` never actually applied. Fixed together with the type change above.
+- `DuStats`: a stat with a legitimate `value` of `0` no longer disappears (was hidden by a truthy check).
+- `DuDock` / `DuStats`: an item's `icon`/`figure`/`actions` explicitly set to `null` is no longer misclassified as a component (`typeof null === 'object'`).
+- `DuCheckbox`: removed a redundant `modelValue` declaration that duplicated what `defineModel()` already provides; `indeterminate` is now reactive after mount, not just applied once on mount.
+- `DuFilter`: per-item `buttonsArgs` now correctly takes priority over the shared component-level ones (the precedence was inverted); fixed every `DuFilter` instance's radio group sharing the literal name `"[object Object]"` instead of a real per-instance name (a `provide()` was passing a ref instead of its value).
+- `DuTimeline`: the `timeline-box` class was unconditionally applied to the end box regardless of any prop (a dead `|| true`); the connecting-line/icon color for `valid` now consistently uses `success`/`error` in both dynamic items mode and manual (`DuTimelineItem`) mode (was `primary`/`error` in manual mode).
+- `DuFieldset`: an empty `<legend>` is no longer rendered when no `legend` prop is given.
 
 ## [0.1.0-beta.10] - 2026-06-15
 

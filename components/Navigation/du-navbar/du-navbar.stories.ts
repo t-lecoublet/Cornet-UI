@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/vue3";
 import DuNavbar from "./du-navbar.vue";
-import DuButtonLink from "../du-button-link/du-button-link.vue";
 import DuButton from "../../Actions/du-button/du-button.vue";
 
 const meta: Meta<typeof DuNavbar> = {
@@ -14,11 +13,11 @@ type Story = StoryObj<typeof DuNavbar>;
 
 export const Default: Story = {
   render: () => ({
-    components: { DuNavbar, DuButtonLink },
+    components: { DuNavbar, DuButton },
     template: `
       <DuNavbar>
         <template #center>
-          <DuButtonLink href="/" :ghost="true">daisyUI</DuButtonLink>
+          <DuButton as="a" href="/" :ghost="true">daisyUI</DuButton>
         </template>
       </DuNavbar>
     `,
@@ -27,11 +26,11 @@ export const Default: Story = {
 
 export const WithTitleAndIcon: Story = {
   render: () => ({
-    components: { DuNavbar, DuButtonLink, DuButton },
+    components: { DuNavbar, DuButton },
     template: `
       <DuNavbar>
         <template #start>
-          <DuButtonLink href="/" :ghost="true">daisyUI</DuButtonLink>
+          <DuButton as="a" href="/" :ghost="true">daisyUI</DuButton>
         </template>
         <template #end>
           <DuButton :ghost="true" :square="true">
@@ -47,7 +46,7 @@ export const WithTitleAndIcon: Story = {
 
 export const WithIconAtStartAndEnd: Story = {
   render: () => ({
-    components: { DuNavbar, DuButtonLink, DuButton },
+    components: { DuNavbar, DuButton },
     template: `
       <DuNavbar>
         <template #start>
@@ -58,7 +57,7 @@ export const WithIconAtStartAndEnd: Story = {
           </DuButton>
         </template>
         <template #center>
-          <DuButtonLink href="/" :ghost="true">daisyUI</DuButtonLink>
+          <DuButton as="a" href="/" :ghost="true">daisyUI</DuButton>
         </template>
         <template #end>
           <DuButton :ghost="true" :square="true">
@@ -74,11 +73,11 @@ export const WithIconAtStartAndEnd: Story = {
 
 export const WithMenuAndSubmenu: Story = {
   render: () => ({
-    components: { DuNavbar, DuButtonLink },
+    components: { DuNavbar, DuButton },
     template: `
       <DuNavbar>
         <template #start>
-          <DuButtonLink class="text-xl" :ghost="true">daisyUI</DuButtonLink>
+          <DuButton as="a" class="text-xl" :ghost="true">daisyUI</DuButton>
         </template>
         <template #end>
           <ul class="menu menu-horizontal px-1">
@@ -113,4 +112,4 @@ export const WithSearchInput: Story = {
       </DuNavbar>
     `,
   }),
-}; 
+};

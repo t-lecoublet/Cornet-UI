@@ -112,7 +112,6 @@ wrapper you could inline yourself.
 | Component | Level | Reason | Status |
 |---|---|---|---|
 | DuBreadcrumbs | Intermediate | Router-component detection/tag resolution plus custom separator mechanism. | Polish only |
-| DuButtonLink | Simple | Pure class-composition wrapper. | Keep as is |
 | DuDock | Intermediate | Internal active-item state plus icon-kind resolution. | Polish only |
 | DuLink | Simple | Pure class-mapping wrapper. | Keep as is |
 | DuMenu | Intermediate | Recursive item-rendering, router-tag resolution, active/checked state, multi-select — mostly conditional markup, not a stateful engine. | Factorize later |
@@ -124,7 +123,7 @@ wrapper you could inline yourself.
 
 ## Summary
 
-- **Simple:** 28 components — no action needed.
+- **Simple:** 27 components — no action needed.
 - **Intermediate:** 20 components — `Polish only` unless flagged below.
 - **Rich, split into composables:** DuSelect, DuSearch, DuDrawer, DuFab, DuRating, DuPagination, DuCountdown (7 total).
 - **`Factorize later` (real but non-urgent complexity):** DuTimeline (multi-layer line-class fallback logic), DuMenu (recursive rendering + router resolution + slot forwarding).

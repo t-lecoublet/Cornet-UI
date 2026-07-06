@@ -8,10 +8,8 @@ export type DuCheckboxVariant = (typeof CHECKBOX_VARIANTS)[number]
 export type DuCheckboxSize = (typeof CHECKBOX_SIZES)[number]
 
 export interface DuCheckboxProps {
-  modelValue?: boolean
-  checked?: boolean
   disabled?: boolean
   indeterminate?: boolean
   variant?: Variant
   size?: Size
-} 
+}
