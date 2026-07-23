@@ -4,8 +4,17 @@ import { type Variant } from "../../../composables/useVariantProps"
 export const SELECT_VARIANTS = ['default', 'select-primary', 'select-secondary', 'select-accent', 'select-info', 'select-success', 'select-warning', 'select-error'] as const
 export const SELECT_SIZES = ['default', 'select-xs', 'select-sm', 'select-md', 'select-lg', 'select-xl'] as const
 
+// du-select.vue sizes its dropdown list via useSizeMapping(props, 'menu')
+// (menu-xs..menu-xl), but those literals otherwise only live in du-menu.types.ts.
+// In embedded mode Tailwind's scanner excludes a component's whole directory
+// (including its .types.ts) when the app doesn't use it directly, so if DuMenu
+// isn't imported anywhere, menu-{size} would never be generated even though
+// DuSelect's dropdown needs it. This local copy keeps them scanned regardless.
+export const SELECT_MENU_SIZES = ['menu-xs', 'menu-sm', 'menu-md', 'menu-lg', 'menu-xl'] as const
+
 export type DuSelectVariant = (typeof SELECT_VARIANTS)[number]
 export type DuSelectSize = (typeof SELECT_SIZES)[number]
+export type DuSelectMenuSize = (typeof SELECT_MENU_SIZES)[number]
 
 export type DuSelectEmit = {
   (e: 'update:modelValue', value: any): void
