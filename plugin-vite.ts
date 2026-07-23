@@ -78,28 +78,33 @@ export function scanSourceContent(content: string, packageNames: string[]): Usag
   const used = new Set<string>()
   let namespaceImport = false
 
+  // Strip comments before matching anything, so a commented-out import or
+  // template tag is never mistaken for real usage. Line comments are only
+  // stripped when `//` is the first non-whitespace token of the line, so a
+  // URL like `href="http://..."` inside real code/templates is untouched.
+  const cleaned = content
+    .replace(/^[ \t]*\/\/.*$/gm, '')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+
   for (const pkg of packageNames) {
     const escaped = pkg.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const namedImportRegex = new RegExp(`import\\s+{([^}]+)}\\s+from\\s+['"]${escaped}['"]`, 'g')
     let match: RegExpExecArray | null
-    while ((match = namedImportRegex.exec(content)) !== null) {
-      // Strip line and block comments (e.g. category headers grouping the
-      // import list) so they don't get glued onto the next identifier by the
-      // comma split.
-      const importBody = match[1].replace(/\/\/[^\n]*/g, '').replace(/\/\*[\s\S]*?\*\//g, '')
-      for (const item of importBody.split(',')) {
+    while ((match = namedImportRegex.exec(cleaned)) !== null) {
+      for (const item of match[1].split(',')) {
         const name = item.trim().split(/\s+as\s+/)[0].trim()
         if (name) used.add(name)
       }
     }
     const namespaceRegex = new RegExp(`import\\s+\\*\\s+as\\s+\\w+\\s+from\\s+['"]${escaped}['"]`)
-    if (namespaceRegex.test(content)) namespaceImport = true
+    if (namespaceRegex.test(cleaned)) namespaceImport = true
   }
 
   // Components referenced directly in templates (global registration, auto-import...)
   const tagRegex = /<(Du\w+)[\s/>]/g
   let tagMatch: RegExpExecArray | null
-  while ((tagMatch = tagRegex.exec(content)) !== null) {
+  while ((tagMatch = tagRegex.exec(cleaned)) !== null) {
     used.add(tagMatch[1])
   }
 

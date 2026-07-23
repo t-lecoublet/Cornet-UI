@@ -88,6 +88,34 @@ describe('scanSourceContent', () => {
     )
     expect([...result.used].sort()).toEqual(['DuAccordion', 'DuButton', 'DuDropdown'])
   })
+
+  it('ignores a whole-line commented-out named import', () => {
+    const result = scanSourceContent(
+      `// import { DuSearch } from 'cornet-ui'
+      import { DuPagination } from 'cornet-ui'`,
+      ['cornet-ui'],
+    )
+    expect([...result.used].sort()).toEqual(['DuPagination'])
+  })
+
+  it('ignores a template tag inside an HTML comment', () => {
+    const result = scanSourceContent(
+      `<template>
+        <DuPagination />
+        <!-- <DuSearch v-model="x" /> -->
+      </template>`,
+      ['cornet-ui'],
+    )
+    expect([...result.used].sort()).toEqual(['DuPagination'])
+  })
+
+  it('does not treat a URL inside real (non-commented) content as a line comment', () => {
+    const result = scanSourceContent(
+      `<template><DuLink href="http://example.com">Go</DuLink></template>`,
+      ['cornet-ui'],
+    )
+    expect(result.used.has('DuLink')).toBe(true)
+  })
 })
 
 describe('expandWithInternalDependencies (real library)', () => {
