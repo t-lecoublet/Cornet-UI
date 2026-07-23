@@ -1,8 +1,14 @@
 import { type Size } from "../../../composables/useSizeProps"
 import { type Variant } from "../../../composables/useVariantProps"
 
-export const SELECT_VARIANTS = ['default', 'select-primary', 'select-secondary', 'select-accent', 'select-info', 'select-success', 'select-warning', 'select-error'] as const
+export const SELECT_VARIANTS = ['default', 'select-primary', 'select-secondary', 'select-accent', 'select-neutral', 'select-info', 'select-success', 'select-warning', 'select-error'] as const
 export const SELECT_SIZES = ['default', 'select-xs', 'select-sm', 'select-md', 'select-lg', 'select-xl'] as const
+
+// du-select.vue also sizes its own <input> (search box) via
+// useSizeMapping(props, 'input'), but those literals otherwise only live in
+// du-input-field.types.ts / du-search.types.ts, which DuSelect doesn't import.
+export const SELECT_INPUT_SIZES = ['default', 'input-xs', 'input-sm', 'input-md', 'input-lg', 'input-xl'] as const
+export type DuSelectInputSize = (typeof SELECT_INPUT_SIZES)[number]
 
 // du-select.vue sizes its dropdown list via useSizeMapping(props, 'menu')
 // (menu-xs..menu-xl), but those literals otherwise only live in du-menu.types.ts.

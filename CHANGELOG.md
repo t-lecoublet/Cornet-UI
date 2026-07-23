@@ -3,6 +3,18 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.21]
+
+### Fixed
+
+- `plugin-vite`: `scanSourceContent` no longer counts a commented-out import (`// import { X } from 'cornet-ui'`) or a commented-out template tag (`<!-- <X /> -->`) as real component usage. This could previously pull in a whole unused component's CSS (and its dependencies') into a "tree-shaken" build — e.g. a single leftover commented-out `<DuSearch>` reference added ~20 KB of unrelated CSS to a build that only actually used `DuPagination`.
+- `DuPagination`, `DuChatItem`, `DuLoading`, `DuRadialProgress`, `DuTooltip`, `DuTable`, `DuProgress`, `DuTextArea`, `DuLink`, `DuTabs`: added local Tailwind-scan safelists for `useSizeMapping`/`useVariantMapping` suffixes that had no literal source anywhere in the library — in embedded mode, Tailwind never generated these classes because no scanned file contained them as literal strings (e.g. `DuPagination`'s own `btn-*` classes, since it doesn't import `DuButton`).
+- `DuCheckbox`, `DuRadio`, `DuRange`, `DuSelect`: their local variant safelists were missing the `-neutral` entry (same root cause as the already-fixed `input-neutral` gap on `DuSearch`/`DuInputField`); `DuSelect` was also missing an `input-*` size safelist for its own search input.
+
+### Added
+
+- `tests/class-literals-invariant.spec.ts`: regression test verifying that every `useSizeMapping`/`useVariantMapping` call in the library has its full set of literal classes reachable (in the calling component's own directory, or a directly-imported dependency's) — guards against this class of embedded-mode tree-shaking bug reappearing on future components.
+
 ## [0.1.0-beta.19] - 2026-07-06
 
 ### Removed (breaking)
