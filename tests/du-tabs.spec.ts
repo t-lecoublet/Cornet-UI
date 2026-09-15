@@ -45,9 +45,15 @@ function tabs(props: Record<string, unknown> = {}, slots: Record<string, string>
   }
 }
 
-async function press(element: HTMLElement, key: string) {
-  element.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }))
+async function fire(element: EventTarget, key: string): Promise<KeyboardEvent> {
+  const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true })
+  element.dispatchEvent(event)
   await nextTick()
+  return event
+}
+
+async function press(element: HTMLElement, key: string) {
+  await fire(element, key)
 }
 
 describe('roles and wiring', () => {
@@ -242,6 +248,51 @@ describe('keyboard', () => {
     await press(document.activeElement as HTMLElement, ' ')
 
     expect(t.selected()).toEqual(['Three'])
+  })
+})
+
+describe('keys from inside a panel', () => {
+  // The panels live inside the tablist (daisyUI's `.tab + .tab-content`
+  // reveal), so their keydowns bubble to the tablist's listener. The tab
+  // interface must only speak for the tabs: once the roving index is armed by
+  // an arrow on a tab, a Space in a textarea used to be swallowed (and re-select
+  // the tab), and the caret arrows used to steal focus.
+  const panelItems: DuTabItem[] = [
+    { label: 'A', value: 'a' },
+    { label: 'B', value: 'b' },
+    { label: 'C', value: 'c' },
+  ]
+
+  function tabsWithPanel(props: Record<string, unknown> = {}) {
+    return tabs({ items: panelItems, ...props }, { content: '<textarea class="prompt"></textarea>' })
+  }
+
+  it('leaves Space in a textarea alone', async () => {
+    const t = tabsWithPanel({ activation: 'manual' })
+    const els = t.elements()
+    const textarea = t.wrapper.find('.prompt').element as HTMLTextAreaElement
+    els[0]!.focus()
+
+    await press(els[0]!, 'ArrowRight')
+    expect(t.focused(), 'armed like a keyboard user would').toBe('B')
+
+    textarea.focus()
+    const event = await fire(textarea, ' ')
+    expect(event.defaultPrevented, 'the space belongs to the textarea').toBe(false)
+    expect(t.selected(), 'and does not select a tab').toEqual(['A'])
+    expect(document.activeElement).toBe(textarea)
+  })
+
+  it('leaves the caret arrows alone', async () => {
+    const t = tabsWithPanel()
+    const textarea = t.wrapper.find('.prompt').element as HTMLTextAreaElement
+    textarea.focus()
+
+    const event = await fire(textarea, 'ArrowRight')
+
+    expect(event.defaultPrevented, 'the caret move is the textarea\'s').toBe(false)
+    expect(document.activeElement, 'focus did not jump to a tab').toBe(textarea)
+    expect(t.selected(), 'and no tab was activated').toEqual(['A'])
   })
 })
 

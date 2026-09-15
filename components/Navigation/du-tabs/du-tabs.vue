@@ -94,6 +94,15 @@ const roving = useRovingIndex({
 })
 
 function onKeydown(event: KeyboardEvent) {
+  // daisyUI's `.tab + .tab-content` reveal keeps the panels inside the tablist
+  // (see the header note), so keydowns from anywhere in a panel bubble here.
+  // The tab keyboard interface only speaks for the tabs themselves: anything
+  // typed inside a panel — spaces in a textarea, arrows to move the caret —
+  // belongs to it.
+  if (!(event.target instanceof Element) || event.target.closest('[role="tab"]') == null) {
+    return
+  }
+
   const list = props.items ?? []
 
   // Manual activation: the arrows only move focus, Enter or Space commits.
