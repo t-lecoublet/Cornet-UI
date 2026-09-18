@@ -331,12 +331,19 @@ describe('DuSearch accessibility and validation', () => {
     }
   })
 
-  it('shows the required message once the field has been visited', async () => {
+  it('shows no default message once the field has been visited; errorMessages override', async () => {
     const wrapper = mountSearch({ required: true })
-    expect(wrapper.text()).not.toContain('Selection is required.')
     await field(wrapper).trigger('focus')
     await field(wrapper).trigger('keydown', { key: 'Escape' })
-    expect(wrapper.text()).toContain('Selection is required.')
+    expect(wrapper.text()).not.toContain('Selection is required.')
+
+    const localized = mountSearch({
+      required: true,
+      errorMessages: { required: 'Ce champ est obligatoire.' },
+    })
+    await field(localized).trigger('focus')
+    await field(localized).trigger('keydown', { key: 'Escape' })
+    expect(localized.text()).toContain('Ce champ est obligatoire.')
   })
 
   it('emits open and close', async () => {

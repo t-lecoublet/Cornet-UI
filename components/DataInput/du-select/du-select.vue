@@ -335,7 +335,7 @@ defineSlots<{
     </div>
 
     <slot v-if="showError" name="error" :errors="errors" :message="validationMessage">
-      <span class="text-error text-sm mt-1 block">{{ validationMessage }}</span>
+      <span v-if="validationMessage" class="text-error text-sm mt-1 block">{{ validationMessage }}</span>
     </slot>
 
     <transition enter-active-class="transition ease-out duration-100" enter-from-class="opacity-0 scale-95"

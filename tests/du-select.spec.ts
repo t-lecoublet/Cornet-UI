@@ -400,12 +400,19 @@ describe('DuSelect accessibility', () => {
 })
 
 describe('DuSelect validation', () => {
-  it('shows the required message once the field has been visited', async () => {
+  it('shows no default message once the field has been visited; errorMessages override', async () => {
     const wrapper = mountSelect({ required: true })
-    expect(wrapper.text()).not.toContain('Selection is required.')
     await openSelect(wrapper)
     await combobox(wrapper).trigger('keydown', { key: 'Escape' })
-    expect(wrapper.text()).toContain('Selection is required.')
+    expect(wrapper.text()).not.toContain('Selection is required.')
+
+    const localized = mountSelect({
+      required: true,
+      errorMessages: { required: 'Ce champ est obligatoire.' },
+    })
+    await openSelect(localized)
+    await combobox(localized).trigger('keydown', { key: 'Escape' })
+    expect(localized.text()).toContain('Ce champ est obligatoire.')
   })
 
   it('reports minSelected through errorMessages', async () => {
@@ -468,8 +475,11 @@ describe('DuSelect events and slots', () => {
     expect(wrapper.text()).toContain('Rien pour zzz')
   })
 
-  it('renders the error slot', async () => {
-    const wrapper = mountSelect({ required: true }, {
+  it('renders the error slot with an errorMessages override', async () => {
+    const wrapper = mountSelect({
+      required: true,
+      errorMessages: { required: 'Selection is required.' },
+    }, {
       slots: { error: '<template #error="{ message }"><em class="err">{{ message }}</em></template>' },
     })
     await openSelect(wrapper)

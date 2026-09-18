@@ -3,6 +3,22 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.26]
+
+### Changed (breaking)
+
+- `DuSelect` / `DuSearch`: no default validation text. The engine spelled an
+  English `Selection is required.` / `Select at least N options.` when a
+  touched field failed its constraints — a library cannot guess the
+  consumer's language, and one hardcoded English sentence among otherwise
+  message-less fields reads as an accident. The error **state** is unchanged
+  (`valid`, `errors`, the red styling, the `error` slot with `message` in its
+  scope); what changed is that the default text is now empty. A consumer who
+  wants a message passes `errorMessages` — e.g.
+  `:error-messages="{ required: 'Ce champ est obligatoire.' }"` — or renders
+  the slot. The fallback `<span>` no longer renders when the message is
+  empty, so an untouched contract leaves no gap in the layout.
+
 ## [0.1.0-beta.25]
 
 ### Fixed

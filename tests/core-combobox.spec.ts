@@ -1030,12 +1030,16 @@ describe('validation', () => {
     expect(picker({ modelValue: TAGS[0], required: true }).scope().errors).toEqual([])
   })
 
-  it('spells out the default messages, singular included', () => {
-    expect(picker({ required: true }).scope().validationMessage).toBe('Selection is required.')
-    expect(picker({ multiple: true, minLength: 1 }).scope().validationMessage)
-      .toBe('Select at least 1 option.')
-    expect(picker({ multiple: true, maxLength: 2, modelValue: TAGS }).scope().validationMessage)
-      .toBe('Select at most 2 options.')
+  it('keeps the state, spells no default text, honors errorMessages', () => {
+    expect(picker({ required: true }).scope().validationMessage).toBe('')
+    expect(picker({ required: true, errorMessages: { required: 'Requis.' } }).scope().validationMessage)
+      .toBe('Requis.')
+    expect(picker({ multiple: true, minLength: 1 }).scope().validationMessage).toBe('')
+    expect(picker({
+      multiple: true,
+      minLength: 1,
+      errorMessages: { minlength: 'Au moins une option.' },
+    }).scope().validationMessage).toBe('Au moins une option.')
   })
 
   it('errorMessages overrides the defaults', () => {

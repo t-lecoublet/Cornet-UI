@@ -654,21 +654,16 @@ export function useCombobox<O, V = O, Q = string>(
 
   const valid = computed(() => errors.value.length === 0)
 
+  // No default text: a library cannot guess the consumer's language, and a
+  // lone English message among fields that show none is inconsistent. The
+  // error STATE stays exposed (`valid`, `errors`) — a consumer who wants text
+  // overrides `errorMessages` or renders the `error` slot.
   const validationMessage = computed(() => {
     const code = errors.value[0]
     if (code == null) {
       return ''
     }
-    const custom = props.errorMessages?.[code]
-    if (custom != null) {
-      return custom
-    }
-    if (code === 'required') {
-      return 'Selection is required.'
-    }
-    const bound = code === 'minlength' ? props.minLength : props.maxLength
-    const noun = bound === 1 ? 'option' : 'options'
-    return code === 'minlength' ? `Select at least ${bound} ${noun}.` : `Select at most ${bound} ${noun}.`
+    return props.errorMessages?.[code] ?? ''
   })
 
   // --- ARIA prop bags ------------------------------------------------------
