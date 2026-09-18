@@ -20,6 +20,7 @@ export interface ComboboxTriggerProps {
   disabled: true | undefined
   'aria-disabled': true | undefined
   'aria-readonly': true | undefined
+  'aria-required': true | undefined
   onClick: () => void
   onKeydown: (event: KeyboardEvent) => void
 }

@@ -3,6 +3,13 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.27]
+
+### Added
+
+- `DuSelect` / `DuSearch`: the trigger carries `aria-required` when the field
+  is `required` — the constraint a screen reader could not see.
+
 ## [0.1.0-beta.26]
 
 ### Changed (breaking)

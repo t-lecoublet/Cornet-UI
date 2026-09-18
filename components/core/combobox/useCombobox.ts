@@ -680,6 +680,7 @@ export function useCombobox<O, V = O, Q = string>(
     disabled: props.disabled ? true : undefined,
     'aria-disabled': props.disabled ? true : undefined,
     'aria-readonly': props.readonly ? true : undefined,
+    'aria-required': props.required ? true : undefined,
     onClick: toggle,
     onKeydown: handleKeydown,
   }))
