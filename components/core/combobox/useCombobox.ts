@@ -410,7 +410,14 @@ export function useCombobox<O, V = O, Q = string>(
     }
 
     if (!isOpen.value) {
-      if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      // A button trigger opens on Enter/Space/arrows. A typeahead field doubles
+      // as the trigger: its Space must type (the input handler opens the
+      // popup), not be swallowed by the opener.
+      if (
+        event.key === 'Enter'
+        || ((event.key === ' ' || event.key === 'ArrowDown' || event.key === 'ArrowUp')
+          && !isTextField(event.target as Element | null))
+      ) {
         event.preventDefault()
         open()
       } else if ((event.key === 'Backspace' || event.key === 'Delete') && !hasEditableText(event.target)) {
@@ -437,10 +444,11 @@ export function useCombobox<O, V = O, Q = string>(
         break
       }
       case ' ': {
-        // Space types text and natively activates option buttons. Only on the
-        // trigger would its native click toggle the popup right back closed —
-        // swallow it there, let it through everywhere else.
-        if (event.target === els.trigger) {
+        // Space types text and natively activates option buttons. Only on a
+        // button trigger would its native click toggle the popup right back
+        // closed — swallow it there. On the typeahead field the trigger IS the
+        // text input: the space has to type.
+        if (event.target === els.trigger && !isTextField(event.target as Element | null)) {
           event.preventDefault()
         }
         break

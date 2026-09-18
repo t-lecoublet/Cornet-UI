@@ -93,7 +93,23 @@ function disabledOf(option: O): boolean {
 }
 
 function optionOf(value: V): O | undefined {
-  return props.options.find((option) => keyOf(option) === value)
+  const found = props.options.find((option) => keyOf(option) === value)
+  if (found !== undefined) {
+    return found
+  }
+  // Under `returnObject`, the v-model holds whole options: one injected from
+  // outside (a form filled from an API payload) is an option-shaped record
+  // whose own fields describe it, and whose key the model reduced to its
+  // `trackBy`. Without this fallback the field displayed an empty string for
+  // a perfectly valid value.
+  if (isRecord(value)) {
+    return value as unknown as O
+  }
+  const raw = model.value
+  const candidates = Array.isArray(raw) ? raw : raw != null ? [raw] : []
+  return candidates.find(
+    (item) => isRecord(item) && keyOf(item as unknown as O) === value,
+  ) as O | undefined
 }
 
 // Selections are always compared by `trackBy` key, never by object identity:

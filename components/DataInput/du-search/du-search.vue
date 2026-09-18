@@ -106,11 +106,22 @@ function optionOf(value: V): O | undefined {
   if (found !== undefined) {
     return found
   }
-  // A committed created option is its own key (`trackBy: null`), so the v-model
-  // holds the object itself and no lookup in `options` can find it. Without
-  // this, the field displayed an empty string (single) or `[object Object]`
-  // (chips) for a perfectly valid committed value.
-  return isCreatedOption(value as unknown as O) ? (value as unknown as O) : undefined
+  // The v-model holds whole options, so a record that is not in `options` is
+  // still an option-shaped object — one injected from outside (a profile
+  // filled from an API payload) or created on commit (`creatable`). Its own
+  // fields describe it. Without this, the field displayed an empty string
+  // (single) or `[object Object]` (chips) for a perfectly valid committed
+  // value.
+  if (isRecord(value)) {
+    return value as unknown as O
+  }
+  // The key came from a record the model holds: `keyOf` reduced it to its
+  // `trackBy`. The raw model keeps the object, which is what has to display.
+  const raw = model.value
+  const candidates = Array.isArray(raw) ? raw : raw != null ? [raw] : []
+  return candidates.find(
+    (item) => isRecord(item) && keyOf(item as unknown as O) === value,
+  ) as O | undefined
 }
 
 /** The option a query stands for while it does not exist yet. */
