@@ -102,7 +102,15 @@ function disabledOf(option: O): boolean {
 }
 
 function optionOf(value: V): O | undefined {
-  return props.options.find((option) => keyOf(option) === value)
+  const found = props.options.find((option) => keyOf(option) === value)
+  if (found !== undefined) {
+    return found
+  }
+  // A committed created option is its own key (`trackBy: null`), so the v-model
+  // holds the object itself and no lookup in `options` can find it. Without
+  // this, the field displayed an empty string (single) or `[object Object]`
+  // (chips) for a perfectly valid committed value.
+  return isCreatedOption(value as unknown as O) ? (value as unknown as O) : undefined
 }
 
 /** The option a query stands for while it does not exist yet. */

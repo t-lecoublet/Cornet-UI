@@ -3,6 +3,17 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.25]
+
+### Fixed
+
+- `DuSearch`: a committed created option (`creatable` + `commitOnClose`) no
+  longer displays as an empty string (single mode) or `[object Object]`
+  (chips). The created option is its own key — the v-model holds the object
+  itself, and no lookup in `options` could find it — so the field showed
+  nothing for a perfectly valid committed value. `optionOf` now resolves a
+  created option from the model value directly.
+
 ## [0.1.0-beta.23]
 
 An empty field now says so with `null`, everywhere it can. `''` and `0` were
