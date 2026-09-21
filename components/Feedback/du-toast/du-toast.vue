@@ -94,7 +94,7 @@ defineSlots<{
         aria-atomic="false"
         class="contents"
       >
-        <TransitionGroup name="du-toast">
+        <TransitionGroup :duration="220" name="du-toast">
           <div v-for="toast in region.items" :key="toast.id" class="du-toast-item">
             <slot name="toast" :toast="toast" :dismiss="() => dismiss(toast.id)">
               <div :class="['alert', alertClass(toast.variant)]">

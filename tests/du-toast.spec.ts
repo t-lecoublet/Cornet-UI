@@ -215,6 +215,15 @@ describe('rendering', () => {
     const container = t.wrapper.find('.toast')
     expect(container.classes()).toEqual(expect.arrayContaining(['toast-end', 'toast-top']))
   })
+
+  it('bounds the leave/enter transitions with an explicit duration', () => {
+    // A dropped `transitionend` (throttled tab, headless compositor) would leave
+    // items stuck in leave-active forever — the JS timeout is the safety net.
+    const t = toaster()
+    push({ message: 'Saved' })
+    const group = t.wrapper.findComponent({ name: 'TransitionGroup' })
+    expect(group.props('duration')).toBe(220)
+  })
 })
 
 describe('pausing from the page', () => {
