@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<Omit<DuSearchProps<O, V>, 'modelValue'>>(
   readonly: false,
   required: false,
   type: 'text',
+  autocomplete: 'off',
+  inputAttrs: undefined,
   placeholder: '',
   noResultsText: 'No results',
   creatable: false,
@@ -223,6 +225,17 @@ const {
   onCreate: (option) => emit('add', option),
 }, writeModel)
 
+// The component's root is a wrapper, so fallthrough attributes land there and
+// never reach the field itself. `inputAttrs` is the way in, merged last so a
+// consumer can override what the engine sets — chiefly the per-vendor opt-outs
+// password managers require, since they ignore `autocomplete="off"` on
+// anything they read as a username.
+const fieldInputProps = computed(() => ({
+  ...comboboxInputProps.value,
+  autocomplete: props.autocomplete,
+  ...props.inputAttrs,
+}))
+
 // Kept alongside the engine's own refs, to hand focus to the input when the
 // field is clicked somewhere that is not a control.
 const inputEl = ref<HTMLInputElement | null>(null)
@@ -340,12 +353,12 @@ defineSlots<{
       </template>
 
       <!--
-        Labelled through `comboboxInputProps` (aria-label / aria-labelledby,
+        Labelled through `fieldInputProps` (aria-label / aria-labelledby,
         forwarded from the props), which a v-bind hides from the rule.
       -->
       <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
-      <input v-bind="comboboxInputProps" :ref="setFieldRef" :name="name" :type="type" :pattern="pattern"
-        :placeholder="placeholder" :value="displayValue" autocomplete="off"
+      <input v-bind="fieldInputProps" :ref="setFieldRef" :name="name" :type="type" :pattern="pattern"
+        :placeholder="placeholder" :value="displayValue"
         :aria-label="ariaLabel" :aria-labelledby="ariaLabelledby"
         class="flex-1 min-w-24 bg-transparent outline-none" @keydown="handleKeydown" @input="commitCommaSegments" />
     </div>

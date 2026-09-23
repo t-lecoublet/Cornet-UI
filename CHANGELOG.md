@@ -3,6 +3,30 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.29]
+
+### Added
+
+- `DuSearch`: `autocomplete` (default `'off'`) and `inputAttrs` props. The
+  component's root is a wrapper, so fallthrough attributes never reached the
+  field — nothing could be set on the `<input>` that the component did not
+  already expose. Password managers ignore `autocomplete="off"` on a field they
+  read as a username and opt out only through their own attribute, so
+  `:input-attrs="{ 'data-bwignore': true }"` (Bitwarden), `'data-1p-ignore'`,
+  `'data-lpignore'` or `'data-form-type': 'other'` (Dashlane) now have a way in.
+  `inputAttrs` is merged last and wins over what the engine sets.
+
+## [0.1.0-beta.28]
+
+### Fixed
+
+- `DuToast`: dismissed toasts no longer stay stuck on screen. The
+  `<TransitionGroup>` relied on `transitionend` alone to finish its
+  enter/leave animations; when that event never fires (throttled background
+  tab, headless compositor), items remained in `leave-active` forever. The
+  group now sets an explicit `:duration="220"`, so Vue's timeout ends the
+  transition even if the event is dropped.
+
 ## [0.1.0-beta.27]
 
 ### Added

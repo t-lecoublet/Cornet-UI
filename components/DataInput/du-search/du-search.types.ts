@@ -114,6 +114,19 @@ export interface DuSearchProps<O = any, V = any> {
   name?: string
   type?: string
   pattern?: string
+  /** Value of the input's `autocomplete` attribute (default: `'off'`). */
+  autocomplete?: string
+  /**
+   * Extra attributes set on the inner `<input>`, applied last so they win over
+   * everything the component sets itself. The component's root is a wrapper, so
+   * fallthrough attributes land there instead — this is the way in.
+   *
+   * Password managers ignore `autocomplete="off"` on anything that looks like a
+   * username, and each opts out through its own attribute:
+   * `{ 'data-bwignore': true, 'data-1p-ignore': true, 'data-lpignore': 'true',
+   *    'data-form-type': 'other' }`.
+   */
+  inputAttrs?: Record<string, string | number | boolean>
   size?: Size
   /** Size of the dropdown list. Defaults to `size`. */
   subSize?: Size
