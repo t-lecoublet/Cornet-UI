@@ -43,7 +43,6 @@ export const relatedGroups: RelatedGroup[] = [
       '/docs/data-input/input-field',
       '/docs/data-input/textarea',
       '/docs/data-input/label',
-      '/docs/data-input/label-input-validator',
       '/docs/data-input/fieldset',
       '/docs/data-input/file-input',
     ],

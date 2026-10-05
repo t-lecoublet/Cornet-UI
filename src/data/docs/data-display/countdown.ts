@@ -152,12 +152,12 @@ const deadline = new Date('2025-12-31T23:59:59')
       preview: `<div class="flex items-center gap-2 font-mono text-4xl">
   <div class="flex flex-col items-center">
     <DuCountdown :value="3" />
-    <span class="text-xs mt-1">jours</span>
+    <span class="text-xs mt-1">days</span>
   </div>
   <span>:</span>
   <div class="flex flex-col items-center">
     <DuCountdown :value="14" />
-    <span class="text-xs mt-1">heures</span>
+    <span class="text-xs mt-1">hours</span>
   </div>
   <span>:</span>
   <div class="flex flex-col items-center">
@@ -172,7 +172,7 @@ const deadline = new Date('2025-12-31T23:59:59')
 </div>`,
       code: `<DuCountdownGroup
   :targetDate="deadline"
-  :labels="{ days: 'jours', hours: 'heures', minutes: 'min', seconds: 'sec' }"
+  :labels="{ days: 'days', hours: 'hours', minutes: 'min', seconds: 'sec' }"
 />`,
     },
     {

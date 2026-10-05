@@ -241,15 +241,6 @@ export const componentGallery: Record<string, string> = {
   <DuInputField type="email" placeholder="you@example.com" size="sm" />
 </DuLabel>`,
 
-  '/docs/data-input/label-input-validator': `<DuLabelInputValidator
-  type="label"
-  inputType="email"
-  placeholder="you@example.com"
-  class="w-52"
->
-  Email
-</DuLabelInputValidator>`,
-
   '/docs/data-input/radio': `<div class="flex gap-3 items-center">
   <DuRadio name="gallery-radio" value="a" :checked="true" variant="primary" />
   <DuRadio name="gallery-radio" value="b" variant="secondary" />

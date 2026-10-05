@@ -158,7 +158,7 @@ export default {
     },
     {
       title: 'errorMessages',
-      description: 'Override the default validation messages, by code (`required`, `minlength`, `maxlength`).',
+      description: 'The validation messages, by code (`required`, `minlength`, `maxlength`). There is no default wording — a library cannot guess your language — so without them a failing field only turns red.',
       type: 'Partial<Record<DuSearchErrorCode, string>>',
     },
     {
@@ -596,7 +596,7 @@ async function fetchAuthors(query: string) {
     },
     {
       title: 'Validation',
-      description: 'Like DuSelect: `required`, plus `minSelected` / `maxSelected` in multiple mode, reported by the component since a custom combobox has no native constraint. Nothing is shown until the field has been visited. Override the wording with `errorMessages`, or replace it entirely with the `#error` slot; `valid`, `errors` and `validationMessage` are exposed on the instance.',
+      description: 'Like DuSelect: `required`, plus `minSelected` / `maxSelected` in multiple mode, reported by the component since a custom combobox has no native constraint. Nothing is shown until the field has been visited; the field then turns red, and the message is yours to write with `errorMessages` (there is no default wording) or to replace entirely with the `#error` slot; `valid`, `errors` and `validationMessage` are exposed on the instance.',
       code: `<script setup lang="ts">
 const field = ref()
 

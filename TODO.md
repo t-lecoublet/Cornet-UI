@@ -57,7 +57,6 @@ Documenter TOUTES les props de chaque composant avec:
 - `data-input/range.ts` ✓
 - `data-input/fieldset.ts` ✓
 - `data-input/label.ts` ✓
-- `data-input/label-input-validator.ts` ✓
 
 #### Actions
 

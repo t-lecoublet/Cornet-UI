@@ -101,7 +101,6 @@ export const componentLevels: ComponentLevelCategory[] = [
       { name: 'DuFilter', path: '/docs/data-input/filter', level: 'Intermediate', reason: 'Generic items, v-model over a radio group, fieldset/legend, conditional reset.' },
       { name: 'DuInputField', path: '/docs/data-input/input-field', level: 'Intermediate', reason: 'defineModel() passthrough plus the shared validation surface over native ValidityState.' },
       { name: 'DuLabel', path: '/docs/data-input/label', level: 'Simple', reason: 'Type-based class mapping plus provide().' },
-      { name: 'DuLabelInputValidator', path: '/docs/data-input/label-input-validator', level: 'Intermediate', reason: 'Composes DuLabel + DuInputField; most logic lives in the children.' },
       { name: 'DuRadio', path: '/docs/data-input/radio', level: 'Simple', reason: 'Pure class-mapping wrapper.' },
       { name: 'DuRange', path: '/docs/data-input/range', level: 'Intermediate', reason: 'Manual model sync plus an exposed computed value, aria-valuetext and a ticks datalist.' },
       { name: 'DuRating', path: '/docs/data-input/rating', level: 'Intermediate', reason: 'Value sync plus a clear-on-reclick rule and three rendering modes (radios, readonly, manual items). Borderline Rich.' },

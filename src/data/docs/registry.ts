@@ -46,7 +46,6 @@ import fileInput from './data-input/file-input'
 import filter from './data-input/filter'
 import inputField from './data-input/input-field'
 import label from './data-input/label'
-import labelInputValidator from './data-input/label-input-validator'
 import radio from './data-input/radio'
 import range from './data-input/range'
 import rating from './data-input/rating'
@@ -119,7 +118,6 @@ export const docsRegistry: Record<string, DocPageData> = {
   '/docs/data-input/filter': filter,
   '/docs/data-input/input-field': inputField,
   '/docs/data-input/label': label,
-  '/docs/data-input/label-input-validator': labelInputValidator,
   '/docs/data-input/radio': radio,
   '/docs/data-input/range': range,
   '/docs/data-input/rating': rating,

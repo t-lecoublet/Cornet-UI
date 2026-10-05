@@ -3,7 +3,7 @@
  * One cell of the All Components gallery: a live miniature of the component,
  * and a link to its page.
  *
- * The preview only mounts once the card is near the viewport. Fifty-one
+ * The preview only mounts once the card is near the viewport. Fifty
  * runtime-compiled templates on one route is enough work to be felt on a slow
  * machine, and all but a handful are below the fold on arrival.
  */

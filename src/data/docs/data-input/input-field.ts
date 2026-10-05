@@ -2,7 +2,7 @@ import type { DocPageData } from '@/types/docs'
 
 export default {
   title: 'InputField',
-  description: 'InputField is a styled text input. Validation is **native** — already localized, already what the form decides on submit — and the component only dresses the result: an error surface identical to DuSelect\'s and DuSearch\'s, so a form of mixed fields reports errors one way.',
+  description: 'InputField is a styled text input. Validation is **native** — already localized, already what the form decides on submit — and the component only dresses the result: an error surface identical to DuSelect\'s and DuSearch\'s, so a form of mixed fields reports errors one way. Any other attribute (`aria-label`, `autocomplete`, `inputmode`…) is passed straight to the `<input>`.',
   category: 'Data Input',
   source: 'https://daisyui.com/components/input/',
   props: [
@@ -47,6 +47,12 @@ export default {
     {
       title: 'invalid',
       description: 'Force the invalid styling regardless of native validity',
+      type: 'boolean',
+      default: 'false',
+    },
+    {
+      title: 'showValid',
+      description: 'Turn the field green once it has been visited and holds a valid, non-empty value. Off by default.',
       type: 'boolean',
       default: 'false',
     },
@@ -308,6 +314,50 @@ const nickname = ref('')          // text keeps ""
 />`,
     },
     {
+      title: 'Showing success',
+      description: 'Errors always show; success is opt-in. With `showValid`, the field turns green once it has been left with a valid, non-empty value — the same moment an error would appear. An empty optional field stays neutral. Inside a `DuLabel type="input"`, the label turns green instead.',
+      preview: `<div class="flex flex-col gap-3 w-72">
+  <DuInputField
+    type="email"
+    placeholder="your@email.com"
+    required
+    showValid
+  />
+  <DuLabel type="floating-label">
+    <span>Username</span>
+    <DuInputField placeholder="3 to 16 letters" required pattern="[A-Za-z]{3,16}" showValid />
+  </DuLabel>
+  <p class="text-xs text-base-content/60">Type a valid value, then click away.</p>
+</div>`,
+      code: `<DuInputField v-model="email" type="email" required showValid />`,
+    },
+    {
+      title: 'With a label',
+      description: 'Inside a `DuLabel`, the message is rendered after the label rather than inside it — every daisyUI label is a flex row, which would otherwise squeeze the field. Works the same for a floating label, a stacked one or a prefixed `type="input"`.',
+      links: [
+        { label: 'DuLabel docs', href: '/docs/data-input/label' },
+      ],
+      preview: `<div class="flex flex-col gap-4 w-72">
+  <DuLabel type="floating-label">
+    <span>Email</span>
+    <DuInputField type="email" placeholder="you@example.com" required />
+  </DuLabel>
+  <DuLabel type="label" class="flex-col items-start gap-1">
+    Password
+    <DuInputField type="password" placeholder="At least 12 characters" required :minlength="12" />
+  </DuLabel>
+</div>`,
+      code: `<DuLabel type="floating-label">
+  <span>Email</span>
+  <DuInputField v-model="email" type="email" placeholder="you@example.com" required />
+</DuLabel>
+
+<DuLabel type="label" class="flex-col items-start gap-1">
+  Password
+  <DuInputField v-model="password" type="password" required :minlength="12" />
+</DuLabel>`,
+    },
+    {
       title: 'Reading validity from a parent',
       description: 'The instance exposes `valid`, `errors`, `validationMessage`, plus `markTouched()` and `reset()` — the same surface DuSelect and DuSearch expose. Call `markTouched()` on submit to reveal messages on fields the user never visited.',
       lang: 'vue',
@@ -330,28 +380,11 @@ function submit() {
 </template>`,
     },
     {
-      title: 'Passing attributes through',
-      description: 'Attributes you put on `DuInputField` — `aria-label`, `aria-describedby`, `autocomplete`, `inputmode`, anything — now reach the `<input>`. They used to land nowhere: the template\'s root is a fragment (input plus an optional `<datalist>`), so Vue could not auto-inherit them, and the field could not be given an accessible name outside a wrapping label.',
-      preview: `<DuInputField
-  class="w-72"
-  type="text"
-  placeholder="Search the docs"
-  aria-label="Search the docs"
-  autocomplete="off"
-/>`,
-      code: `<DuInputField
-  v-model="query"
-  type="search"
-  aria-label="Search the docs"
-  autocomplete="off"
-  inputmode="search"
-/>`,
-    },
-    {
-      title: 'Suggestion list (autocomplete)',
-      description: 'Pass `suggestionList` (values array) and `suggestionName` (HTML datalist id) to enable native browser autocomplete suggestions.',
+      title: 'Suggestions (datalist)',
+      description: 'Pass `suggestionList` (the values) and `suggestionName` (the id of the generated `<datalist>`) and the browser offers those values as you type. The field stays free text: any value is accepted. To pick from a filtered list with keyboard navigation and a real selection, use DuSearch.',
       links: [
         { label: 'MDN datalist element', href: 'https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist' },
+        { label: 'DuSearch docs', href: '/docs/data-input/search' },
       ],
       preview: `<DuInputField
   placeholder="Search a country..."
@@ -389,7 +422,7 @@ const countries = [
 
   <DuLabel>Password</DuLabel>
     <DuInputField type="password" placeholder="••••••••" />
-  <DuLabel type="label"> Min 12 caract</DuLabel>
+  <DuLabel type="label"> Min 12 characters</DuLabel>
 </DuFieldset>`,
       code: `<DuFieldset legend="Account" class="bg-base-200 border border-base-300 rounded-box p-4">
   <DuLabel> Email </DuLabel>
@@ -398,7 +431,7 @@ const countries = [
 
   <DuLabel>Password</DuLabel>
     <DuInputField type="password" placeholder="••••••••" />
-  <DuLabel type="label"> Min 12 caract</DuLabel>
+  <DuLabel type="label"> Min 12 characters</DuLabel>
 </DuFieldset>`,
     },
   ],

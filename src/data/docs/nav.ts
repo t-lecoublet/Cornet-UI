@@ -76,7 +76,6 @@ export const docsNav: NavCategory[] = [
       { label: 'Filter', path: '/docs/data-input/filter', description: 'A radio-button-style toggle group in a fieldset, with a legend naming the whole set.' },
       { label: 'InputField', path: '/docs/data-input/input-field', description: 'InputField is a styled text input element with support for variants, sizes, and validation.' },
       { label: 'Label', path: '/docs/data-input/label', description: 'Label wraps an input with an accessible label.' },
-      { label: 'LabelInputValidator', path: '/docs/data-input/label-input-validator', description: 'Label + input combo with built-in HTML5 constraint validation and an optional hint.' },
       { label: 'Radio', path: '/docs/data-input/radio', description: 'Radio buttons allow the user to select one option from a set.' },
       { label: 'Range', path: '/docs/data-input/range', description: 'Range input allows users to select a value within a numeric range.' },
       { label: 'Rating', path: '/docs/data-input/rating', description: 'Rating shows a star-based (or custom shape) rating input.' },

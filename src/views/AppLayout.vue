@@ -165,7 +165,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
 
     <!-- ─── Search modal ──────────────────────────────── -->
     <DuModal v-model:open="searchOpen" placement="top" closeOnEscape classBox="overflow-visible">
-      <!-- Détourne l'auto-focus du dialog loin du DuSearch -->
+      <!-- Takes the dialog's autofocus so it does not land on DuSearch -->
       <span tabindex="0" autofocus class="sr-only" />
       <div class="flex items-center gap-3">
         <svg class="w-4 h-4 shrink-0 text-base-content/40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

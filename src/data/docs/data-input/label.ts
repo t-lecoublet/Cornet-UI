@@ -102,6 +102,72 @@ export default {
   <span class="label">Your name</span>
   <DuInputField v-model="name" placeholder="Your name" />
 </DuLabel>`,
-    }
+    },
+    {
+      title: 'Floating label with validation',
+      description: 'Constraints go on the `DuInputField` as usual. Once the field has been visited and fails, it turns red and its message appears under the label — the field hands it to `DuLabel`, which renders it after the `<label>` so the flex row never squeezes the input. Type something wrong, then click away.',
+      links: [
+        { label: 'DuInputField validation', href: '/docs/data-input/input-field' },
+        { label: 'DaisyUI floating-label', href: 'https://daisyui.com/components/label/#floating-label' },
+      ],
+      preview: `<div class="flex flex-col gap-4 w-72">
+  <DuLabel type="floating-label">
+    <span>Email</span>
+    <DuInputField
+      type="email"
+      placeholder="you@example.com"
+      required
+      :errorMessages="{ required: 'We need an email to reach you.', type: 'That does not look like an email.' }"
+    />
+  </DuLabel>
+  <DuLabel type="floating-label">
+    <span>Username</span>
+    <DuInputField
+      placeholder="3 to 16 letters"
+      required
+      pattern="[A-Za-z]{3,16}"
+      :errorMessages="{ pattern: '3 to 16 letters, nothing else.' }"
+    />
+  </DuLabel>
+</div>`,
+      code: `<DuLabel type="floating-label">
+  <span>Email</span>
+  <DuInputField
+    v-model="email"
+    type="email"
+    placeholder="you@example.com"
+    required
+    :errorMessages="{
+      required: 'We need an email to reach you.',
+      type: 'That does not look like an email.',
+    }"
+  />
+</DuLabel>`,
+    },
+    {
+      title: 'Prefixed input with validation',
+      description: 'With `type="input"` the label itself draws the border, so it is the label that turns red. The message is rendered as the label\'s next sibling, so give the parent a column layout.',
+      preview: `<div class="flex flex-col w-72">
+  <DuLabel type="input">
+    <span class="label">https://</span>
+    <DuInputField
+      placeholder="mysite.com"
+      required
+      pattern="[a-z0-9]+(\\.[a-z0-9]+)+"
+      :errorMessages="{ required: 'A domain is required.', pattern: 'Something like mysite.com' }"
+    />
+  </DuLabel>
+</div>`,
+      code: `<DuLabel type="input">
+  <span class="label">https://</span>
+  <DuInputField
+    v-model="domain"
+    placeholder="mysite.com"
+    required
+    pattern="[a-z0-9]+(\\.[a-z0-9]+)+"
+    :errorMessages="{ required: 'A domain is required.', pattern: 'Something like mysite.com' }"
+  />
+</DuLabel>`,
+    },
   ],
 } satisfies DocPageData

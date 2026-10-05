@@ -147,7 +147,7 @@ export default {
     },
     {
       title: 'errorMessages',
-      description: 'Override the default validation messages, by code (`required`, `minlength`, `maxlength`).',
+      description: 'The validation messages, by code (`required`, `minlength`, `maxlength`). There is no default wording — a library cannot guess your language — so without them a failing field only turns red.',
       type: 'Partial<Record<DuSelectErrorCode, string>>',
     },
     {
@@ -611,7 +611,7 @@ const selected = ref(null) // will hold the id (trackBy value)
     },
     {
       title: 'Validation',
-      description: 'A custom combobox has no native form constraint behind it, so the component reports its own: `required`, and `minSelected` / `maxSelected` in multiple mode. Nothing is shown until the field has been visited. Override the wording with `errorMessages`, replace the whole thing with the `#error` slot, and read `valid`, `errors` and `validationMessage` off the component instance when the form submits.',
+      description: 'A custom combobox has no native form constraint behind it, so the component reports its own: `required`, and `minSelected` / `maxSelected` in multiple mode. Nothing is shown until the field has been visited — closed after opening, or tabbed past. The field then turns red; the message is yours to write with `errorMessages` (there is no default wording), replace the whole thing with the `#error` slot, and read `valid`, `errors` and `validationMessage` off the component instance when the form submits.',
       preview: `<div class="flex flex-col gap-3 w-72">
   <DuSelect
     ariaLabel="Tags"
@@ -620,6 +620,7 @@ const selected = ref(null) // will hold the id (trackBy value)
     required
     :minSelected="2"
     placeholder="Pick at least two"
+    :errorMessages="{ required: 'Pick at least two tags.', minlength: 'Pick at least two tags.' }"
   />
   <p class="text-xs text-base-content/60">Open it, pick one, then click away.</p>
 </div>`,
