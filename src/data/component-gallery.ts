@@ -324,18 +324,17 @@ export const componentGallery: Record<string, string> = {
 </div>`,
 
   // ─── Layout ───────────────────────────────────────────────
-  '/docs/layout/drawer': `<div class="relative h-28 w-full overflow-hidden rounded-lg border border-base-300" style="transform: translate(0, 0)">
-  <DuDrawer :modelValue="true" overlayClass="hidden">
-    <template #sidebar>
-      <nav class="p-3 bg-base-200 h-full w-28">
-        <ul class="menu menu-xs">
-          <li><a>Home</a></li>
-          <li><a>Settings</a></li>
-        </ul>
-      </nav>
-    </template>
-    <div class="p-3 text-xs text-base-content/50">Page content</div>
-  </DuDrawer>
+  // An open DuDrawer is a modal: its focus trap grabs focus on mount and pulls
+  // it back on every click elsewhere, scrolling the gallery to this tile and
+  // swallowing the click. The cell draws the open layout instead.
+  '/docs/layout/drawer': `<div class="relative h-28 w-full overflow-hidden rounded-lg border border-base-300 flex">
+  <nav class="p-3 bg-base-200 h-full w-28 shrink-0">
+    <ul class="menu menu-xs p-0">
+      <li><span>Home</span></li>
+      <li><span>Settings</span></li>
+    </ul>
+  </nav>
+  <div class="p-3 text-xs text-base-content/50">Page content</div>
 </div>`,
 
   '/docs/layout/join': `<DuJoin direction="horizontal">
