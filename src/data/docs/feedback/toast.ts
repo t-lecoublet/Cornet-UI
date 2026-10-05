@@ -160,8 +160,8 @@ push({ message: 'Careful', politeness: 'assertive' })          // forced asserti
     {
       title: 'Handwritten toasts',
       description: 'The default slot still works exactly as before, and it is additive — its content renders alongside anything in the queue. Use it for a banner that is not really a notification.',
-      preview: `<div class="relative h-36 w-full rounded-xl border border-base-300 overflow-hidden">
-  <DuToast class="absolute" horizontalPosition="end" verticalPosition="top">
+      preview: `<div class="relative h-36 w-full rounded-xl border border-base-300 overflow-hidden" style="transform: translate(0, 0)">
+  <DuToast horizontalPosition="end" verticalPosition="top">
     <DuAlert variant="success" icon>Saved successfully!</DuAlert>
     <DuAlert variant="info" icon>2 files uploaded</DuAlert>
   </DuToast>
@@ -173,8 +173,8 @@ push({ message: 'Careful', politeness: 'assertive' })          // forced asserti
     },
     {
       title: 'Placement',
-      preview: `<div class="relative h-40 w-full rounded-xl border border-base-300 overflow-hidden">
-  <DuToast class="absolute" horizontalPosition="start" verticalPosition="top">
+      preview: `<div class="relative h-40 w-full rounded-xl border border-base-300 overflow-hidden" style="transform: translate(0, 0)">
+  <DuToast horizontalPosition="start" verticalPosition="top">
     <DuAlert variant="info">start / top</DuAlert>
   </DuToast>
 </div>`,

@@ -310,9 +310,10 @@ export const componentGallery: Record<string, string> = {
   <DuSkeleton class="h-3 w-1/2" />
 </div>`,
 
-  // `.toast` is fixed-positioned; bounded here so it stays in its cell.
-  '/docs/feedback/toast': `<div class="relative h-24 w-full overflow-hidden">
-  <DuToast class="absolute" horizontalPosition="end" verticalPosition="bottom">
+  // `.toast` is fixed-positioned, and DuToast's root is a Teleport so a `class`
+  // never reaches it. A transform on the cell makes it the containing block.
+  '/docs/feedback/toast': `<div class="relative h-24 w-full overflow-hidden" style="transform: translate(0, 0)">
+  <DuToast horizontalPosition="end" verticalPosition="bottom">
     <DuAlert variant="success" icon>Saved</DuAlert>
   </DuToast>
 </div>`,
