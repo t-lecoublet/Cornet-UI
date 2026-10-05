@@ -29,7 +29,7 @@ export default {
     },
     {
       title: 'absolute',
-      description: 'Pin the FAB to the bottom-right of the nearest positioned ancestor. Set to `false` to place it inline.',
+      description: 'Pin the FAB to the bottom-right of the nearest positioned ancestor. Set to `false` to fall back to daisyUI\'s `position: fixed`, pinning it to the bottom-right of the viewport.',
       type: 'boolean',
       default: 'true',
     },
@@ -162,7 +162,7 @@ export default {
     },
     {
       title: 'Positioning',
-      description: 'By default `absolute` is `true`, pinning the FAB to the bottom-right corner of the nearest positioned ancestor (give it `relative`). Set `:absolute="false"` to let the FAB sit inline in the normal document flow.',
+      description: 'By default `absolute` is `true`, pinning the FAB to the bottom-right corner of the nearest positioned ancestor (give it `relative`). Set `:absolute="false"` for daisyUI\'s default `position: fixed`: the FAB stays in the bottom-right corner of the viewport while the page scrolls — the usual app-wide FAB. (The second box below uses `transform` to keep that fixed FAB inside the preview.)',
       preview: `<div class="flex flex-col gap-4">
   <div class="relative h-40 w-64 border border-base-300 rounded-xl">
     <DuFab
@@ -170,7 +170,7 @@ export default {
       :items="[{ label: 'Test' }]"
     />
   </div>
-  <div class="flex justify-start w-64 border border-base-300 rounded-xl p-4">
+  <div class="h-40 w-64 border border-base-300 rounded-xl" style="transform: translate(0, 0)">
     <DuFab
       :absolute="false"
       :mainAction="{ label: '↗', variant: 'secondary' }"
@@ -186,7 +186,7 @@ export default {
   />
 </div>
 
-<!-- Inline, in the normal document flow -->
+<!-- Fixed to the viewport's bottom-right corner (daisyUI default) -->
 <DuFab
   :absolute="false"
   :mainAction="{ label: '↗', variant: 'secondary' }"
