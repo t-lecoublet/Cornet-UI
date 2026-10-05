@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, provide, shallowRef } from "vue"
+import { hugPreviousSibling } from "../../core/shared"
 import { LABEL_FIELD_ERROR, type DuLabelFieldError, type DuLabelProps } from "./du-label.types"
 
 const props = defineProps<DuLabelProps>()
@@ -53,5 +54,5 @@ const stateClass = computed(() => {
   <label v-bind="$attrs" :class="[typeClass, stateClass]">
     <slot />
   </label>
-  <p v-if="fieldError" :id="fieldError.id" class="validator-hint visible text-error">{{ fieldError.message }}</p>
+  <p v-if="fieldError?.message" :id="fieldError.id" :ref="hugPreviousSibling" class="validator-hint visible text-error text-xs mt-1">{{ fieldError.message }}</p>
 </template>

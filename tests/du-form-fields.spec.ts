@@ -103,7 +103,8 @@ describe('how the error looks', () => {
   })
 
   it('marks the field invalid and points it at the message', async () => {
-    const f = field({ required: true, 'aria-describedby': 'help' })
+    // jsdom leaves `validationMessage` empty, where a browser never does.
+    const f = field({ required: true, errorMessages: { required: 'Required' }, 'aria-describedby': 'help' })
     expect(f.input().attributes('aria-invalid')).toBeUndefined()
 
     await f.leave()
@@ -159,7 +160,7 @@ describe('showValid', () => {
 describe('inside a DuLabel', () => {
   function labelled(type: string) {
     const wrapper = mount(
-      { components: { DuLabel, DuInputField }, template: `<DuLabel type="${type}" class="mine"><span>Email</span><DuInputField required /></DuLabel>` },
+      { components: { DuLabel, DuInputField }, template: `<DuLabel type="${type}" class="mine"><span>Email</span><DuInputField required :errorMessages="{ required: 'Required' }" /></DuLabel>` },
       { attachTo: document.body },
     )
     return { wrapper, leave: () => wrapper.find('input').trigger('blur') }

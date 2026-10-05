@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import {
   focusableInDocument,
   hasEditableText,
+  hugPreviousSibling,
   isTextField,
   revealInContainer,
 } from '../components/core/shared/dom'
@@ -104,5 +105,45 @@ describe('revealInContainer', () => {
 
   it('does nothing without a container', () => {
     expect(() => revealInContainer(rowAt(120, 140), null)).not.toThrow()
+  })
+})
+
+describe('hugPreviousSibling', () => {
+  function inParent(style: Partial<CSSStyleDeclaration>) {
+    const parent = document.createElement('div')
+    Object.assign(parent.style, style)
+    const field = document.createElement('input')
+    const message = document.createElement('p')
+    parent.append(field, message)
+    document.body.append(parent)
+    return message
+  }
+
+  it('cancels the gap of a column flex', () => {
+    const message = inParent({ display: 'flex', flexDirection: 'column', rowGap: '16px' })
+    hugPreviousSibling(message)
+    expect(message.style.marginTop).toBe('calc(0.25rem - 16px)')
+  })
+
+  it('cancels the row gap of a grid', () => {
+    const message = inParent({ display: 'grid', rowGap: '12px' })
+    hugPreviousSibling(message)
+    expect(message.style.marginTop).toBe('calc(0.25rem - 12px)')
+  })
+
+  it('leaves a plain small margin where there is no gap to cancel', () => {
+    const block = inParent({ display: 'block' })
+    hugPreviousSibling(block)
+    expect(block.style.marginTop).toBe('0.25rem')
+
+    // A row flex puts the message beside the field: its gap is not between them vertically.
+    const row = inParent({ display: 'flex', rowGap: '16px' })
+    hugPreviousSibling(row)
+    expect(row.style.marginTop).toBe('0.25rem')
+  })
+
+  it('ignores a missing or detached element', () => {
+    expect(() => hugPreviousSibling(null)).not.toThrow()
+    expect(() => hugPreviousSibling(document.createElement('p'))).not.toThrow()
   })
 })

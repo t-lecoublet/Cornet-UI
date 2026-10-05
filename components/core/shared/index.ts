@@ -1,5 +1,5 @@
 export { useComponentId, useScopedIds } from './ids'
-export { focusableInDocument, focusableWithin, hasEditableText, isTextField, revealInContainer } from './dom'
+export { focusableInDocument, focusableWithin, hasEditableText, hugPreviousSibling, isTextField, revealInContainer } from './dom'
 export { useControllableState } from './useControllableState'
 export { useNativeValidation } from './useNativeValidation'
 export type { NativeErrorCode, NativeValidation, NativeValidationOptions } from './useNativeValidation'

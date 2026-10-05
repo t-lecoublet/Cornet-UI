@@ -33,6 +33,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/) and the p
   it after the `<label>`; with `type="input"` / `"select"` the label turns red
   too. `DuLabel`'s root is now a fragment (label + optional message);
   attributes still land on the `<label>`.
+- `DuSelect`, `DuSearch`: a failing field gave no sign at all unless
+  `errorMessages` was set — there is no default wording since beta.29, and
+  nothing else changed. The field now turns `input-error` and the combobox
+  carries `aria-invalid` (plus `aria-describedby` when a message is shown).
+  Tabbing past the field without opening it now counts as a visit, as closing
+  the popup already did. Inside a `DuLabel`, the message goes after the label
+  and the label turns red, as for `DuInputField`.
+- Validation messages (`DuInputField`, `DuLabel`, `DuSelect`, `DuSearch`)
+  share one look — `text-xs`, 4px under the field — whatever `gap` the parent
+  puts between its children: the message, a sibling of the field, cancels it.
+  `DuSelect` / `DuSearch` render it after the dropdown, which a message
+  before it used to push down.
 
 ## [0.1.0-beta.29]
 

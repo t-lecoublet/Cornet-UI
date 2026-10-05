@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import DuSelect from '../components/DataInput/du-select/du-select.vue'
+import DuLabel from '../components/DataInput/du-label/du-label.vue'
 
 const options = [
   { id: 1, name: 'One' },
@@ -425,6 +426,51 @@ describe('DuSelect validation', () => {
     await openSelect(wrapper)
     await combobox(wrapper).trigger('keydown', { key: 'Escape' })
     expect(wrapper.text()).toContain('Choisis-en deux')
+  })
+
+  it('turns the field red even with no message to show', async () => {
+    // The combobox ships no default wording, so the colour is the only signal
+    // a consumer who set no `errorMessages` gets.
+    const wrapper = mountSelect({ required: true })
+    await openSelect(wrapper)
+    await combobox(wrapper).trigger('keydown', { key: 'Escape' })
+
+    expect(wrapper.find('.input').classes()).toContain('input-error')
+    expect(combobox(wrapper).attributes('aria-invalid')).toBe('true')
+    expect(combobox(wrapper).attributes('aria-describedby')).toBeUndefined()
+  })
+
+  it('points the trigger at the message when there is one', async () => {
+    const wrapper = mountSelect({ required: true, errorMessages: { required: 'Pick one.' } })
+    await openSelect(wrapper)
+    await combobox(wrapper).trigger('keydown', { key: 'Escape' })
+
+    const id = combobox(wrapper).attributes('aria-describedby')
+    expect(wrapper.find(`#${id}`).text()).toBe('Pick one.')
+  })
+
+  it('counts tabbing past without opening as a visit', async () => {
+    const wrapper = mountSelect({ required: true })
+    await combobox(wrapper).trigger('focusout', { relatedTarget: document.body })
+    expect(combobox(wrapper).attributes('aria-invalid')).toBe('true')
+  })
+
+  it('hands its message to a wrapping DuLabel, which turns red', async () => {
+    const wrapper = mount(
+      {
+        components: { DuLabel, DuSelect },
+        data: () => ({ options }),
+        template: `<DuLabel type="select"><span class="label">Type</span><DuSelect :options="options" required :errorMessages="{ required: 'Pick one.' }" /></DuLabel>`,
+      },
+      { attachTo: document.body },
+    )
+    await wrapper.find('[role="combobox"]').trigger('click')
+    await wrapper.find('[role="combobox"]').trigger('keydown', { key: 'Escape' })
+
+    const label = wrapper.find('label')
+    expect(label.classes()).toContain('input-error')
+    expect(label.text()).not.toContain('Pick one.')
+    expect((label.element.nextElementSibling as HTMLElement).textContent).toBe('Pick one.')
   })
 
   it('exposes the validity to a parent', async () => {

@@ -69,3 +69,27 @@ export function revealInContainer(el: HTMLElement, container: HTMLElement | null
     container.scrollTop += (target.bottom - viewport.bottom) / scale
   }
 }
+
+/**
+ * Pull a field's message up against the field, whatever gap the parent puts
+ * between its children.
+ *
+ * The message is the field's next sibling — no wrapper, so a consumer's
+ * `flex-1` or `grow` on the field keeps working — which exposes it to the
+ * parent's `gap`: 4px under one field, 28px under another. In a column flex or
+ * a grid, the margin cancels that gap. Use as a function ref.
+ */
+export function hugPreviousSibling(target: unknown) {
+  // A single parameter on purpose: Vue calls a function ref with a second
+  // argument (the refs object), which must not land in anything meaningful.
+  const offset = '0.25rem'
+  const el = target as HTMLElement | null
+  if (el?.parentElement == null) {
+    return
+  }
+  const parent = getComputedStyle(el.parentElement)
+  const stacked = parent.display.includes('grid')
+    || (parent.display.includes('flex') && parent.flexDirection.startsWith('column'))
+  const gap = stacked ? parent.rowGap : 'normal'
+  el.style.marginTop = gap === 'normal' || gap === '0px' ? offset : `calc(${offset} - ${gap})`
+}

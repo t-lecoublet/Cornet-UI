@@ -3,6 +3,7 @@ import { computed, reactive, ref, watch } from 'vue'
 import { nestedSize, useSizeMapping, type Size } from '../../../composables/useSizeProps'
 import { useVariantMapping } from '../../../composables/useVariantProps'
 import { useCombobox } from '../../core/combobox'
+import { useLabelledFieldError } from '../du-label/useLabelledFieldError'
 import type { DuSearchEmit, DuSearchProps } from './du-search.types'
 
 const props = withDefaults(defineProps<Omit<DuSearchProps<O, V>, 'modelValue'>>(), {
@@ -68,6 +69,7 @@ const fieldClass = computed(() => [
   colorClass.value,
   props.ghost ? 'input-ghost' : '',
   props.disabled ? 'input-disabled' : '',
+  showError.value ? 'input-error' : '',
   props.customClass ?? '',
 ].filter(Boolean))
 
@@ -307,9 +309,28 @@ function removeEntry(entry: { value: V; option: O | undefined }) {
   writeModel(selectedList.value.filter((value) => value !== entry.value))
 }
 
-// Errors only show once the user has been through the field at least once.
+// Errors only show once the user has been through the field at least once:
+// closed the popup, or tabbed past without ever opening it.
 const touched = ref(false)
 const showError = computed(() => touched.value && !valid.value)
+
+function onFocusout(event: FocusEvent) {
+  // While open, closing is what marks the visit — a click on an option must
+  // not flash the error mid-selection.
+  if (isOpen.value) {
+    return
+  }
+  const root = event.currentTarget as HTMLElement
+  if (!root.contains(event.relatedTarget as Node | null)) {
+    touched.value = true
+  }
+}
+
+const { errorId, delegated, describedBy } = useLabelledFieldError({
+  showError,
+  message: validationMessage,
+  idPrefix: 'du-search-error',
+})
 
 watch(isOpen, (value) => {
   if (value) {
@@ -332,7 +353,7 @@ defineSlots<{
 </script>
 
 <template>
-  <div class="relative" :ref="setContainerRef">
+  <div class="relative" :ref="setContainerRef" @focusout="onFocusout">
     <!--
       The field is a surface, not the control: it forwards a click on the
       chips to the `<input role="combobox">` it contains, which owns the
@@ -360,12 +381,9 @@ defineSlots<{
       <input v-bind="fieldInputProps" :ref="setFieldRef" :name="name" :type="type" :pattern="pattern"
         :placeholder="placeholder" :value="displayValue"
         :aria-label="ariaLabel" :aria-labelledby="ariaLabelledby"
+        :aria-invalid="showError || undefined" :aria-describedby="describedBy"
         class="flex-1 min-w-24 bg-transparent outline-none" @keydown="handleKeydown" @input="commitCommaSegments" />
     </div>
-
-    <slot v-if="showError" name="error" :errors="errors" :message="validationMessage">
-      <span v-if="validationMessage" class="text-error text-sm mt-1 block">{{ validationMessage }}</span>
-    </slot>
 
     <transition enter-active-class="transition ease-out duration-100" enter-from-class="opacity-0 scale-95"
       enter-to-class="opacity-100 scale-100" leave-active-class="transition ease-in duration-75"
@@ -398,5 +416,11 @@ defineSlots<{
         </ul>
       </div>
     </transition>
+
+    <!-- After the dropdown: an absolute popup with no `top` sits where it
+         would in the flow, so a message before it pushed it down. -->
+    <slot v-if="showError && !delegated" name="error" :errors="errors" :message="validationMessage">
+      <p v-if="validationMessage" :id="errorId" class="validator-hint visible text-error text-xs mt-1">{{ validationMessage }}</p>
+    </slot>
   </div>
 </template>
