@@ -48,7 +48,6 @@ export { default as DuFileInput } from './components/DataInput/du-file-input/du-
 export { default as DuFilter } from './components/DataInput/du-filter/du-filter.vue'
 export { default as DuInputField } from './components/DataInput/du-input-field/du-input-field.vue'
 export { default as DuLabel } from './components/DataInput/du-label/du-label.vue'
-export { default as DuLabelInputValidator } from './components/DataInput/du-label-input-validator/du-label-input-validator.vue'
 export { default as DuRadio } from './components/DataInput/du-radio/du-radio.vue'
 export { default as DuRange } from './components/DataInput/du-range/du-range.vue'
 export { default as DuRating } from './components/DataInput/du-rating/du-rating.vue'

@@ -30,7 +30,6 @@ export type { DuFieldsetProps } from '../components/DataInput/du-fieldset/du-fie
 export type { DuFileInputEmit,DuFileInputProps } from '../components/DataInput/du-file-input/du-file-input.types'
 export type { DuFilterValue,DuFilterEmit,DuFilterButtonArgs,DuFilterItem,DuFilterProps } from '../components/DataInput/du-filter/du-filter.types'
 export type { DuInputFieldVariant,DuInputFieldSize,DuInputFieldType,DuInputFieldValidatorProps,DuInputFieldModelModifier,DuInputFieldProps } from '../components/DataInput/du-input-field/du-input-field.types'
-export type { DuLabelInputValidatorProps } from '../components/DataInput/du-label-input-validator/du-label-input-validator.types'
 export type { DuLabelProps } from '../components/DataInput/du-label/du-label.types'
 export type { DuRadioVariant,DuRadioSize,DuRadioProps } from '../components/DataInput/du-radio/du-radio.types'
 export type { DuRangeVariant,DuRangeSize,DuRangeValueText,DuRangeProps } from '../components/DataInput/du-range/du-range.types'

@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useSizeMapping } from "../../../composables/useSizeProps"
 import { useVariantMapping } from "../../../composables/useVariantProps"
-import { computed, inject } from "vue"
-import { useNativeValidation } from "../../core/shared"
+import { computed, inject, onBeforeUnmount, useAttrs, useSlots, watchEffect } from "vue"
+import { useComponentId, useNativeValidation } from "../../core/shared"
+import { LABEL_FIELD_ERROR } from "../du-label/du-label.types"
 import { NULL_WHEN_EMPTY_TYPES, type DuInputFieldModelModifier, type DuInputFieldProps } from "./du-input-field.types"
 
-// The model stays `unknown`, as it was: `DuLabelInputValidator` declares its own
-// as `string` and binds it here, so narrowing this one would break it. Only the
-// modifier bag is new.
 const [model, modifiers] = defineModel<unknown, DuInputFieldModelModifier>()
 
 const props = withDefaults(defineProps<DuInputFieldProps>(), {
@@ -18,6 +16,7 @@ const props = withDefaults(defineProps<DuInputFieldProps>(), {
   variant: "default",
   disabled: false,
   required: false,
+  showValid: false,
 })
 
 const { colorClass } = useVariantMapping(props, "input")
@@ -93,6 +92,48 @@ defineExpose({
 const isInput = inject("isInInput", false)
 const inJoin = inject("isInJoin", false)
 
+const showError = computed(() => validation.showError.value)
+const errorId = useComponentId(undefined, "du-input-error")
+
+// Inside a DuLabel the message goes after the label, not inside it (see
+// LABEL_FIELD_ERROR). A consumer's own `#error` slot stays where they put it.
+const slots = useSlots()
+const label = inject(LABEL_FIELD_ERROR, null)
+const delegated = computed(() => label != null && slots.error == null)
+
+watchEffect(() => {
+  if (!delegated.value) {
+    return
+  }
+  label!.report(showError.value ? { id: errorId, message: validation.validationMessage.value } : null)
+})
+
+/** Opt-in: visited, valid and not empty — the same moment an error would show. */
+const showSuccess = computed(() => (
+  props.showValid
+  && validation.touched.value
+  && validation.valid.value
+  && model.value != null
+  && model.value !== ""
+))
+
+watchEffect(() => {
+  label?.reportValid(showSuccess.value)
+})
+
+onBeforeUnmount(() => {
+  label?.report(null)
+  label?.reportValid(false)
+})
+
+// The consumer's own `aria-describedby` is kept, the message's id appended —
+// unless they render the message themselves, in which case there is no id.
+const attrs = useAttrs()
+const describedBy = computed(() => {
+  const ids = [attrs["aria-describedby"], showError.value && slots.error == null && errorId].filter(Boolean)
+  return ids.length > 0 ? ids.join(" ") : undefined
+})
+
 // The template's root is a fragment (input + optional datalist), so Vue cannot
 // auto-inherit attributes — without this, an `aria-label` or `aria-describedby`
 // passed by the consumer would land nowhere and the field would have no
@@ -107,7 +148,9 @@ defineOptions({ inheritAttrs: false })
     :disabled="disabled"
     :type="type"
     :placeholder="placeholder"
-    :class="[!isInput && 'input', colorClass, sizeClass, ghostClass, invalidClass, props.class, inJoin && 'join-item']"
+    :class="[!isInput && 'input', colorClass, sizeClass, ghostClass, invalidClass, !isInput && showError && 'input-error', !isInput && showSuccess && 'input-success', props.class, inJoin && 'join-item']"
+    :aria-invalid="showError || undefined"
+    :aria-describedby="describedBy"
     :list="suggestionName"
     :required="required"
     :pattern="pattern"
@@ -119,12 +162,13 @@ defineOptions({ inheritAttrs: false })
   <!-- Shown only once the field has been visited: an untouched field is not
        failing, it is unanswered. -->
   <slot
-    v-if="validation.showError.value"
+    v-if="showError && !delegated"
     name="error"
     :errors="validation.errors.value"
     :message="validation.validationMessage.value"
   >
-    <p class="validator-hint">{{ validation.validationMessage.value }}</p>
+    <!-- `visible`: daisyUI hides `.validator-hint` unless it follows a `.validator`. -->
+    <p :id="errorId" class="validator-hint visible text-error">{{ validation.validationMessage.value }}</p>
   </slot>
   <datalist v-if="suggestionName" :id="suggestionName">
     <option v-for="suggestion in suggestionList" :key="suggestion">

@@ -29,6 +29,7 @@ not it reads them, so an ignored one looks like it works.
 - `size?`: Size
 - `ghost?`: boolean
 - `invalid?`: boolean
+- `showValid?`: boolean — green once visited, valid and non-empty (off by default)
 - `variant?`: Variant
 - `disabled?`: boolean
 - `suggestionName?`: string
@@ -280,23 +281,16 @@ export interface DuFilterButtonArgs {
 **Props :**
 - `type?`: `'label'` | `'input'` | `'select'` | `'floating-label'` | `'fieldset-label'`
 
+A nested `DuInputField` hands its validation message to the label, which renders
+it **after** the `<label>` — never inside, where the flex row would squeeze the
+field. With `type="input"` / `"select"` the label also turns red.
+
+```vue
+<DuLabel type="floating-label">
+  <span>Email</span>
+  <DuInputField v-model="email" type="email" placeholder="you@example.com" required />
+</DuLabel>
+```
+
 ---
 
-## DuLabelInputValidator
-
-**Files:** `components/DataInput/du-label-input-validator/du-label-input-validator.vue` | `.types.ts` | `.stories.ts`
-
-Label + input combo with built-in HTML5 validation.
-
-**Props:**
-- `type?`: DuLabelProps["type"]
-- `pattern?`: string
-- `minlength?`: number
-- `maxlength?`: number
-- `title?`: string
-- `required?`: boolean
-- `placeholder?`: string
-- `inputType?`: DuInputFieldType
-- `disabled?`: boolean
-- `suggestionName?`: string
-- `suggestionList?`: string[]

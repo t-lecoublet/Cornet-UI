@@ -68,6 +68,12 @@ export type DuInputFieldProps = {
   size?: Size
   ghost?: boolean
   invalid?: boolean
+  /**
+   * Turn the field green once it has been visited and holds a valid, non-empty
+   * value. Off by default: a field that simply did its job rarely needs
+   * applause, and an empty optional field is not an achievement.
+   */
+  showValid?: boolean
   variant?: Variant
   disabled?: boolean
   suggestionName?: string

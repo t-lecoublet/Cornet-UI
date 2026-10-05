@@ -716,6 +716,7 @@ export interface DuFilterProps {
 - size?: Size
 - ghost?: boolean
 - invalid?: boolean
+- showValid?: boolean
 - variant?: Variant
 - disabled?: boolean
 - suggestionName?: string
@@ -749,39 +750,6 @@ export type DuInputFieldType = "text" | "password" | "email" | "number" | "date"
 ```typescript
 export type DuLabelProps = {
   type?: "label" | "input" | "select" | "floating-label" | "fieldset-label"
-}
-```
-
-### DuLabelInputValidator
-**File:** components/DataInput/du-label-input-validator/du-label-input-validator.vue
-<!-- @see-if-needed: components/DataInput/du-label-input-validator/du-label-input-validator.vue -->
-
-**Props:**
-- type?: DuLabelProps["type"]
-- pattern?: string
-- minlength?: number
-- maxlength?: number
-- title?: string
-- required?: boolean
-- placeholder?: string
-- inputType?: DuInputFieldType
-- disabled?: boolean
-- suggestionName?: string
-- suggestionList?: string[]
-
-**Types (du-label-input-validator.types.ts):**
-```typescript
-import { type DuLabelProps } from "../du-label/du-label.types"
-import { type DuInputFieldProps, type DuInputFieldType } from "../du-input-field/du-input-field.types"
-
-export interface DuLabelInputValidatorProps extends DuLabelProps, 
-  Omit<DuInputFieldProps, "type" | "size" | "ghost" | "variant"> {
-  pattern?: string
-  minlength?: number
-  maxlength?: number
-  title?: string
-  required?: boolean
-  inputType?: DuInputFieldType
 }
 ```
 

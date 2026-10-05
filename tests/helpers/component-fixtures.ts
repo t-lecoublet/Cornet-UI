@@ -64,7 +64,6 @@ export const FIXTURES: Record<string, Fixture> = {
   DuJoin: { slots: { default: '<button type="button">One</button><button type="button">Two</button>' } },
   DuKbd: { slots: { default: 'Ctrl' } },
   DuLabel: { slots: { default: 'Email <input type="text" />' } },
-  DuLabelInputValidator: { props: { inputType: 'email' }, slots: { default: 'Email' } },
   DuLink: { slots: { default: 'Docs' } },
   DuList: { slots: { default: '<li>One</li>' } },
   DuLoading: { props: { ariaLabel: 'Loading' } },

@@ -9,6 +9,7 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import DuFileInput from '../components/DataInput/du-file-input/du-file-input.vue'
 import DuInputField from '../components/DataInput/du-input-field/du-input-field.vue'
+import DuLabel from '../components/DataInput/du-label/du-label.vue'
 
 function field(props: Record<string, unknown> = {}, slots: Record<string, string> = {}) {
   const wrapper = mount(DuInputField, { attachTo: document.body, props, slots })
@@ -89,6 +90,110 @@ describe('what the error says', () => {
     )
     await f.leave()
     expect(f.wrapper.find('.mine').text()).toBe('required: Required')
+  })
+})
+
+describe('how the error looks', () => {
+  it('is visible, not left hidden by daisyUI', async () => {
+    // daisyUI keeps `.validator-hint` at `visibility: hidden` unless it
+    // follows a `.validator` — which the field never is.
+    const f = field({ required: true })
+    await f.leave()
+    expect(f.hint().classes()).toContain('visible')
+  })
+
+  it('marks the field invalid and points it at the message', async () => {
+    const f = field({ required: true, 'aria-describedby': 'help' })
+    expect(f.input().attributes('aria-invalid')).toBeUndefined()
+
+    await f.leave()
+    const hintId = f.hint().attributes('id')
+    expect(f.input().classes()).toContain('input-error')
+    expect(f.input().attributes('aria-invalid')).toBe('true')
+    expect(f.input().attributes('aria-describedby')).toBe(`help ${hintId}`)
+  })
+})
+
+describe('showValid', () => {
+  it('stays neutral unless asked', async () => {
+    const f = field({ required: true })
+    await f.type('x')
+    await f.leave()
+    expect(f.input().classes()).not.toContain('input-success')
+  })
+
+  it('turns green once visited and valid', async () => {
+    const f = field({ required: true, showValid: true })
+    await f.type('x')
+    expect(f.input().classes()).not.toContain('input-success')
+
+    await f.leave()
+    expect(f.input().classes()).toContain('input-success')
+  })
+
+  it('does not applaud an empty optional field', async () => {
+    const f = field({ showValid: true })
+    await f.leave()
+    expect(f.input().classes()).not.toContain('input-success')
+  })
+
+  it('goes red, not green, when the value breaks a constraint', async () => {
+    const f = field({ type: 'email', showValid: true })
+    await f.type('nope')
+    await f.leave()
+    expect(f.input().classes()).toContain('input-error')
+    expect(f.input().classes()).not.toContain('input-success')
+  })
+
+  it('turns the label green where the label draws the border', async () => {
+    const wrapper = mount(
+      { components: { DuLabel, DuInputField }, template: '<DuLabel type="input"><DuInputField required showValid /></DuLabel>' },
+      { attachTo: document.body },
+    )
+    await wrapper.find('input').setValue('x')
+    await wrapper.find('input').trigger('blur')
+    expect(wrapper.find('label').classes()).toContain('input-success')
+  })
+})
+
+describe('inside a DuLabel', () => {
+  function labelled(type: string) {
+    const wrapper = mount(
+      { components: { DuLabel, DuInputField }, template: `<DuLabel type="${type}" class="mine"><span>Email</span><DuInputField required /></DuLabel>` },
+      { attachTo: document.body },
+    )
+    return { wrapper, leave: () => wrapper.find('input').trigger('blur') }
+  }
+
+  it('renders the message after the label, never inside its flex row', async () => {
+    // Inside, it became a flex item beside the field and squeezed it to half
+    // its width.
+    const l = labelled('floating-label')
+    await l.leave()
+
+    const label = l.wrapper.find('label')
+    expect(label.find('.validator-hint').exists()).toBe(false)
+    const hint = label.element.nextElementSibling as HTMLElement
+    expect(hint.classList.contains('validator-hint')).toBe(true)
+    expect(l.wrapper.find('input').attributes('aria-describedby')).toBe(hint.id)
+  })
+
+  it('keeps the consumer’s attributes on the label', () => {
+    const l = labelled('floating-label')
+    expect(l.wrapper.find('label').classes()).toEqual(expect.arrayContaining(['floating-label', 'mine']))
+  })
+
+  it('turns the label red where the label draws the border', async () => {
+    const l = labelled('input')
+    await l.leave()
+    expect(l.wrapper.find('label').classes()).toContain('input-error')
+  })
+
+  it('drops the message when the field is fixed', async () => {
+    const l = labelled('floating-label')
+    await l.leave()
+    await l.wrapper.find('input').setValue('x')
+    expect(l.wrapper.find('.validator-hint').exists()).toBe(false)
   })
 })
 

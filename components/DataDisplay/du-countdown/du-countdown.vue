@@ -34,7 +34,7 @@ const { startCountdown, stopCountdown, resetCountdown } = useCountdownTimer(
   getTotalTimeRemaining,
 )
 
-// Exposer les méthodes pour le contrôle externe
+// Expose the methods for external control
 defineExpose({
   start: startCountdown,
   stop: stopCountdown,

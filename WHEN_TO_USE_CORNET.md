@@ -83,7 +83,6 @@ falls and why.
 | DuFilter | Intermediate | Generic items, `v-model` over a radio group, fieldset/legend, conditional reset. | Polish only |
 | DuInputField | Intermediate | `defineModel()` passthrough plus the shared validation surface over native ValidityState. | Facade over `core/shared/useNativeValidation` |
 | DuLabel | Simple | Type-based class mapping plus `provide()`. | Keep as is |
-| DuLabelInputValidator | Intermediate | Composes DuLabel + DuInputField with one mode switch; most logic lives in children. | Polish only |
 | DuRadio | Simple | Pure class-mapping wrapper. | Keep as is |
 | DuRange | Intermediate | Manual model sync (ref + watch + dual emit) plus exposed computed value. | Polish only |
 | DuRating | Intermediate/Rich borderline | Value sync + clear-on-reclick business rule, multiple rendering modes. | Split (composable: `useRatingValue`) |

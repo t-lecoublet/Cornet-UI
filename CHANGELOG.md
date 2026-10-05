@@ -3,6 +3,37 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- `DuInputField`: `showValid` prop (default `false`). Turns the field green
+  (`input-success`) once it has been visited and holds a valid, non-empty
+  value — the same moment an error would show. Inside a `DuLabel` with
+  `type="input"` / `"select"`, the label turns green instead. Opt-in rather
+  than daisyUI's `.validator`, which greens every valid field automatically.
+
+### Removed
+
+- **Breaking:** `DuLabelInputValidator`. It composed `DuLabel` and
+  `DuInputField` and added nothing but a broken `validator` class — the field
+  already carries the whole validation surface. Write the two directly:
+  `<DuLabel type="floating-label"><span>Email</span><DuInputField … /></DuLabel>`.
+
+### Fixed
+
+- `DuInputField`: the validation message was never visible. daisyUI keeps
+  `.validator-hint` at `visibility: hidden` unless it follows a `.validator`,
+  which the field never was. The message now shows, the field turns
+  `input-error`, and the input carries `aria-invalid` and an
+  `aria-describedby` pointing at the message.
+- `DuLabel` + `DuInputField`: inside a label (every daisyUI label is a flex
+  row) the message rendered as a flex item beside the field and squeezed it to
+  half its width. The field now hands its message to the label, which renders
+  it after the `<label>`; with `type="input"` / `"select"` the label turns red
+  too. `DuLabel`'s root is now a fragment (label + optional message);
+  attributes still land on the `<label>`.
+
 ## [0.1.0-beta.29]
 
 ### Added

@@ -22,7 +22,7 @@ const emit = defineEmits<{
   close: [];
 }>();
 
-// Détermine si l'alerte est visible
+// Whether the alert is visible
 const visible = ref(true);
 
 const dismiss = () => {
@@ -36,7 +36,7 @@ onMounted(() => {
   }
 });
 
-// Détermine la classe CSS en fonction du type d'alerte
+// CSS class for the alert variant
 const alertColorClass = computed(() => {
   return {
     default: "",

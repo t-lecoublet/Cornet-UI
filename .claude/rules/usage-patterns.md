@@ -5,17 +5,17 @@
 ### Field with label and validation
 
 ```vue
-<DuLabelInputValidator
-  type="label"
-  inputType="email"
-  placeholder="your@email.com"
-  required
-  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-  title="Invalid email"
-  v-model="email"
->
-  Email
-</DuLabelInputValidator>
+<DuLabel type="floating-label">
+  <span>Email</span>
+  <DuInputField
+    v-model="email"
+    type="email"
+    placeholder="your@email.com"
+    required
+    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+    :errorMessages="{ pattern: 'Invalid email' }"
+  />
+</DuLabel>
 ```
 
 ### Label + Simple Input

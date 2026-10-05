@@ -15,7 +15,7 @@ import { useVariantMapping } from '../../../composables/useVariantProps'
 import { useSizeMapping } from '../../../composables/useSizeProps'
 import { type DuBadgeProps } from './du-badge.types'
 
-// Définition des types pour les props
+// Prop type definitions
 const props = withDefaults(
   defineProps<DuBadgeProps>(),
   {

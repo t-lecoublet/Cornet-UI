@@ -17,7 +17,7 @@ lib/
 ├── components/
 │   ├── Actions/                # 5 components: buttons, modals, dropdowns
 │   ├── DataDisplay/            # 18 components: cards, tables, badges, avatars
-│   ├── DataInput/              # 13 components: inputs, selects, checkboxes
+│   ├── DataInput/              # 12 components: inputs, selects, checkboxes
 │   ├── Feedback/               # 7 components: alerts, loading, tooltips
 │   ├── Layout/                 # 2 components: drawer, join
 │   └── Navigation/             # 9 components: menus, pagination, tabs
@@ -32,8 +32,8 @@ DuButton, DuDropdown, DuModal, DuSwap, DuFab
 ### DataDisplay (18)
 DuAccordion, DuAvatar, DuBadge, DuCard, DuCarousel, DuCarouselItem, DuChat, DuCollapse, DuCountdown, DuCountdownGroup, DuDiff, DuKbd, DuList, DuStat, DuStats, DuStatus, DuTable, DuTimeline
 
-### DataInput (13)
-DuCheckbox, DuFieldset, DuFileInput, DuFilter, DuInputField, DuLabel, DuLabelInputValidator, DuRadio, DuRange, DuRating, DuSearch, DuSelect, DuTextArea
+### DataInput (12)
+DuCheckbox, DuFieldset, DuFileInput, DuFilter, DuInputField, DuLabel, DuRadio, DuRange, DuRating, DuSearch, DuSelect, DuTextArea
 
 ### Feedback (7)
 DuAlert, DuLoading, DuProgress, DuRadialProgress, DuSkeleton, DuToast, DuTooltip
