@@ -41,7 +41,7 @@ watch(navSearch, (val) => {
 function openSearch() {
   searchOpen.value = true
   setTimeout(() => {
-    (document.getElementById('modal-search') as HTMLInputElement)?.focus()
+    (document.getElementById('modal-search-input') as HTMLInputElement)?.focus()
   }, 300)
 }
 
@@ -164,7 +164,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
     </div>
 
     <!-- ─── Search modal ──────────────────────────────── -->
-    <DuModal v-model:open="searchOpen" placement="top" closeOnEscape classBox="overflow-visible w-full max-w-lg">
+    <DuModal v-model:open="searchOpen" placement="top" closeOnEscape classBox="overflow-visible">
       <!-- Détourne l'auto-focus du dialog loin du DuSearch -->
       <span tabindex="0" autofocus class="sr-only" />
       <div class="flex items-center gap-3">
