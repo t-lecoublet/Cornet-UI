@@ -249,8 +249,8 @@ export type DuAccordionModifier = (typeof ACCORDION_MODIFIERS)[number]
 - rounded?: DuAvatarRounded
 - mask?: DuAvatarMask
 - ring?: boolean
-- ringColor?: string
-- ringOffset?: number
+- ringVariant?: Variant
+- ringOffset?: DuAvatarRingOffset (0 | 1 | 2 | 4 | 8)
 - online?: boolean
 - offline?: boolean
 - placeholder?: boolean

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSizeMapping} from '../../../composables/useSizeProps'
-import { useVariantMapping } from '../../../composables/useVariantProps'
+import { mapVariant, useVariantMapping } from '../../../composables/useVariantProps'
 import { computed } from 'vue'
 import { type DuAvatarProps, type DuAvatarRoundedClass, type DuAvatarMaskClass } from './du-avatar.types'
 
@@ -14,7 +14,7 @@ const props = withDefaults(
     online: false,
     placeholder: false,
     ring: false,
-    ringColor: 'primary',
+    ringVariant: 'primary',
     ringOffset: 2
   },
 )
@@ -42,7 +42,14 @@ const maskClass = computed(() => {
 
 const ringClass = computed(() => {
   if (!props.ring) return ''
-  return `ring-${props.ringOffset} ring-${props.ringColor} ring-offset-base-100 ring-offset-2 ring-2`
+  const offsetClass = ({
+    0: 'ring-offset-0',
+    1: 'ring-offset-1',
+    2: 'ring-offset-2',
+    4: 'ring-offset-4',
+    8: 'ring-offset-8',
+  } as const)[props.ringOffset]
+  return ['ring-2', mapVariant(props.ringVariant, 'ring'), 'ring-offset-base-100', offsetClass].filter(Boolean).join(' ')
 })
 
 const statusClass = computed(() => {

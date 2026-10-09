@@ -61,7 +61,7 @@ const AMBIGUOUS_BASES = new Set([
   'link',
 ])
 
-// useSizeMapping(props, 'X') / useVariantMapping(props, 'X') build classes like
+// useSizeMapping(props, 'X') / useVariantMapping(props, 'X') / mapVariant(v, 'X') build classes like
 // `X-md` / `X-primary` at runtime. The literals are NOT in the calling
 // component when the suffix belongs to another component (e.g. DuSelect renders
 // a `menu` and calls useSizeMapping(props, 'menu'), but `menu-sm`…`menu-xl`
@@ -70,7 +70,7 @@ const AMBIGUOUS_BASES = new Set([
 const SIZE_MODIFIERS = ['xs', 'sm', 'md', 'lg', 'xl']
 const VARIANT_MODIFIERS = ['neutral', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error']
 const SIZE_CALL = /useSizeMapping\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
-const VARIANT_CALL = /useVariantMapping\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
+const VARIANT_CALL = /(?:useVariantMapping|mapVariant)\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
 
 function dynamicMappingClasses(text) {
   const out = []

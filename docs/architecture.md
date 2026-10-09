@@ -321,7 +321,13 @@ The directory matters — a `btn-*` list in DuButton does not cover DuPagination
 unless DuPagination imports DuButton.
 
 Adding a `useSizeMapping` call with a new suffix therefore means adding the
-matching constant in the same commit.
+matching constant in the same commit. `mapVariant(value, 'x')` — the same
+mapping for one value, such as a variant per list item — counts as a call too.
+
+These checks only see the mapping calls, so a class built by hand
+(`` `step-${props.variant}` ``) slipped past all of them: DuSteps' colours were
+never generated. The same spec therefore also rejects any size/variant/colour
+class built by hand — template literal or concatenation.
 
 The invariant proves a class is *scannable*. It cannot prove daisyUI defines
 it — a safelist can be complete and still name a class that does not exist, in

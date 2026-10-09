@@ -38,8 +38,8 @@ const emit = defineEmits<{
   (e: "update:modelValue", value: number): void;
 }>();
 
-const { sizeClass } = useSizeMapping({ size: props.size }, "btn");
-const { colorClass } = useVariantMapping({ variant: props.variant }, "btn");
+const { sizeClass } = useSizeMapping(props, "btn");
+const { colorClass } = useVariantMapping(props, "btn");
 
 const outlineClass = computed(() => {
   return props.outline ? "btn-outline" : "";

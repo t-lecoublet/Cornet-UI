@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { type DuStepItemProps } from './du-step-item.types';
+import { useVariantMapping } from "../../../composables/useVariantProps";
 
 const props = withDefaults(
   defineProps<DuStepItemProps>(),
@@ -13,14 +14,13 @@ const props = withDefaults(
   },
 );
 
+const { colorClass: variantClass } = useVariantMapping(props, "step");
+
 const stepClass = computed(() => {
   const classes = ["step"];
 
-  const variantClass =
-    props.variant === "default" ? "" : `step-${props.variant}`;
-
-  if (props.active && variantClass) {
-    classes.push(variantClass);
+  if (props.active && variantClass.value) {
+    classes.push(variantClass.value);
   }
 
   if (props.customClass) {

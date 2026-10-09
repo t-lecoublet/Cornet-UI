@@ -121,4 +121,22 @@ describe('DuFab', () => {
     })
     expect(wrapper.text()).toContain('Shut')
   })
+
+  it('colours the close button btn-error by default, or with its own variant', () => {
+    const closeIcon = (closeButton: Record<string, unknown>) =>
+      mount(DuFab, { props: { mainAction: { label: 'Main' }, closeButton } }).find('.fab-close .btn')
+
+    expect(closeIcon({ label: 'Shut' }).classes()).toContain('btn-error')
+    expect(closeIcon({ label: 'Shut', variant: 'success' }).classes()).toContain('btn-success')
+    expect(closeIcon({ label: 'Shut', variant: 'success' }).classes()).not.toContain('btn-error')
+  })
+
+  it('adds no colour class, and no btn-default, for a default close button variant', () => {
+    const wrapper = mount(DuFab, {
+      props: { mainAction: { label: 'Main' }, closeButton: { label: 'Shut', variant: 'default' } },
+    })
+    const classes = wrapper.find('.fab-close .btn').classes()
+    expect(classes).not.toContain('btn-default')
+    expect(classes).not.toContain('btn-error')
+  })
 })

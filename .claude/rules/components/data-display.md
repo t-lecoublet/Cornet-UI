@@ -50,8 +50,8 @@ export interface DuAccordionItemData {
 - `rounded?`: DuAvatarRounded (`'default'` | `'rounded'` | `'full'` | `'xs'` | `'sm'` | `'md'` | `'lg'` | `'xl'`)
 - `mask?`: DuAvatarMask (`'default'` | `'heart'` | `'squircle'` | `'hexagon'` | `'hexagon-2'` | `'decagon'` | `'pentagon'` | `'diamond'` | `'square'` | `'circle'` | `'parallelogram'` | `'parallelogram-2'` | `'star'` | `'star-2'`)
 - `ring?`: boolean
-- `ringColor?`: string
-- `ringOffset?`: number
+- `ringVariant?`: Variant (default `'primary'`)
+- `ringOffset?`: DuAvatarRingOffset (`0` | `1` | `2` | `4` | `8`, px gap between avatar and ring, default `2`)
 - `online?`: boolean
 - `offline?`: boolean
 - `placeholder?`: boolean

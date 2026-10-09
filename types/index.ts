@@ -9,7 +9,7 @@ export type { DuFabModifier,DuFabItem,DuFabMainAction,DuFabCloseButton,DuFabProp
 export type { DuModalPlacement,DuModalProps } from '../components/Actions/du-modal/du-modal.types'
 export type { DuSwapProperty,DuSwapProps } from '../components/Actions/du-swap/du-swap.types'
 export type { DuAccordionValue,DuAccordionModifier,DuAccordionEmit,DuAccordionItemData,DuAccordionProps,DuAccordionContext,DuAccordionItemProps } from '../components/DataDisplay/du-accordion/du-accordion.types'
-export type { DuAvatarRounded,DuAvatarMask,DuAvatarSize,DuAvatarRoundedClass,DuAvatarRingColor,DuAvatarColor,DuAvatarMaskClass,DuAvatarProps } from '../components/DataDisplay/du-avatar/du-avatar.types'
+export type { DuAvatarRounded,DuAvatarMask,DuAvatarSize,DuAvatarRoundedClass,DuAvatarRingVariant,DuAvatarRingOffset,DuAvatarColor,DuAvatarMaskClass,DuAvatarProps } from '../components/DataDisplay/du-avatar/du-avatar.types'
 export type { DuBadgeSize,DuBadgeVariant,DuBadgeProps } from '../components/DataDisplay/du-badge/du-badge.types'
 export type { DuCardSize,DuCardProperty,DuCardProps } from '../components/DataDisplay/du-card/du-card.types'
 export type { DuCarouselPosition,DuCarouselSlideLabel,DuCarouselItemData,DuCarouselProps,DuCarouselItemProps } from '../components/DataDisplay/du-carousel/du-carousel.types'

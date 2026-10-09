@@ -12,7 +12,7 @@ export const AVATAR_ROUNDED = [
   'rounded-xl',
 ] as const
 
-export const AVATAR_RING_COLORS = [
+export const AVATAR_RING_VARIANTS = [
   'ring-primary',
   'ring-secondary',
   'ring-accent',
@@ -21,6 +21,14 @@ export const AVATAR_RING_COLORS = [
   'ring-success',
   'ring-warning',
   'ring-error',
+] as const
+
+export const AVATAR_RING_OFFSETS = [
+  'ring-offset-0',
+  'ring-offset-1',
+  'ring-offset-2',
+  'ring-offset-4',
+  'ring-offset-8',
 ] as const
 
 export const AVATAR_COLORS = [
@@ -39,7 +47,9 @@ export type DuAvatarMask = 'default' | 'heart' | 'squircle' | 'hexagon' | 'hexag
 
 export type DuAvatarSize = (typeof AVATAR_SIZES)[number]
 export type DuAvatarRoundedClass = (typeof AVATAR_ROUNDED)[number]
-export type DuAvatarRingColor = (typeof AVATAR_RING_COLORS)[number]
+export type DuAvatarRingVariant = (typeof AVATAR_RING_VARIANTS)[number]
+/** Gap in px between the avatar and its ring — Tailwind's `ring-offset-*` scale. */
+export type DuAvatarRingOffset = 0 | 1 | 2 | 4 | 8
 export type DuAvatarColor = (typeof AVATAR_COLORS)[number]
 
 // Types pour les masques
@@ -69,7 +79,7 @@ export interface DuAvatarProps {
   online?: boolean
   placeholder?: boolean
   ring?: boolean
-  ringColor?: string
-  ringOffset?: number
+  ringVariant?: Variant
+  ringOffset?: DuAvatarRingOffset
   mask?: DuAvatarMask
 }

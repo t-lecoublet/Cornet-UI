@@ -6,7 +6,11 @@ import { expandWithInternalDependencies, parseLibraryExports } from '../plugin-v
 // Mirrors the regexes/modifier lists in scripts/generate-candidates.mjs (not
 // exported from there — it's a script, not a module — so redefined here).
 const SIZE_CALL = /useSizeMapping\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
-const VARIANT_CALL = /useVariantMapping\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
+const VARIANT_CALL = /(?:useVariantMapping|mapVariant)\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
+// A size/variant/colour class built by hand — `step-${props.variant}`,
+// 'btn-' + size — is invisible to every check here, so it is not allowed at all.
+const HAND_BUILT_TEMPLATE = /[a-z][\w-]*-\$\{\s*[\w.?]*?(?:variant|size|color)\s*\}/gi
+const HAND_BUILT_CONCAT = /['"][a-z][\w-]*-['"]\s*\+\s*[\w.?]*?(?:variant|size|color)\b/gi
 const SIZE_MODIFIERS = ['xs', 'sm', 'md', 'lg', 'xl']
 const VARIANT_MODIFIERS = ['neutral', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error']
 
@@ -25,6 +29,15 @@ function findCalls(vueContent: string): ClassCall[] {
   VARIANT_CALL.lastIndex = 0
   while ((m = VARIANT_CALL.exec(vueContent)) !== null) calls.push({ suffix: m[1], kind: 'variant' })
   return calls
+}
+
+/** Every .vue / .ts source under `dir`, recursively — stories left out. */
+function sourceFiles(dir: string): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = join(dir, entry.name)
+    if (entry.isDirectory()) return sourceFiles(full)
+    return /\.(vue|ts)$/.test(entry.name) && !entry.name.endsWith('.stories.ts') ? [full] : []
+  })
 }
 
 /** Concatenated .vue + .types.ts content of every file directly inside `dir` (non-recursive, mirrors generate-candidates.mjs). */
@@ -48,7 +61,7 @@ interface Failure {
 }
 
 describe('class-literals invariant', () => {
-  it('every useSizeMapping/useVariantMapping call has its literal classes reachable in its own or a dependency component directory', () => {
+  it('every useSizeMapping/useVariantMapping/mapVariant call has its literal classes reachable in its own or a dependency component directory', () => {
     const indexContent = readFileSync(join(libRoot, 'index.ts'), 'utf-8')
     const componentPaths = parseLibraryExports(indexContent)
 
@@ -84,10 +97,31 @@ describe('class-literals invariant', () => {
     const message = failures
       .map(
         (f) =>
-          `${f.component} (${f.file}): useVariantMapping/useSizeMapping(props, '${f.suffix}') [${f.kind}] is missing [${f.missing.join(', ')}] — searched in: ${f.searchedDirs.join(', ')}`,
+          `${f.component} (${f.file}): useVariantMapping/useSizeMapping/mapVariant(…, '${f.suffix}') [${f.kind}] is missing [${f.missing.join(', ')}] — searched in: ${f.searchedDirs.join(', ')}`,
       )
       .join('\n')
 
     expect(failures, message).toEqual([])
+  })
+
+  it('builds no size/variant/colour class by hand', () => {
+    const offenders: string[] = []
+    for (const file of sourceFiles(join(libRoot, 'components'))) {
+      const lines = readFileSync(file, 'utf-8').split('\n')
+      lines.forEach((line, i) => {
+        for (const re of [HAND_BUILT_TEMPLATE, HAND_BUILT_CONCAT]) {
+          re.lastIndex = 0
+          const m = re.exec(line)
+          if (m) offenders.push(`${file.replace(libRoot + '/', '')}:${i + 1}  ${m[0]}`)
+        }
+      })
+    }
+
+    expect(
+      offenders,
+      'Build these classes with useSizeMapping / useVariantMapping (props) or mapVariant (one value) ' +
+        'and list their literals in .types.ts — a hand-built class is never checked:\n' +
+        offenders.join('\n'),
+    ).toEqual([])
   })
 })

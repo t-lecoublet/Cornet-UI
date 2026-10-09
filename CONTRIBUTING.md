@@ -44,7 +44,10 @@ npm run build       # dist build (vite + declaration emit)
 - Export every new component from `index.ts`, then run
   `npm run generate:types` to refresh `types/index.ts` (CI fails on drift).
 - Use the `useSizeMapping` / `useVariantMapping` composables for the common
-  `size` / `variant` props.
+  `size` / `variant` props, and `mapVariant(value, 'x')` for a variant that is
+  not a prop (one per list item). Never build a size/variant/colour class by
+  hand (`` `btn-${variant}` ``): no check can see it, so Tailwind may never
+  generate it. `tests/class-literals-invariant.spec.ts` rejects it.
 - Default UI texts are in English and must be overridable via props or slots.
 - Code comments are in English.
 - Follow [Conventional Commits](https://www.conventionalcommits.org/)

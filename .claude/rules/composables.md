@@ -62,6 +62,22 @@ const variantClass = useVariantMapping(props, 'btn')
 // props.variant = 'default' -> variantClass.value = ''
 ```
 
+### mapVariant Function
+
+```typescript
+export function mapVariant(variant: Variant | undefined, suffix: string): string
+```
+
+- Same mapping for one value that is not a prop — a variant per item of a list (DuChat bubbles), a nested config (DuFab's `closeButton.variant`)
+- Returns `''` for `'default'` and `undefined`
+- Keep `suffix` a string literal: the class checks read it from the call
+
+```typescript
+mapVariant(item.variant, 'chat-bubble') // 'primary' -> 'chat-bubble-primary'
+```
+
+**Rule:** never build a size/variant/colour class by hand (`` `btn-${variant}` ``, `'btn-' + size`) — go through `useSizeMapping` / `useVariantMapping` / `mapVariant`, and list the literals in `.types.ts`. `tests/class-literals-invariant.spec.ts` fails on a hand-built one.
+
 ---
 
 ## Combined usage in a component

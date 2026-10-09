@@ -39,6 +39,17 @@ describe('DuPagination', () => {
     expect(wrapper.find('[aria-label="Next page"]').exists()).toBe(true)
   })
 
+  it('follows size and variant changes after mount', async () => {
+    const wrapper = mountPagination({ size: 'sm', variant: 'primary' })
+    const current = () => wrapper.find('[aria-current="page"]')
+    expect(current().classes()).toEqual(expect.arrayContaining(['btn-sm', 'btn-primary']))
+
+    await wrapper.setProps({ size: 'lg', variant: 'error' })
+    expect(current().classes()).toEqual(expect.arrayContaining(['btn-lg', 'btn-error']))
+    expect(current().classes()).not.toContain('btn-sm')
+    expect(current().classes()).not.toContain('btn-primary')
+  })
+
   it('emits the new page on click', async () => {
     const wrapper = mountPagination()
     await wrapper.find('[aria-label="Next page"]').trigger('click')

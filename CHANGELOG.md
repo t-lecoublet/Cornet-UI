@@ -3,6 +3,48 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.31]
+
+### Added
+
+- `mapVariant(variant, suffix)`, exported next to `useVariantMapping`: the same
+  mapping (`'primary'` → `'btn-primary'`, `'default'` → `''`) for one value
+  that is not a prop — a variant per list item, a nested config.
+
+### Changed
+
+- **Breaking:** `DuAvatar`: `ringColor` is renamed `ringVariant` and typed
+  `Variant` (default `'primary'`), like every other colour prop. Any string
+  outside `Variant` never rendered anyway — no literal for Tailwind to scan.
+  The `DuAvatarRingColor` type becomes `DuAvatarRingVariant`.
+  ```diff
+  - <DuAvatar ring ringColor="success" />
+  + <DuAvatar ring ringVariant="success" />
+  ```
+- **Breaking:** `DuAvatar`: `ringOffset` is typed `DuAvatarRingOffset`
+  (`0 | 1 | 2 | 4 | 8`, Tailwind's `ring-offset-*` scale) instead of
+  `number`: each value needs its literal class for Tailwind to generate it.
+- No size/variant/colour class is built by hand any more
+  (`` `btn-${variant}` ``): `DuChat` bubbles, `DuFab`'s close button and
+  `DuAvatar`'s ring go through `mapVariant`. `tests/class-literals-invariant.spec.ts`
+  now rejects a hand-built one, and the class checks (`check:css`, the npm
+  candidates) read `mapVariant` calls like `useVariantMapping` ones.
+
+### Fixed
+
+- `DuSteps` / `DuStepItem`: the `variant` colour now renders. The class was
+  built by hand (`step-${variant}`) with no literal anywhere for Tailwind to
+  scan, so `step-primary`… were never generated. Both now go through
+  `useVariantMapping(props, "step")` and list their literals
+  (`DU_STEPS_VARIANTS`, `DU_STEP_ITEM_VARIANTS`).
+- `DuPagination`: changing `size` or `variant` after mount now updates the
+  buttons. The mapping composables were handed a one-off copy of the props.
+- `DuFab`: a close button with `variant: 'default'` no longer gets the
+  non-existent `btn-default` class.
+- `DuAvatar`: `ringOffset` now sets the gap between the avatar and its ring.
+  It used to emit `ring-${ringOffset}` — the ring's *width* — while the offset
+  stayed hard-coded at `ring-offset-2`.
+
 ## [0.1.0-beta.30]
 
 ### Added

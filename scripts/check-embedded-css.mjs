@@ -11,8 +11,8 @@
  * So this compiles the real thing — Tailwind 4 plus the daisyUI plugin, over
  * the candidates Tailwind's own scanner finds in the library sources, exactly
  * as a consumer's embedded build does — and checks that every class
- * `useSizeMapping` / `useVariantMapping` can produce at runtime comes out the
- * other end as a CSS rule.
+ * `useSizeMapping` / `useVariantMapping` / `mapVariant` can produce at runtime
+ * comes out the other end as a CSS rule.
  *
  * Run as `npm run check:css`.
  */
@@ -30,7 +30,7 @@ const require = createRequire(pathToFileURL(join(libRoot, 'package.json')))
 const SIZE_MODIFIERS = ['xs', 'sm', 'md', 'lg', 'xl']
 const VARIANT_MODIFIERS = ['neutral', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error']
 const SIZE_CALL = /useSizeMapping\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
-const VARIANT_CALL = /useVariantMapping\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
+const VARIANT_CALL = /(?:useVariantMapping|mapVariant)\([^,]+,\s*['"]([\w-]+)['"]\s*\)/g
 
 /** Every .vue / .types.ts file under components/, recursively. */
 function sourceFiles(dir) {

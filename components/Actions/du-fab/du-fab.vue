@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSizeMapping } from '../../../composables/useSizeProps'
-import { useVariantMapping } from '../../../composables/useVariantProps'
+import { mapVariant, useVariantMapping } from '../../../composables/useVariantProps'
 import { type DuFabProps } from './du-fab.types'
 import DuButton from '../du-button/du-button.vue'
 import DuTooltip from '../../Feedback/du-tooltip/du-tooltip.vue'
@@ -61,7 +61,7 @@ const { resolveIconKind, getTooltipPosition } = useFabIcon()
               'btn',
               sizeClass,
               'btn-circle',
-              closeButton.variant ? `btn-${closeButton.variant}` : 'btn-error',
+              mapVariant(closeButton.variant ?? 'error', 'btn'),
               closeButton.customClass,
             ]"
           >

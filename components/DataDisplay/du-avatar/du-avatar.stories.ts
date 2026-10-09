@@ -31,14 +31,16 @@ const meta: Meta<typeof DuAvatar> = {
       control: 'boolean',
       description: 'Adds a ring around the avatar'
     },
-    ringColor: { 
-      control: 'text',
+    ringVariant: { 
+      control: { type: 'select' },
+      options: ['default', 'primary', 'secondary', 'accent', 'neutral', 'info', 'success', 'warning', 'error'],
       description: 'Color of the ring',
       if: { arg: 'ring', truthy: true }
     },
     ringOffset: { 
-      control: 'number',
-      description: 'Size of the ring offset',
+      control: { type: 'select' },
+      options: [0, 1, 2, 4, 8],
+      description: 'Gap in px between the avatar and its ring',
       if: { arg: 'ring', truthy: true }
     },
     mask: {
@@ -113,13 +115,13 @@ const avatarWithPresenceTplStr = `
 
 const avatarWithRingTplStr = `
 <div class="flex items-center gap-4">
-  <DuAvatar size="lg" rounded="full" ring ringColor="primary">
+  <DuAvatar size="lg" rounded="full" ring ringVariant="primary">
     <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="Avatar" />
   </DuAvatar>
-  <DuAvatar size="lg" rounded="full" ring ringColor="secondary">
+  <DuAvatar size="lg" rounded="full" ring ringVariant="secondary">
     <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="Avatar" />
   </DuAvatar>
-  <DuAvatar size="lg" rounded="full" ring ringColor="accent">
+  <DuAvatar size="lg" rounded="full" ring ringVariant="accent">
     <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="Avatar" />
   </DuAvatar>
 </div>
