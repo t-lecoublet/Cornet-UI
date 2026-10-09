@@ -28,5 +28,21 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <!-- Context7 docs chat: injected once the page has loaded and gone idle, so it stays off the critical path (FCP/LCP/TBT). -->
+    <script>
+      addEventListener('load', () => {
+        const inject = () => {
+          const s = document.createElement('script')
+          s.src = 'https://context7.com/widget.js'
+          s.dataset.library = '/git_gitlab_limos_fr/hub-isima_daisyui-vue-kit'
+          // The theme's primary hue, darkened: the widget writes white on this colour, and #f09100 gives only 2.4:1.
+          s.dataset.color = '#ad5e00'
+          s.dataset.placeholder = 'Ask about Cornet…'
+          s.dataset.welcomeMessage = 'Hi! Ask me anything about Cornet: components, props, theming or installation. Your questions are sent to Context7 to be answered.'
+          document.body.appendChild(s)
+        }
+        'requestIdleCallback' in window ? requestIdleCallback(inject, { timeout: 3000 }) : setTimeout(inject, 1500)
+      })
+    </script>
   </body>
 </html>

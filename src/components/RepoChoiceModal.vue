@@ -10,7 +10,7 @@ function choose(pref: RepoPref) {
 
 <template>
   <Teleport to="body">
-    <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-base-300/60 backdrop-blur-sm">
+    <div data-repo-choice class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-base-300/60 backdrop-blur-sm">
       <div class="bg-base-100 rounded-2xl shadow-2xl w-full max-w-lg border border-base-300">
 
         <div class="p-6 pb-4">

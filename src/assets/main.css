@@ -68,3 +68,9 @@
     }
   }
 }
+
+/* The Context7 chat bubble (injected by index.html) sits above everything; keep it
+   out of the way while the first-visit source picker is open. */
+body:has([data-repo-choice]) #context7-widget {
+  display: none;
+}
