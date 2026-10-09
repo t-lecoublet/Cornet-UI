@@ -162,7 +162,10 @@ const nav = docsNav.map((cat) => ({
     </aside>
 
     <!-- ─── Content ────────────────────────────────────── -->
-    <main ref="scrollPort" class="flex-1 overflow-y-scroll h-full">
+    <!-- `relative`: an absolutely positioned descendant with no positioned ancestor
+         (the gallery cards' sr-only labels) is otherwise placed against <body>, escapes
+         this scrollport's clipping and makes the window scroll past the page too. -->
+    <main ref="scrollPort" class="relative flex-1 overflow-y-scroll h-full">
       <!-- A prose column for a doc page; a wider one for the component grid. -->
       <div class="mx-auto px-6 py-10" :class="isGallery ? 'max-w-6xl' : 'max-w-3xl'">
         <RouterView />
