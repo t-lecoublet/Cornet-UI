@@ -8,7 +8,8 @@ MCP server exposing the [Cornet](https://gitlab.limos.fr/hub-isima/daisyui-vue-k
 | --- | --- |
 | `list_components` | List all components by category |
 | `get_component_docs` | Full docs for a component (props, slots, classnames, code examples) |
-| `get_component_source` | Raw `.vue` source from the lib |
+| `get_component_source` | Source from the lib: the `.vue`, its `.types.ts`, sub-components and local composables |
+| `install_cornet` | Step-by-step install (npm or git submodule, Tailwind + daisyUI included) for the assistant to run in the user's project — the server changes nothing itself |
 
 ## Setup
 

@@ -1,6 +1,9 @@
 services:
   web:
     image: node:24
+    # Run as the host user (the image's `node` user is uid 1000), so npm install
+    # doesn't leave a root-owned node_modules behind.
+    user: "1000:1000"
     ports:
       - "3000:3000"
     volumes:
