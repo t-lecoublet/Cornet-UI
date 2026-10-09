@@ -96,7 +96,7 @@ export const componentGallery: Record<string, string> = {
   <DuAvatar size="sm" mask="hexagon" offline>
     <img src="https://i.pravatar.cc/96?img=15" alt="" />
   </DuAvatar>
-  <DuAvatar size="sm" rounded="full" ring ringColor="primary" online placeholder variant="neutral">
+  <DuAvatar size="sm" rounded="full" ring ringVariant="primary" online placeholder variant="neutral">
     CD
   </DuAvatar>
 </div>`,

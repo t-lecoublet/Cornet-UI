@@ -58,16 +58,18 @@ export default {
       default: 'false',
     },
     {
-      title: 'ringColor',
-      description: 'Ring color (a variant name, e.g. `"primary"`)',
-      type: 'string',
+      title: 'ringVariant',
+      description: 'Color variant of the ring',
+      type: 'Variant',
       default: '"primary"',
+      options: ['default', 'neutral', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'],
     },
     {
       title: 'ringOffset',
       description: 'Gap in pixels between the avatar and its ring',
-      type: 'number',
+      type: 'DuAvatarRingOffset',
       default: '2',
+      options: ['0', '1', '2', '4', '8'],
     },
   ],
   classnames: {
@@ -97,6 +99,9 @@ export default {
       { class: 'avatar-placeholder', desc: 'Initials/icon instead of an image — placeholder' },
       { class: 'mask mask-{shape}', desc: 'Mask shape — mask="heart", mask="squircle", …' },
       { class: 'rounded-{size}', desc: 'Corner rounding — rounded="full", rounded="lg", …' },
+      { class: 'ring-2 ring-offset-base-100', desc: 'Ring around the avatar — ring' },
+      { class: 'ring-{variant}', desc: 'Ring color — ringVariant="primary" (default), ringVariant="success", …' },
+      { class: 'ring-offset-{0|1|2|4|8}', desc: 'Gap between the avatar and its ring — ringOffset (default 2)' },
     ],
   },
   sections: [
@@ -175,31 +180,31 @@ export default {
     },
     {
       title: 'Ring border',
-      description: 'Set `ring` to add a colored ring. Use `ringColor` (Tailwind color token) and `ringOffset` (offset in px) to customize it.',
+      description: 'Set `ring` to add a colored ring. Use `ringVariant` to pick its color and `ringOffset` (0, 1, 2, 4 or 8 px) to set the gap between the avatar and the ring.',
       links: [
         { label: 'Tailwind ring utilities', href: 'https://tailwindcss.com/docs/ring-color' },
       ],
       preview: `<div class="flex items-center gap-4">
-  <DuAvatar size="md" rounded="full" ring ringColor="primary">
+  <DuAvatar size="md" rounded="full" ring ringVariant="primary">
     <img src="https://i.pravatar.cc/64?img=5" alt="user" />
   </DuAvatar>
-  <DuAvatar size="md" rounded="full" ring ringColor="success">
+  <DuAvatar size="md" rounded="full" ring ringVariant="success">
     <img src="https://i.pravatar.cc/64?img=6" alt="user" />
   </DuAvatar>
-  <DuAvatar size="md" rounded="full" ring ringColor="error">
+  <DuAvatar size="md" rounded="full" ring ringVariant="error">
     <img src="https://i.pravatar.cc/64?img=7" alt="user" />
   </DuAvatar>
-  <DuAvatar size="md" rounded="full" ring ringColor="warning" :ringOffset="4">
+  <DuAvatar size="md" rounded="full" ring ringVariant="warning" :ringOffset="4">
     <img src="https://i.pravatar.cc/64?img=8" alt="user" />
   </DuAvatar>
 </div>`,
       code: `<!-- ring applies a colored border around the avatar -->
-<DuAvatar size="md" rounded="full" ring ringColor="primary">
+<DuAvatar size="md" rounded="full" ring ringVariant="primary">
   <img src="/user.jpg" alt="User" />
 </DuAvatar>
 
-<!-- custom offset -->
-<DuAvatar size="md" rounded="full" ring ringColor="success" :ringOffset="4">
+<!-- wider gap between the avatar and its ring -->
+<DuAvatar size="md" rounded="full" ring ringVariant="success" :ringOffset="4">
   <img src="/user.jpg" alt="User" />
 </DuAvatar>`,
     },

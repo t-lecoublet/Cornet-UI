@@ -323,7 +323,7 @@ const isOpen = ref(false)
       preview: `<DuDropdown placement="bottom,end">
   <template #trigger="{ triggerProps }">
     <DuButton ghost circle v-bind="triggerProps" ariaLabel="Account menu">
-      <DuAvatar size="sm" rounded="full" ring ringColor="primary" placeholder variant="primary">JD</DuAvatar>
+      <DuAvatar size="sm" rounded="full" ring ringVariant="primary" placeholder variant="primary">JD</DuAvatar>
     </DuButton>
   </template>
   <div class="bg-base-100 border border-base-300 rounded-xl shadow-lg p-4 w-56 flex flex-col gap-3 mt-2">
