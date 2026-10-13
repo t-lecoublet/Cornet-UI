@@ -25,6 +25,7 @@ const meta: Meta<typeof DuCheckbox> = {
       description: 'Couleur de la checkbox',
     },
     disabled: { control: "boolean" },
+    readonly: { control: "boolean" },
     indeterminate: { control: "boolean" },
   },
 }
@@ -139,6 +140,10 @@ const CheckboxStatesTplStr = `
   <div class="flex items-center gap-2">
     <DuCheckbox :modelValue="true" disabled />
     <span>Checked & Disabled</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <DuCheckbox :modelValue="true" variant="success" readonly />
+    <span>Checked & Readonly</span>
   </div>
 </div>`
 

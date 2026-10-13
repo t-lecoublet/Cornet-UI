@@ -3,6 +3,17 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.32]
+
+### Added
+
+- `DuCheckbox` / `DuRadio`: `readonly` prop. Shows the state without letting
+  anyone change it — a checklist of met criteria, a summary. Unlike `disabled`
+  (daisyUI dims it to 20% opacity and takes it out of the tab order), the
+  control keeps its colour and stays focusable, with `aria-readonly="true"`.
+  Native checkboxes/radios ignore the `readonly` attribute, so the click
+  (mouse or Space) is cancelled: no `update:modelValue`, no `change`.
+
 ## [0.1.0-beta.31]
 
 ### Added

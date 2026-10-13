@@ -10,6 +10,13 @@ export type DuCheckboxSize = (typeof CHECKBOX_SIZES)[number]
 export interface DuCheckboxProps {
   disabled?: boolean
   indeterminate?: boolean
+  /**
+   * Show the state without letting anyone change it. Unlike `disabled`, the
+   * control keeps its full colour and stays focusable: a read-only value is
+   * not a broken control. Native checkboxes/radios ignore the `readonly`
+   * attribute, so the click (mouse or Space) is cancelled instead.
+   */
+  readonly?: boolean
   variant?: Variant
   size?: Size
 }

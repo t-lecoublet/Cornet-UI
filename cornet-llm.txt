@@ -608,6 +608,7 @@ export interface DuTimelineItemData {
 **Props:**
 - modelValue?: boolean (via defineModel())
 - disabled?: boolean
+- readonly?: boolean — full colour, focusable, but the click is cancelled (no model update)
 - indeterminate?: boolean
 - variant?: Variant
 - size?: Size
@@ -760,6 +761,7 @@ export type DuLabelProps = {
 **Props:**
 - checked?: boolean
 - disabled?: boolean
+- readonly?: boolean — full colour, focusable, but the click is cancelled (no change event)
 - variant?: Variant
 - size?: Size
 

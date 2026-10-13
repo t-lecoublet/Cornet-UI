@@ -37,4 +37,27 @@ describe('DuCheckbox', () => {
     const wrapper = mount(DuCheckbox, { props: { disabled: true } })
     expect((wrapper.find('input').element as HTMLInputElement).disabled).toBe(true)
   })
+
+  it('readonly: a click changes neither the state nor the model', async () => {
+    const wrapper = mount(DuCheckbox, { props: { modelValue: true, readonly: true } })
+    const input = wrapper.find('input').element as HTMLInputElement
+
+    input.click()
+    await wrapper.vm.$nextTick()
+
+    expect(input.checked).toBe(true)
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+  })
+
+  it('readonly: stays enabled and announces itself as read-only', () => {
+    const wrapper = mount(DuCheckbox, { props: { readonly: true } })
+    const input = wrapper.find('input')
+    expect((input.element as HTMLInputElement).disabled).toBe(false)
+    expect(input.attributes('aria-readonly')).toBe('true')
+  })
+
+  it('omits aria-readonly when not readonly', () => {
+    const wrapper = mount(DuCheckbox)
+    expect(wrapper.find('input').attributes('aria-readonly')).toBeUndefined()
+  })
 })

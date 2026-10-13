@@ -10,6 +10,7 @@ const props = withDefaults(
   defineProps<DuCheckboxProps>(),
   {
     disabled: false,
+    readonly: false,
     indeterminate: false,
     variant: "default",
     size: "default",
@@ -17,6 +18,12 @@ const props = withDefaults(
 )
 
 const currentCheckbox = ref()
+
+// A cancelled click leaves `checked` untouched and fires no change event,
+// so v-model never sees it — mouse and Space alike.
+function onClick(event: MouseEvent) {
+  if (props.readonly) event.preventDefault()
+}
 
 const { colorClass } = useVariantMapping(props, "checkbox")
 const { sizeClass } = useSizeMapping(props, "checkbox")
@@ -38,6 +45,8 @@ watch(() => props.indeterminate, (indeterminate) => {
     type="checkbox"
     v-model="model"
     :disabled="disabled"
-    :class="['checkbox', colorClass, sizeClass]"
+    :aria-readonly="readonly || undefined"
+    :class="['checkbox', colorClass, sizeClass, readonly && 'cursor-default']"
+    @click="onClick"
   />
 </template>

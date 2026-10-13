@@ -8,6 +8,7 @@ const props = withDefaults(
   {
     checked: false,
     disabled: false,
+    readonly: false,
     variant: "default",
     size: "default",
   },
@@ -15,6 +16,11 @@ const props = withDefaults(
 
 const { colorClass } = useVariantMapping(props, "radio")
 const { sizeClass } = useSizeMapping(props, "radio")
+
+// A cancelled click leaves `checked` untouched and fires no change event.
+function onClick(event: MouseEvent) {
+  if (props.readonly) event.preventDefault()
+}
 </script>
 
 <template>
@@ -22,6 +28,8 @@ const { sizeClass } = useSizeMapping(props, "radio")
     type="radio"
     :checked="checked"
     :disabled="disabled"
-    :class="['radio', colorClass, sizeClass]"
+    :aria-readonly="readonly || undefined"
+    :class="['radio', colorClass, sizeClass, readonly && 'cursor-default']"
+    @click="onClick"
   />
 </template> 

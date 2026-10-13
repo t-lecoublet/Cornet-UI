@@ -26,6 +26,7 @@ const meta: Meta<typeof DuRadio> = {
     },
     checked: { control: "boolean" },
     disabled: { control: "boolean" },
+    readonly: { control: "boolean" },
   },
 }
 
@@ -106,6 +107,10 @@ const RadioStatesTplStr = `
   <div class="flex items-center gap-2">
     <DuRadio checked disabled />
     <span>Checked & Disabled</span>
+  </div>
+  <div class="flex items-center gap-2">
+    <DuRadio checked variant="success" readonly />
+    <span>Checked & Readonly</span>
   </div>
 </div>`
 
