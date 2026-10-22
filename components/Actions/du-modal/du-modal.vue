@@ -82,8 +82,21 @@ watch(
   },
 )
 
-function handleEscapeKey(_event: KeyboardEvent) {
-  if (props.closeOnEscape) {
+// Escape belongs to the innermost thing that is open. A select or a search
+// closes its list on the key and marks it handled before it bubbles up here;
+// a dropdown listens on the document, after this listener, so its expanded
+// trigger is what says the key is its own. Either way the dialog stays open.
+function escapeClaimedInside(event: KeyboardEvent): boolean {
+  return event.defaultPrevented
+    || dialogRef.value?.querySelector('[aria-haspopup][aria-expanded="true"]') != null
+}
+
+function handleEscapeKey(event: KeyboardEvent) {
+  const claimed = escapeClaimedInside(event)
+  // Left alone, the browser closes the dialog itself: closing goes through
+  // closeOnEscape and the check above instead.
+  event.preventDefault()
+  if (props.closeOnEscape && !claimed) {
     closeModal()
   }
 }
@@ -96,7 +109,7 @@ function handleEscapeKey(_event: KeyboardEvent) {
     :class="['modal', placementClass]"
     :aria-label="ariaLabel"
     :aria-labelledby="ariaLabelledby"
-    @keydown.esc.prevent="handleEscapeKey"
+    @keydown.esc="handleEscapeKey"
     @close="emit('update:open', false)"
   >
     <div :class="['modal-box', classBox]">

@@ -3,6 +3,16 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.33]
+
+### Fixed
+
+- `DuModal`: Escape in an open `DuSelect`, `DuSearch` or `DuDropdown` inside
+  the modal closed the whole modal along with the popup, losing what the form
+  held. The modal now leaves an Escape alone when a widget inside has already
+  handled it (`defaultPrevented`) or when a popup trigger inside is expanded
+  (`[aria-haspopup][aria-expanded="true"]`); the next Escape closes the modal.
+
 ## [0.1.0-beta.32]
 
 ### Added
