@@ -11,45 +11,45 @@ export default {
       lang: 'bash',
       links: [
         { label: 'MCP specification', href: 'https://modelcontextprotocol.io' },
+        { label: 'cornet-mcp on npm', href: 'https://www.npmjs.com/package/cornet-mcp' },
         { label: 'Cornet MCP repository', href: 'https://gitlab.limos.fr/hub-isima/daisyui-vue-kit/-/tree/mcp' },
       ],
       code: `# Available tools:
 # list_components         → lists all components by category
 # get_component_docs      → full docs (props, slots, classnames, examples)
-# get_component_source    → raw .vue source from the lib`,
+# get_component_source    → raw .vue source from the lib
+# install_cornet          → exact install steps (npm or git submodule)`,
     },
     {
       title: 'Setup',
-      description: 'Clone the MCP branch and start the server with Docker. The server listens on port 3000.',
-      lang: 'bash',
-      code: `git clone --recurse-submodules \\
-  git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git \\
-  -b mcp cornet-mcp
-
-cd cornet-mcp
-docker compose up -d
-
-# Server is now available at http://localhost:3000/mcp`,
+      description: 'The published package is self-contained — docs and component sources are bundled, zero dependencies. No install, no clone, no Docker.',
+      lang: 'json',
+      code: `// Add to any client that supports stdio MCP servers:
+"cornet": {
+  "type": "local",
+  "command": ["npx", "-y", "cornet-mcp@latest"]
+}`,
     },
     {
       title: 'Claude Code',
-      description: 'Register the server with the Claude Code CLI. The server will be available in every conversation within this project.',
+      description: 'Register the server with the Claude Code CLI, or add it to your project or global MCP config.',
       lang: 'bash',
       links: [
         { label: 'Claude Code MCP docs', href: 'https://docs.anthropic.com/en/docs/claude-code/mcp' },
       ],
-      code: `claude mcp add --transport http cornet http://localhost:3000/mcp`,
+      code: `claude mcp add cornet -- npx -y cornet-mcp@latest`,
     },
     {
       title: 'Claude Code — manual config',
       description: 'Alternatively, add the server manually to your project or global MCP config.',
       lang: 'json',
-      code: `// .claude/mcp.json  (project)  or  ~/.claude/mcp.json  (global)
+      code: `// .mcp.json  (project)  or  ~/.claude/mcp.json  (global)
 {
   "mcpServers": {
     "cornet": {
-      "type": "http",
-      "url": "http://localhost:3000/mcp"
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "cornet-mcp@latest"]
     }
   }
 }`,
@@ -61,12 +61,12 @@ docker compose up -d
       links: [
         { label: 'OpenCode MCP docs', href: 'https://opencode.ai/docs/mcp' },
       ],
-      code: `// ~/.config/opencode/config.json
+      code: `// ~/.config/opencode/opencode.json
 {
   "mcp": {
     "cornet": {
-      "type": "remote",
-      "url": "http://localhost:3000/mcp"
+      "type": "local",
+      "command": ["npx", "-y", "cornet-mcp@latest"]
     }
   }
 }`,
@@ -79,17 +79,38 @@ docker compose up -d
 {
   "mcpServers": {
     "cornet": {
-      "url": "http://localhost:3000/mcp"
+      "command": "npx",
+      "args": ["-y", "cornet-mcp@latest"]
     }
   }
 }`,
     },
     {
-      title: 'Updating docs and components',
-      description: 'When the Cornet library or documentation is updated upstream, pull the latest changes with a single command.',
+      title: 'Self-hosting',
+      description: 'For a shared remote URL (a server your whole team points at, or clients without stdio support), run the server over HTTP instead. The npx command serves stdio by default; pass --http to listen on a port.',
       lang: 'bash',
-      code: `cd cornet-mcp
+      code: `# From the repo (Docker):
+git clone --recurse-submodules \\
+  git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git \\
+  -b mcp cornet-mcp
+cd cornet-mcp
+docker compose up -d
+# Server is now available at http://localhost:3000/mcp
+
+# Or from the package itself:
+npx -y cornet-mcp@latest --http --port 3000`,
+    },
+    {
+      title: 'Updating docs and components',
+      description: 'The published package bundles the docs and component sources. When they change upstream, republish the package — clients pick the new version on their next npx run.',
+      lang: 'bash',
+      code: `# In the MCP repo:
+cd cornet-mcp
 git submodule update --remote --recursive
+npm version patch
+npm publish
+
+# Hosts of a remote URL also restart the server:
 docker compose restart web`,
     },
   ],
