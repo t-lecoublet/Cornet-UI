@@ -7,6 +7,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { basename, dirname, join, relative } from 'node:path'
 import { docsRegistry } from './website/src/data/docs/registry.js'
+import { allComponentLevels, levelByPath } from './website/src/data/component-levels.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -159,14 +160,21 @@ function createServer() {
   server.registerTool(
     'list_components',
     {
-      description: 'List all Cornet Vue components and guides organized by category (includes a "Guides" category with installation, quick-start, theming, etc.)',
+      description:
+        'List all Cornet Vue components organized by category, each tagged by internal complexity — Rich (state, keyboard nav, focus, dismiss: always use the component), Intermediate (some real state: use it for logic, inline for markup) or Simple (class-mapping wrapper: plain HTML + DaisyUI classes does the same) — plus the guides. ' +
+        'Use the tags to decide between the Cornet component and plain markup.',
       inputSchema: { repo: repoSchema },
     },
     async ({ repo = 'gitlab' }) => {
-      const categories: Record<string, string[]> = {}
+      // Components keyed by doc path (levelByPath covers every page; sub-components
+      // without a page hang off their parent's docs anyway).
+      const levelOf = (path: string): string | null => levelByPath[path]?.level ?? null
+      const categories: Record<string, Array<{ name: string; level?: string }>> = {}
       for (const [path, doc] of Object.entries(docsRegistry)) {
         if (!categories[doc.category]) categories[doc.category] = []
-        categories[doc.category].push(path.split('/').pop()!)
+        const name = path.split('/').pop()!
+        const level = levelOf(path)
+        categories[doc.category].push(level ? { name, level } : { name })
       }
       const text = applyRepo(JSON.stringify(categories, null, 2), repo)
       return { content: [{ type: 'text', text }] }
