@@ -11,6 +11,11 @@ import { allComponentLevels, levelByPath } from './website/src/data/component-le
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
+/** `npm version` bumps package.json without touching the code — read the version from it. */
+const { version: SERVER_VERSION } = JSON.parse(
+  readFileSync(join(__dirname, existsSync(join(__dirname, 'package.json')) ? 'package.json' : join('..', 'package.json')), 'utf-8'),
+) as { version: string }
+
 /** `dist/components` in the published package, the submodule in dev — either way the Cornet sources. */
 const COMPONENTS_DIR = existsSync(join(__dirname, 'components'))
   ? join(__dirname, 'components')
@@ -155,7 +160,7 @@ const repoSchema = z.enum(['gitlab', 'github']).optional().describe(
 )
 
 function createServer() {
-  const server = new McpServer({ name: 'cornet', version: '1.0.0' })
+  const server = new McpServer({ name: 'cornet', version: SERVER_VERSION })
 
   server.registerTool(
     'list_components',
