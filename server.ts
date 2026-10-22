@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from 'express'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js'
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod'
 import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -8,6 +9,12 @@ import { basename, dirname, join, relative } from 'node:path'
 import { docsRegistry } from './website/src/data/docs/registry.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
+
+/** `dist/components` in the published package, the submodule in dev — either way the Cornet sources. */
+const COMPONENTS_DIR = existsSync(join(__dirname, 'components'))
+  ? join(__dirname, 'components')
+  : join(__dirname, 'website', 'lib', 'components')
+const LIB_DIR = dirname(COMPONENTS_DIR)
 
 const GITLAB_BASE = 'https://gitlab.limos.fr/hub-isima/daisyui-vue-kit'
 const GITHUB_BASE = 'https://github.com/t-lecoublet/Cornet-UI'
@@ -26,9 +33,6 @@ function transformToGithub(text: string): string {
 function applyRepo(text: string, repo: 'gitlab' | 'github'): string {
   return repo === 'github' ? transformToGithub(text) : text
 }
-
-const LIB_DIR = join(__dirname, 'website', 'lib')
-const COMPONENTS_DIR = join(LIB_DIR, 'components')
 
 /** `DuTextArea`, `du-text-area`, `text-area` and `textarea` all name the same component. */
 function normalizeName(name: string): string {
@@ -244,16 +248,25 @@ function createServer() {
   return server
 }
 
-const app = express()
-app.use(express.json())
+// stdio by default (the `npx`/local case): stdout is the JSON-RPC channel, logs go to stderr.
+// `--http [--port N]` starts the HTTP server, for hosting the remote URL.
+const httpMode = process.argv.includes('--http')
 
-app.post('/mcp', async (req: Request, res: Response) => {
-  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined })
-  const server = createServer()
-  res.on('close', () => { transport.close(); server.close() })
-  await server.connect(transport)
-  await transport.handleRequest(req, res, req.body)
-})
+if (!httpMode) {
+  await createServer().connect(new StdioServerTransport())
+} else {
+  const app = express()
+  app.use(express.json())
 
-const PORT = process.env.PORT ?? 3000
-app.listen(PORT, () => console.log(`Cornet MCP server → http://localhost:${PORT}/mcp`))
+  app.post('/mcp', async (req: Request, res: Response) => {
+    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined })
+    const server = createServer()
+    res.on('close', () => { transport.close(); server.close() })
+    await server.connect(transport)
+    await transport.handleRequest(req, res, req.body)
+  })
+
+  const portIndex = process.argv.indexOf('--port')
+  const PORT = (portIndex !== -1 ? Number(process.argv[portIndex + 1]) : NaN) || process.env.PORT || 3000
+  app.listen(PORT, () => console.error(`Cornet MCP server → http://localhost:${PORT}/mcp`))
+}

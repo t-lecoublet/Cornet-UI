@@ -1,20 +1,38 @@
 {
   "name": "cornet-mcp",
   "version": "1.0.0",
+  "description": "MCP server exposing the Cornet Vue component library documentation and source code to any LLM",
+  "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.limos.fr:hub-isima/daisyui-vue-kit.git",
+    "directory": "mcp"
+  },
+  "bin": {
+    "cornet-mcp": "dist/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepublishOnly": "npm run build",
     "start": "tsx server.ts",
     "dev": "tsx watch server.ts"
   },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.15.0",
-    "express": "^4.21.0",
-    "zod": "^3.24.0"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.15.0",
     "@types/express": "^4.17.21",
     "@types/node": "^24.0.0",
+    "esbuild": "^0.27.7",
+    "express": "^4.21.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "zod": "^3.24.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

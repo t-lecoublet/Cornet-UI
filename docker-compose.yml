@@ -9,4 +9,4 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-    command: bash -c "npm install && npx tsx /app/server.ts"
+    command: bash -c "npm install && npx tsx /app/server.ts --http"
