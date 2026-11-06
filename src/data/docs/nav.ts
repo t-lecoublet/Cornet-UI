@@ -63,7 +63,7 @@ export const docsNav: NavCategory[] = [
       { label: 'Stat', path: '/docs/data-display/stat', description: 'Stat displays a single statistic with title, value, and description slots.' },
       { label: 'Stats', path: '/docs/data-display/stats', description: 'Stats groups multiple DuStat components in a horizontal or vertical layout.' },
       { label: 'Status', path: '/docs/data-display/status', description: 'Status is a small colored indicator dot used to show the status of an item.' },
-      { label: 'Table', path: '/docs/data-display/table', description: 'Table is used to display tabular data with headers, rows, and optional actions.' },
+      { label: 'Table', path: '/docs/data-display/table', description: 'Data table with sorting, selection, expandable rows, search, paging and a server-side mode.' },
       { label: 'Timeline', path: '/docs/data-display/timeline', description: 'Timeline displays events in chronological order.' },
     ],
   },

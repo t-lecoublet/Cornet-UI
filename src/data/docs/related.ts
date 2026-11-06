@@ -113,6 +113,15 @@ export const relatedGroups: RelatedGroup[] = [
     ],
   },
   {
+    label: 'Browsing a long list of records',
+    paths: [
+      '/docs/data-display/table',
+      '/docs/navigation/pagination',
+      '/docs/data-input/search',
+      '/docs/data-input/filter',
+    ],
+  },
+  {
     label: 'Things laid out over time',
     paths: [
       '/docs/data-display/timeline',

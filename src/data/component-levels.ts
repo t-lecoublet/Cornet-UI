@@ -5,7 +5,8 @@
  * Nine components moved from `Simple`/`Intermediate` to `Rich` in that pass,
  * because they gained the state they had been faking with CSS — a dropdown that
  * only toggled a class, tabs driven by hidden radios, a toast that was a
- * positioned box.
+ * positioned box. DuTable followed in beta.34, when sorting, selection and
+ * paging landed on the `core/table` engine.
  *
  * This is the single source of truth for both the sidebar level tags
  * (`DocsLayout.vue`) and the "When to Use Cornet" guide, which renders its
@@ -88,7 +89,7 @@ export const componentLevels: ComponentLevelCategory[] = [
       { name: 'DuStat', path: '/docs/data-display/stat', level: 'Simple', reason: 'Slot-presence conditional wrapper.' },
       { name: 'DuStats', path: '/docs/data-display/stats', level: 'Intermediate', reason: 'Item-type resolution (component/image/HTML) for figure and actions.' },
       { name: 'DuStatus', path: '/docs/data-display/status', level: 'Simple', reason: 'Conditional markup plus class mapping.' },
-      { name: 'DuTable', path: '/docs/data-display/table', level: 'Intermediate', reason: 'Dynamic columns/rows vs manual-slot mode, purely structural. Generic over the row type.' },
+      { name: 'DuTable', path: '/docs/data-display/table', level: 'Rich', reason: 'APG sortable table on the core/table engine: search → sort → page, selection and expansion keyed by row id, manual (server) mode, every state v-model-able. Generic over the row type.' },
       { name: 'DuTimeline', path: '/docs/data-display/timeline', level: 'Intermediate', reason: 'Multi-layer connector-line class fallback plus dynamic/manual modes.' },
     ],
   },
@@ -136,7 +137,7 @@ export const componentLevels: ComponentLevelCategory[] = [
       { name: 'DuLink', path: '/docs/navigation/link', level: 'Simple', reason: 'Pure class-mapping wrapper.' },
       { name: 'DuMenu', path: '/docs/navigation/menu', level: 'Rich', reason: 'Two roles (nav list vs APG menu), roving tabindex, typeahead, collapsible submenus, recursive rendering through a context.' },
       { name: 'DuNavbar', path: '/docs/navigation/navbar', level: 'Simple', reason: 'Pure slot-presence layout wrapper.' },
-      { name: 'DuPagination', path: '/docs/navigation/pagination', level: 'Intermediate', reason: 'A page-range/ellipsis algorithm; no internal state or keyboard nav.' },
+      { name: 'DuPagination', path: '/docs/navigation/pagination', level: 'Intermediate', reason: 'A page-range/ellipsis algorithm; keeps its own page when uncontrolled, no keyboard nav of its own.' },
       { name: 'DuStepItem', level: 'Simple', reason: 'Pure class-composition wrapper.' },
       { name: 'DuSteps', path: '/docs/navigation/steps', level: 'Intermediate', reason: 'Dynamic vs manual mode with per-index class resolution.' },
       { name: 'DuTabs', path: '/docs/navigation/tabs', level: 'Rich', reason: 'APG tablist with roving tabindex, v-model by stable value, automatic/manual activation.' },

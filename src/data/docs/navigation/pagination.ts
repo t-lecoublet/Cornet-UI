@@ -8,9 +8,8 @@ export default {
   props: [
     {
       title: 'modelValue',
-      description: 'Current page number (use with v-model)',
+      description: 'Current page (`v-model`). Leave it out and the pagination keeps its own page, starting at 1; pass it and the pagination follows it and only emits `update:modelValue`.',
       type: 'number',
-      default: '1',
     },
     {
       title: 'total',
@@ -225,7 +224,8 @@ export default {
   sections: [
     {
       title: 'Basic',
-      preview: `<DuPagination :modelValue="3" :total="100" :perPage="10" />`,
+      description: 'Without `v-model` the pagination keeps its own page — click away. Bind `v-model` as soon as something else needs to know the page.',
+      preview: `<DuPagination :total="100" :perPage="10" />`,
       code: `<script setup lang="ts">
 import { ref } from 'vue'
 const page = ref(1)
@@ -234,6 +234,23 @@ const page = ref(1)
 <template>
   <DuPagination v-model="page" :total="100" :perPage="10" />
 </template>`,
+    },
+    {
+      title: 'Controlled or not',
+      description: 'Pass `modelValue` (or `v-model`) and the page is yours: a click only emits `update:modelValue`, and nothing moves until the prop does — so you can refuse a change, or keep the page in the URL. Leave it out and the component owns the page. A static `:modelValue` with no listener therefore never moves.',
+      script: `
+      const page = ref(2)
+      return { page }
+      `,
+      preview: `<div class="flex flex-col items-center gap-3">
+  <DuPagination v-model="page" :total="60" :perPage="10" />
+  <span class="text-sm text-base-content/60">page = {{ page }}</span>
+</div>`,
+      code: `<!-- controlled: the page lives in your state (or the URL) -->
+<DuPagination v-model="page" :total="60" :perPage="10" />
+
+<!-- uncontrolled: the component keeps it -->
+<DuPagination :total="60" :perPage="10" @update:modelValue="track" />`,
     },
     {
       title: 'Without navigation buttons',

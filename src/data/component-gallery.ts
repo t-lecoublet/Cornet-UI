@@ -198,7 +198,8 @@ export const componentGallery: Record<string, string> = {
   size="xs"
   zebra
   class="w-52"
-  :columns="[{ key: 'name', label: 'Name' }, { key: 'role', label: 'Role' }]"
+  :sort="[{ key: 'name', direction: 'asc' }]"
+  :columns="[{ key: 'name', label: 'Name', sortable: true }, { key: 'role', label: 'Role', sortable: true }]"
   :rows="[
     { id: 1, name: 'Ada', role: 'Admin' },
     { id: 2, name: 'Grace', role: 'Dev' },
