@@ -93,3 +93,21 @@ export function hugPreviousSibling(target: unknown) {
   const gap = stacked ? parent.rowGap : 'normal'
   el.style.marginTop = gap === 'normal' || gap === '0px' ? offset : `calc(${offset} - ${gap})`
 }
+
+const CONTROL_SELECTOR
+  = 'a[href], button, input, select, textarea, label, summary, [role="button"], [role="link"], [role="checkbox"], [role="switch"], [contenteditable=""], [contenteditable="true"]'
+
+/**
+ * Whether a click landed on a control (or inside one) within `boundary`.
+ *
+ * A clickable container — a table row that opens its record — must not also
+ * fire when the click was meant for a checkbox, a link or a button inside it.
+ * Controls *outside* the boundary do not count: the row is not inside them.
+ */
+export function isInsideControl(target: EventTarget | null, boundary: Element): boolean {
+  if (!(target instanceof Element)) {
+    return false
+  }
+  const control = target.closest(CONTROL_SELECTOR)
+  return control !== null && boundary.contains(control)
+}

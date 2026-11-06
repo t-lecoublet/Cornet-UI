@@ -42,13 +42,14 @@ Rules that hold without exception:
 | `combobox/useCombobox` | the whole combobox state machine, in one closure | DuSelect, DuSearch |
 | `popover/usePopoverState` | open flag, Popover API, outside/Escape dismissal, focus return | combobox, DuDropdown |
 | `positioning/useAnchorPosition` | CSS anchor positioning: `side` × `align` × `matchWidth` → inline style | combobox, DuDropdown |
+| `table/useTable` | data-table engine in one closure: search → sort → page, selection and expansion keyed by row id, `manual` mode, `aria-sort`/row-control prop bags, sort announcement | DuTable |
 | `navigation/useRovingIndex` | roving tabindex: arrows, Home/End, typeahead, skip disabled | DuMenu |
 | `focus/useFocusReturn` | remembers what had focus before opening, hands it back after | DuDrawer |
 | `focus/useFocusTrap` | keeps Tab inside a container while it is open | — (DuDrawer overlay, G5) |
-| `shared/useControllableState` | the controlled/uncontrolled contract of §5 | DuDropdown |
+| `shared/useControllableState` | the controlled/uncontrolled contract of §5 | DuDropdown, DuPagination, table |
 | `shared/useComponentId` | SSR-safe ids (§6) | combobox, five facades |
 | `shared/useNativeValidation` | native constraint validation, wearing the combobox's error surface | DuInputField |
-| `shared/dom` | `focusableInDocument`, `isTextField`, `hasEditableText`, `revealInContainer` | combobox |
+| `shared/dom` | `focusableInDocument`, `isTextField`, `hasEditableText`, `revealInContainer`, `isInsideControl` | combobox, DuTable |
 
 Four notes that are easy to lose:
 

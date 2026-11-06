@@ -3,6 +3,94 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.34]
+
+### Upgrading from beta.33
+
+- Tables written by hand (`<DuTable>` with a default slot, no `columns`) and
+  tables with `columns` + `rows` render as before; nothing to change.
+- Every new behaviour below is opt-in. To get the bordered-panel look around
+  a server-driven table, add `panel` with `manual` — see the *Panel —
+  server-side (FR)* story and the Recipes section of the DuTable docs.
+
+### Added
+
+- `DuTable` is now a rich data table, on a new internal engine
+  (`core/table/useTable`). Everything below is opt-in; a table given only
+  `columns` and `rows` renders as before. Every state can be bound with
+  `v-model:` or left to the table (§5).
+  - **Sorting**: `sortable` columns render a `<button>` in their header;
+    a click cycles none → ascending → descending → none. `aria-sort` sits on
+    the sorted column only, and the change is announced politely
+    (`sortAnnouncement` to reword it). `v-model:sort` is an array of
+    `{ key, direction }`, and `sortMode: 'multiple'` stacks columns. Values
+    compare as numbers, dates or text (numeric-aware, accent-insensitive);
+    empty values go last both ways; `sortFn` overrides per column.
+  - **Selection**: `selectionMode: 'multiple'` (checkboxes and a select-all
+    with an indeterminate state, over the visible page) or `'single'` (radios).
+    `v-model:selected` holds row ids and survives sorting and paging;
+    `isRowSelectable` disables rows. Row controls are named after the
+    `rowHeader` column ("Select row Ada").
+  - **Expandable rows**: an `expanded` slot adds a disclosure button per row
+    (`aria-expanded`, `aria-controls`) and a detail row; `v-model:expanded`.
+  - **Search**: `v-model:search`, a built-in field with `searchable`, a
+    per-column `filter` / `searchable: false`, or a whole-row `filter`. A new
+    query returns to page 1.
+  - **Paging**: `pageSize` and `v-model:page`, through `DuPagination`, with a
+    "1–10 of 42" range (`rangeText`).
+  - **Server-side data**: `manual` — the table keeps emitting search, sort and
+    page but applies none of them; `total` drives the pagination.
+  - **States**: `loading` (`aria-busy`; placeholder rows when there are no rows
+    yet, dimmed rows otherwise) and an empty state (`emptyText`,
+    `noResultsText`, `empty` slot).
+  - **Columns**: `accessor`, `format`, `align`, `width`, `headerClass`,
+    `cellClass`, and `rowHeader` (cells render as `<th scope="row">`).
+  - **Customising**: `wrapperClass`, `rowClass`, and slots for every part —
+    `toolbar`, `header-{key}`, `sort-icon`, `select-all`, `select`,
+    `expand-toggle`, `cell-{key}` (now also given `index`), `expanded`,
+    `empty`, `loading`, `pagination`. Exposes `toggleSort`, `toggleRow`,
+    `toggleAll`, `clearSelection`, `toggleExpanded`.
+  - `row-click(row, event)`, not fired for clicks on a control inside the row.
+  - **`panel`**: the bordered-panel preset — a rounded bordered surface, the
+    toolbar and the pagination bar separated by borders, a tinted header, the
+    sorted header in full colour, hovered rows and a loading overlay. Theme
+    tokens only, so it follows each app's daisyUI theme.
+  - **Class hooks** `toolbarClass`, `headClass`, `footerClass`: each replaces
+    its part's default rather than adding to it.
+  - **`sortRequired`**: clicks alternate ascending ↔ descending, never
+    clearing the sort.
+  - **Page sizes**: `pageSizeOptions` (a native select, labelled by
+    `pageSizeLabel`) and `v-model:page-size`; a new size returns to page 1.
+  - **`paginationProps`**: handed to the embedded `DuPagination` — its labels,
+    `ariaLabel`, `variant`… so the pagination can be translated.
+  - **`loadingOverlay`**: a spinner over rows being reloaded instead of
+    dimming them (`loading-overlay` slot to replace it).
+- `DuTableItem`: `scope` prop, defaulting to `'col'` on a header cell — it set
+  none before.
+
+### Fixed
+
+- `DuPagination` never changed page without `v-model`: `modelValue` defaulted
+  to `1` and a click only emitted. It now keeps its own page when uncontrolled.
+- `DuTable`: the scroll container is focusable (and, with a caption, a named
+  region) **while the table overflows it**, so a wide table can be scrolled by
+  keyboard and a table that fits is not a dead tab stop. It is measured after
+  mount and on resize; the server render is never focusable.
+- `DuTable`: `columns` without `rows` fell back to the manual mode and
+  rendered an empty `<table>`; it now renders the headers and the empty state.
+- `DuTable`: a column's cells were keyed by index; they are keyed by
+  `column.key` now, so reordering columns no longer reuses the wrong cells.
+
+### Changed
+
+- `DuTable`: the root element is now a flex column holding the toolbar, the
+  scroll container and the pagination, and the sort/loading live regions
+  (rendered with `columns` only). Attributes on `<DuTable>` (a height for
+  `pinRows`, say) still land on the root and still constrain the scroll area;
+  use `wrapperClass` to style the scroll container itself.
+- `DuTable`: a cell with no slot shows `format(value)` when given; a `Date`
+  value is shown with `toLocaleString()` instead of its JSON form.
+
 ## [0.1.0-beta.33]
 
 ### Fixed

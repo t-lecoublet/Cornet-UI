@@ -535,35 +535,36 @@ export type DuStatusVariant = (typeof STATUS_VARIANTS)[number]
 
 ### DuTable
 **File:** components/DataDisplay/du-table/du-table.vue
-<!-- @see-if-needed: components/DataDisplay/du-table/du-table.vue (slots pour cellules personnalisées) -->
+<!-- @see-if-needed: .claude/rules/components/data-display.md (DuTable — full API) -->
 
-**Props:**
-- columns?: DuTableColumn[]
-- rows?: DuTableRow[]
-- zebra?: boolean
-- pinRows?: boolean
-- pinCols?: boolean
-- size?: DuTableSize
-- customClass?: string
-- header?: boolean
-- footer?: boolean
+Rich data table, generic over the row type. Dynamic mode (`columns` + `rows`)
+or manual mode (default slot with `DuTableItem`s). Client-side search → sort →
+page by default; `manual` for server-side data (the table only emits).
 
-**Types (du-table.types.ts):**
+**Props (main):** columns, rows, caption, hideCaption, zebra, pinRows, pinCols,
+size, customClass, wrapperClass, rowClass, toolbarClass, headClass, footerClass,
+panel (bordered-panel preset), header, footer, sort (v-model), sortMode,
+sortRequired, selectionMode ('none' | 'single' | 'multiple'), selected (v-model),
+isRowSelectable, expanded (v-model, needs the `expanded` slot), search
+(v-model), searchable, filter, page (v-model), pageSize (v-model),
+pageSizeOptions, pageSizeLabel, paginationProps, total, manual, loading,
+loadingOverlay, loadingRows, emptyText, noResultsText, and overridable labels.
+
+**Emits:** update:sort, update:selected, update:expanded, update:search, update:page, update:pageSize, row-click
+
+**Slots:** caption, toolbar, header, header-{key}, sort-icon, select-all, select,
+expand-toggle, cell-{key}, expanded, empty, loading, loading-overlay, footer, footer-{key}, pagination
+
 ```typescript
-export const TABLE_SIZES = ['default', 'xs', 'sm', 'md', 'lg', 'xl'] as const
-export type DuTableSize = (typeof TABLE_SIZES)[number]
-
-export interface DuTableColumn {
-  key: string
-  label: string
-  customClass?: string
+export interface DuTableColumn<R> {
+  key: string; label: string
+  accessor?: (row: R) => unknown; format?: (value: unknown, row: R) => string
+  sortable?: boolean; sortFn?: (a: R, b: R) => number
+  searchable?: boolean; filter?: (value: unknown, row: R, query: string) => boolean
+  align?: 'start' | 'center' | 'end'; width?: string; rowHeader?: boolean
+  customClass?: string; headerClass?: string; cellClass?: string | ((row: R) => string | undefined)
 }
-
-export interface DuTableRow {
-  id: string | number
-  [key: string]: unknown
-  customClass?: string
-}
+export interface DuTableSort { key: string; direction: 'asc' | 'desc' }
 ```
 
 ### DuTimeline

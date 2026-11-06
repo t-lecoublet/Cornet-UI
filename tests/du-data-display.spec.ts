@@ -1,5 +1,6 @@
 // The data-display components that carry structure a screen reader has to make
-// sense of: a table's columns, a carousel's slides, a comparison's two states.
+// sense of: a carousel's slides, a comparison's two states. (DuTable has its
+// own spec, `du-table.spec.ts`.)
 //
 // None of them was wrong about its *markup* — they were silent about what the
 // markup meant, which is a different failure and an easier one to overlook.
@@ -7,62 +8,6 @@ import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import DuCarousel from '../components/DataDisplay/du-carousel/du-carousel.vue'
 import DuDiff from '../components/DataDisplay/du-diff/du-diff.vue'
-import DuTable from '../components/DataDisplay/du-table/du-table.vue'
-
-const columns = [
-  { key: 'name', label: 'Name' },
-  { key: 'total', label: 'Total' },
-]
-
-const rows = [
-  { id: 1, name: 'Ada', total: 12 },
-  { id: 2, name: 'Grace', total: 7 },
-]
-
-describe('DuTable', () => {
-  it('ties every header to the column beneath it', () => {
-    // Without `scope`, a screen reader has to guess whether a `<th>` heads a
-    // column or a row, and announces the wrong one on complex tables.
-    const wrapper = mount(DuTable, { props: { columns, rows } })
-    const headers = wrapper.findAll('thead th')
-
-    expect(headers).toHaveLength(2)
-    expect(headers.every((th) => th.attributes('scope') === 'col')).toBe(true)
-  })
-
-  it('says what the table is about', () => {
-    const wrapper = mount(DuTable, { props: { columns, rows, caption: 'Sales by rep' } })
-    const caption = wrapper.find('caption')
-
-    expect(caption.text()).toBe('Sales by rep')
-    expect(caption.element.tagName).toBe('CAPTION')
-  })
-
-  it('can expose the caption without showing it', () => {
-    const wrapper = mount(DuTable, { props: { columns, rows, caption: 'Sales', hideCaption: true } })
-    expect(wrapper.find('caption').classes()).toContain('sr-only')
-  })
-
-  it('has no caption at all when there is nothing to say', () => {
-    const wrapper = mount(DuTable, { props: { columns, rows } })
-    expect(wrapper.find('caption').exists()).toBe(false)
-  })
-
-  it('takes the caption from a slot too', () => {
-    const wrapper = mount(DuTable, {
-      props: { columns, rows },
-      slots: { caption: '<span class="rich">Sales <b>2024</b></span>' },
-    })
-    expect(wrapper.find('caption .rich').exists()).toBe(true)
-  })
-
-  it('still renders the cells through their column keys', () => {
-    const wrapper = mount(DuTable, { props: { columns, rows } })
-    expect(wrapper.findAll('tbody tr')).toHaveLength(2)
-    expect(wrapper.text()).toContain('Ada')
-    expect(wrapper.text()).toContain('12')
-  })
-})
 
 const slides = [
   { src: '/a.png', alt: 'A' },

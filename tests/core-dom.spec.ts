@@ -6,6 +6,7 @@ import {
   focusableInDocument,
   hasEditableText,
   hugPreviousSibling,
+  isInsideControl,
   isTextField,
   revealInContainer,
 } from '../components/core/shared/dom'
@@ -145,5 +146,36 @@ describe('hugPreviousSibling', () => {
   it('ignores a missing or detached element', () => {
     expect(() => hugPreviousSibling(null)).not.toThrow()
     expect(() => hugPreviousSibling(document.createElement('p'))).not.toThrow()
+  })
+})
+
+describe('isInsideControl', () => {
+  function row() {
+    const tr = document.createElement('tr')
+    tr.innerHTML = '<td class="plain">Ada</td><td><button><span class="icon">x</span></button></td><td><a href="#">Open</a></td>'
+    document.body.appendChild(tr)
+    return tr
+  }
+
+  it('is false for a plain cell', () => {
+    const tr = row()
+    expect(isInsideControl(tr.querySelector('.plain'), tr)).toBe(false)
+  })
+
+  it('is true inside a button or a link', () => {
+    const tr = row()
+    expect(isInsideControl(tr.querySelector('.icon'), tr)).toBe(true)
+    expect(isInsideControl(tr.querySelector('a'), tr)).toBe(true)
+  })
+
+  it('ignores controls that wrap the boundary itself', () => {
+    const label = document.createElement('label')
+    const inner = document.createElement('span')
+    label.appendChild(inner)
+    expect(isInsideControl(inner, inner)).toBe(false)
+  })
+
+  it('is false for a non-element target', () => {
+    expect(isInsideControl(null, document.body)).toBe(false)
   })
 })

@@ -69,4 +69,26 @@ describe('DuPagination', () => {
     const ellipsis = wrapper.findAll('button').filter((b) => b.text() === '...')
     expect(ellipsis).toHaveLength(2)
   })
+
+  it('moves on its own without v-model', async () => {
+    // Uncontrolled: no modelValue at all. It used to default to 1 and only
+    // emit, so the current page never changed.
+    const wrapper = mount(DuPagination, { props: { total: 100, perPage: 10 } })
+    expect(wrapper.find('[aria-current="page"]').text()).toBe('1')
+
+    await wrapper.find('[aria-label="Next page"]').trigger('click')
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([2])
+    expect(wrapper.find('[aria-current="page"]').text()).toBe('2')
+  })
+
+  it('follows the prop and only emits when controlled', async () => {
+    const wrapper = mountPagination({ modelValue: 3 })
+    await wrapper.find('[aria-label="Next page"]').trigger('click')
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([4])
+    // The consumer did not accept the change: the page stays where the prop is.
+    expect(wrapper.find('[aria-current="page"]').text()).toBe('3')
+
+    await wrapper.setProps({ modelValue: 4 })
+    expect(wrapper.find('[aria-current="page"]').text()).toBe('4')
+  })
 })

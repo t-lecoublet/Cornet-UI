@@ -1,15 +1,16 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, reactive } from "vue";
 import DuJoin from "../../Layout/du-join/du-join.vue";
 import { type DuPaginationProps } from './du-pagination.types';
 import { useSizeMapping } from "../../../composables/useSizeProps";
 import { useVariantMapping } from "../../../composables/useVariantProps";
 import { usePaginationPages } from "./composables/usePaginationPages";
+import { useControllableState } from "../../core/shared";
 
 const props = withDefaults(
   defineProps<DuPaginationProps>(),
   {
-    modelValue: 1,
+    modelValue: undefined,
     perPage: 10,
     showNext: true,
     showPrevious: true,
@@ -49,11 +50,25 @@ const softClass = computed(() => {
   return props.soft ? "btn-soft" : "";
 });
 
-const { totalPages, pages } = usePaginationPages(props);
+// Without `v-model` the pagination keeps its own page (§5): it used to default
+// `modelValue` to 1 and only emit, so an uncontrolled pagination never moved.
+const current = useControllableState(
+  () => props.modelValue,
+  (value) => emit("update:modelValue", value),
+  1,
+);
+
+const { totalPages, pages } = usePaginationPages(reactive({
+  get modelValue() { return current.value; },
+  get total() { return props.total; },
+  get perPage() { return props.perPage; },
+  get maxPages() { return props.maxPages; },
+  get showEllipsis() { return props.showEllipsis; },
+}));
 
 function changePage(page: number | string) {
   if (typeof page === "number") {
-    emit("update:modelValue", page);
+    current.value = page;
   }
 }
 </script>
@@ -71,8 +86,8 @@ function changePage(page: number | string) {
           colorClass,
           outlineClass,
           softClass,
-          { 'btn-disabled': modelValue <= 1 },
-        ]" @click="changePage(1)" :disabled="modelValue <= 1" :aria-label="firstAriaLabel">
+          { 'btn-disabled': current <= 1 },
+        ]" @click="changePage(1)" :disabled="current <= 1" :aria-label="firstAriaLabel">
           <slot name="first">{{ firstLabel }}</slot>
         </button>
 
@@ -81,8 +96,8 @@ function changePage(page: number | string) {
           colorClass,
           outlineClass,
           softClass,
-          { 'btn-disabled': modelValue <= 1 },
-        ]" @click="changePage(modelValue - 1)" :disabled="modelValue <= 1" :aria-label="previousAriaLabel">
+          { 'btn-disabled': current <= 1 },
+        ]" @click="changePage(current - 1)" :disabled="current <= 1" :aria-label="previousAriaLabel">
           <slot name="previous">{{ previousLabel }}</slot>
         </button>
 
@@ -91,10 +106,10 @@ function changePage(page: number | string) {
           colorClass,
           outlineClass,
           softClass,
-          { 'btn-active': page === modelValue },
+          { 'btn-active': page === current },
           { 'btn-disabled': page === '...' },
         ]" @click="changePage(page)" :disabled="page === '...'"
-          :aria-current="page === modelValue ? 'page' : undefined"
+          :aria-current="page === current ? 'page' : undefined"
           :aria-hidden="page === '...' ? 'true' : undefined"
           :tabindex="page === '...' ? -1 : undefined">
           <slot :name="`page-${page}`">{{ page }}</slot>
@@ -105,8 +120,8 @@ function changePage(page: number | string) {
           colorClass,
           outlineClass,
           softClass,
-          { 'btn-disabled': modelValue >= totalPages },
-        ]" @click="changePage(modelValue + 1)" :disabled="modelValue >= totalPages" :aria-label="nextAriaLabel">
+          { 'btn-disabled': current >= totalPages },
+        ]" @click="changePage(current + 1)" :disabled="current >= totalPages" :aria-label="nextAriaLabel">
           <slot name="next">{{ nextLabel }}</slot>
         </button>
 
@@ -114,9 +129,9 @@ function changePage(page: number | string) {
           sizeClass,
           colorClass,
           outlineClass,
-          { 'btn-disabled': modelValue >= totalPages },
+          { 'btn-disabled': current >= totalPages },
           softClass,
-        ]" @click="changePage(totalPages)" :disabled="modelValue >= totalPages" :aria-label="lastAriaLabel">
+        ]" @click="changePage(totalPages)" :disabled="current >= totalPages" :aria-label="lastAriaLabel">
           <slot name="last">{{ lastLabel }}</slot>
         </button>
       </template>

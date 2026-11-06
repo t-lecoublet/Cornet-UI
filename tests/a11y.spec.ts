@@ -91,6 +91,62 @@ const extraCases: Case[] = [
     component: STANDALONE.find(([n]) => n === 'DuDrawer')![1],
     props: { open: true, ariaLabel: 'Main navigation', items: [{ label: 'Home', href: '/' }] },
   },
+  {
+    name: 'DuTable (sortable, selectable, paged, searchable)',
+    component: STANDALONE.find(([n]) => n === 'DuTable')![1],
+    props: {
+      caption: 'Owners',
+      columns: [
+        { key: 'name', label: 'Name', sortable: true, rowHeader: true },
+        { key: 'age', label: 'Age', sortable: true, align: 'end' },
+      ],
+      rows: [{ id: 1, name: 'Ada', age: 36 }, { id: 2, name: 'Grace', age: 85 }, { id: 3, name: 'Alan', age: 41 }],
+      sort: [{ key: 'age', direction: 'desc' }],
+      selectionMode: 'multiple',
+      selected: [1],
+      pageSize: 2,
+      searchable: true,
+    },
+  },
+  {
+    name: 'DuTable (single selection, expandable)',
+    component: STANDALONE.find(([n]) => n === 'DuTable')![1],
+    props: {
+      caption: 'Owners',
+      columns: [{ key: 'name', label: 'Name', rowHeader: true }],
+      rows: [{ id: 1, name: 'Ada' }, { id: 2, name: 'Grace' }],
+      selectionMode: 'single',
+      expanded: [1],
+    },
+    slots: { expanded: '<p>Details</p>' },
+  },
+  {
+    name: 'DuTable (panel, overlay, page sizes)',
+    component: STANDALONE.find(([n]) => n === 'DuTable')![1],
+    props: {
+      caption: 'Inscrits',
+      panel: true,
+      loading: true,
+      sortRequired: true,
+      columns: [{ key: 'name', label: 'Nom', sortable: true, rowHeader: true }],
+      rows: [{ id: 1, name: 'Ada' }, { id: 2, name: 'Grace' }, { id: 3, name: 'Alan' }],
+      pageSizeOptions: [2, 5],
+      pageSizeLabel: 'Lignes par page',
+      paginationProps: { ariaLabel: 'Pages des inscrits', previousAriaLabel: 'Page précédente', nextAriaLabel: 'Page suivante' },
+      searchable: true,
+      searchLabel: 'Rechercher un inscrit',
+    },
+  },
+  {
+    name: 'DuTable (loading)',
+    component: STANDALONE.find(([n]) => n === 'DuTable')![1],
+    props: { caption: 'Owners', columns: [{ key: 'name', label: 'Name' }], rows: [], loading: true },
+  },
+  {
+    name: 'DuTable (empty)',
+    component: STANDALONE.find(([n]) => n === 'DuTable')![1],
+    props: { caption: 'Owners', columns: [{ key: 'name', label: 'Name' }], rows: [], selectionMode: 'multiple' },
+  },
 ]
 
 let mounted: ReturnType<typeof mount> | null = null

@@ -68,7 +68,7 @@ export interface DuMenuItemData {
 > **Complex component**: Page calculation logic and ellipsis.
 
 **Props:**
-- `modelValue?`: number (v-model, current page)
+- `modelValue?`: number (v-model, current page) — omit it and the pagination keeps its own page, starting at 1
 - `total`: number (required, total number of items)
 - `perPage?`: number (default: 10)
 - `showNext?`: boolean (default: true)

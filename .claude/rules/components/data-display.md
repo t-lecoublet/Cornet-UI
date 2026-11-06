@@ -287,37 +287,141 @@ Status indicator (colored dot).
 
 ## DuTable
 
-**Files:** `components/DataDisplay/du-table/du-table.vue` | `.types.ts` | `.stories.ts`
+**Files:** `components/DataDisplay/du-table/du-table.vue` | `du-table-item.vue` | `.types.ts` | `.stories.ts`
 
-> **Complex component**: Supports custom slots per cell (`#cell-{columnKey}="{ row }"`).
+APG *sortable table*: a plain `<table>` (not a `grid`), `scope` on every header
+cell, `aria-sort` on the sorted column only, each sort control a real
+`<button>`. State, search, sort, paging and the ARIA prop bags live in
+`core/table/useTable` (internal); the facade owns the markup and the slots.
+
+Two modes:
+- **dynamic** — `columns` given (rows default to `[]`): the table renders itself;
+- **manual** — no `columns`: the default slot is the table body
+  (`<thead>`/`<tbody>` of `DuTableItem`s), and only the styling props apply.
+
+**Pipeline** (dynamic, client side): `rows → search → sort → page`. With
+`manual: true` the rows arrive already processed (a server): the table keeps
+emitting `update:search` / `update:sort` / `update:page` but applies none of
+them, and `total` drives the pagination.
 
 **Props:**
-- `columns?`: DuTableColumn[]
-- `rows?`: R[] — generic over the row type
-- `caption?`: string — what the table is about, rendered as a `<caption>`
-- `hideCaption?`: boolean — expose it without showing it
-- `zebra?`: boolean
-- `pinRows?`: boolean
-- `pinCols?`: boolean
-- `size?`: DuTableSize
-- `customClass?`: string
-- `header?`: boolean
-- `footer?`: boolean
+- `columns?`: DuTableColumn<R>[] · `rows?`: R[] — generic over the row type; `row.id` must be unique and stable (selection and expansion are keyed by it)
+- `caption?` / `hideCaption?` — the caption also names the scroll region (focusable, so a wide table scrolls by keyboard)
+- `zebra?`, `pinRows?`, `pinCols?`, `size?`: DuTableSize, `header?` (default `true`), `footer?`
+- Classes: `customClass` (`<table>`), `wrapperClass` (scroll container), `rowClass?`: string | (row, index) => string, and `toolbarClass`, `headClass` (`<thead>`), `footerClass` (range + pagination bar) — each **replaces** its part's default (see `TABLE_PART_CLASSES` / `TABLE_PANEL_CLASSES`) so two utilities never fight
+- `panel?`: boolean — the bordered-panel preset: rounded bordered surface, toolbar and footer separated by borders with `p-4`, tinted `<thead>`, hovered rows, the sorted header in full colour, and `loadingOverlay` on. Theme tokens only, so it follows the app's daisyUI theme
+- Sorting: `sort?`: DuTableSort[] (`v-model:sort`), `sortMode?`: `'single'` | `'multiple'`, `sortRequired?` (asc ↔ desc, never cleared), `sortAnnouncement?`: (label, direction | null) => string — click cycles none → asc → desc → none; empty values sort last both ways
+- Selection: `selectionMode?`: `'none'` | `'single'` (radios) | `'multiple'` (checkboxes + select-all), `selected?`: id[] (`v-model:selected`), `isRowSelectable?`, `selectAllLabel?`, `selectRowLabel?`, `selectColumnLabel?` — select-all covers the **visible page**; selections on other pages are kept
+- Expansion: needs the `expanded` slot; `expanded?`: id[] (`v-model:expanded`), `expandLabel?`, `expandColumnLabel?`
+- Search: `search?` (`v-model:search`), `searchable?` (built-in field), `searchLabel?`, `searchPlaceholder?`, `filter?`: (row, query) => boolean — default match: any searchable column's shown text contains the query, ignoring case and accents. A new query returns to page 1
+- Paging: `pageSize?` (`v-model:page-size`; absent = no paging, or the first of `pageSizeOptions`), `pageSizeOptions?`: number[] (a native select, labelled by `pageSizeLabel?`), `page?` (`v-model:page`, 1-based), `total?` (manual mode), `rangeText?`: (start, end, total) => string, `paginationProps?`: Partial<DuPaginationProps> — handed to the embedded DuPagination (labels, `ariaLabel`, `variant`…); `modelValue`, `total` and `perPage` stay the table's. Changing the page size goes back to page 1
+- `manual?`: boolean
+- States: `loading?` (`aria-busy`; placeholder rows when there are no rows yet, dimmed rows otherwise), `loadingOverlay?` (a spinner over the rows instead of dimming them; default with `panel`), `loadingRows?` (5), `loadingText?`, `emptyText?`, `noResultsText?`
 
-**Types :**
+The scroll container becomes focusable (`tabindex="0"`, and a `region` named by
+the caption) **only while the table overflows** — measured after mount and on
+resize. A table that fits is not a dead tab stop; the server render never is.
+
+Every state follows §5: omit the prop and the table owns it; pass it and the
+table only emits. Default UI strings are English and all overridable.
+
+**Emits:** `update:sort`, `update:selected`, `update:expanded`, `update:search`,
+`update:page`, `update:pageSize`, `row-click(row, event)` — not fired for clicks on a control
+inside the row. A `<tr>` is not focusable: whatever a row click does must also
+be reachable through a link or button in the row.
+
+**Slots:** `caption`, `toolbar` ({ search, setSearch, selected, clearSelection, total }),
+`header` (whole `<thead>` content), `header-{key}` ({ column, direction }),
+`sort-icon` ({ column, direction }), `select-all` ({ state, toggle }),
+`select` ({ row, selected, selectable, toggle, controlProps }),
+`expand-toggle` ({ row, expanded, toggle, buttonProps }), `cell-{key}`
+({ row, column, value, index }), `expanded` ({ row, index }), `empty`
+({ searching }), `loading` ({ colspan, count }), `loading-overlay`, `footer`, `footer-{key}`,
+`pagination` ({ page, pageCount, pageSize, total, setPage, setPageSize, rangeText }), default (manual mode).
+
+**Exposes:** `toggleSort(key)`, `toggleRow(row)`, `toggleAll()`, `clearSelection()`, `toggleExpanded(row)`, `setPageSize(size)`
+
+**Types:**
 ```typescript
-export interface DuTableColumn {
-  key: string
+export interface DuTableColumn<R extends DuTableRowBase = DuTableRow> {
+  key: Extract<keyof R, string> | (string & {})  // unique; also names the slots
   label: string
-  customClass?: string
+  accessor?: (row: R) => unknown                  // value for display, sort and search
+  format?: (value: unknown, row: R) => string     // shown text (and searched text)
+  sortable?: boolean
+  sortFn?: (a: R, b: R) => number                 // ascending; flipped for desc
+  searchable?: boolean                            // default true
+  filter?: (value: unknown, row: R, query: string) => boolean
+  align?: 'start' | 'center' | 'end'
+  width?: string
+  rowHeader?: boolean                             // <th scope="row">, names the row's controls
+  customClass?: string                            // header/footer cell (same as headerClass)
+  headerClass?: string
+  cellClass?: string | ((row: R) => string | undefined)
 }
 
-export interface DuTableRow {
-  id: string | number
-  [key: string]: unknown
-  customClass?: string
-}
+export interface DuTableRowBase { id: string | number; customClass?: string }
+export interface DuTableSort { key: string; direction: 'asc' | 'desc' }
 ```
+
+The row callbacks are typed bivariantly (method syntax), so a
+`DuTableColumn<Invoice>[]` can be passed wherever columns over a wider row are
+expected.
+
+Styling hooks: `tr[data-selected]`, `tr[data-expanded]`, `tr[data-detail]`
+(the detail row), `button[data-sort="asc|desc|none"]`.
+
+### Recipes
+
+One preset ships (`panel`); everything else is a recipe on the hooks above.
+A preset is API to keep stable; a recipe costs nothing and shows the way.
+
+**Server-side panel, in French** (story *Panel — server-side (FR)*): the page
+owns the state (often the URL) and fetches; the table only emits.
+
+```vue
+<DuTable
+  v-model:sort="state.sort" v-model:page="state.page" v-model:page-size="state.perPage"
+  :columns="columns" :rows="result.items" :total="result.total" :loading="loading"
+  manual panel sort-required hide-caption
+  :page-size-options="[10, 25, 50, 100]" page-size-label="par page"
+  :range-text="(s, e, t) => `${s}–${e} sur ${t}`"
+  :pagination-props="{ ariaLabel: 'Pages des inscrits', previousAriaLabel: 'Page précédente', nextAriaLabel: 'Page suivante' }"
+  :sort-announcement="(label, d) => `Trié par ${label}, ${d === 'asc' ? 'croissant' : 'décroissant'}`"
+  loading-text="Chargement…"
+>
+  <template #caption>Inscrits, triés par …</template>
+  <template #toolbar><!-- DuLabel + search icon + DuInputField, DuSelect filters, reset --></template>
+  <template #cell-bib="{ row }">…</template>
+  <template #empty>{{ hasFilters ? 'Aucun résultat.' : 'Aucun inscrit.' }}</template>
+</DuTable>
+```
+
+Filters the table does not know about (DuSelects in the toolbar) must reset
+the page themselves: `watch(filters, () => { state.page = 1 })`. Sort and page
+size already do.
+
+**The panel look without the preset**, to tweak one part:
+
+```vue
+<DuTable
+  class="rounded-box border border-base-300 bg-base-100 shadow-xs overflow-hidden"
+  toolbar-class="flex flex-wrap items-center gap-3 border-b border-base-300 p-4"
+  head-class="bg-base-200/60"
+  footer-class="flex items-center justify-between border-t border-base-300 p-4"
+  row-class="transition-colors hover:bg-base-200/50"
+  loading-overlay
+/>
+```
+
+**Colour the sorted column** (an app token, global CSS):
+
+```css
+.table button[data-sort="asc"], .table button[data-sort="desc"] { color: var(--color-primary-ink); }
+```
+
+**DuTableItem** (manual mode): `isHeader?`, `scope?` (`'col'` default on a
+header cell; `'row'`, `'colgroup'`, `'rowgroup'`), `colspan?`, `rowspan?`, `customClass?`.
 
 ---
 

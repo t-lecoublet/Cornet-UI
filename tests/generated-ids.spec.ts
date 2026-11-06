@@ -17,6 +17,7 @@ import DuDrawer from '../components/Layout/du-drawer/du-drawer.vue'
 import DuFilter from '../components/DataInput/du-filter/du-filter.vue'
 import DuRating from '../components/DataInput/du-rating/du-rating.vue'
 import DuSelect from '../components/DataInput/du-select/du-select.vue'
+import DuTable from '../components/DataDisplay/du-table/du-table.vue'
 
 /** Reads the generated value out of one freshly mounted instance. */
 type Probe = (wrapper: ReturnType<typeof mount>) => string | undefined
@@ -65,6 +66,14 @@ const cases: Case[] = [
     component: DuSelect,
     props: { options: ['a', 'b'] },
     read: (w) => w.find('[role="listbox"], [aria-controls]').attributes('aria-controls'),
+  },
+  {
+    name: 'DuTable',
+    component: DuTable,
+    // The radio group of single selection: shared, it would let picking a row
+    // in one table clear the pick in the other.
+    props: { columns: [{ key: 'name', label: 'Name' }], rows: [{ id: 1, name: 'Ada' }], selectionMode: 'single' },
+    read: (w) => w.find('input[type="radio"]').attributes('name'),
   },
 ]
 

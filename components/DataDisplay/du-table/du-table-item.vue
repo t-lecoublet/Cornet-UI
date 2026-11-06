@@ -6,6 +6,7 @@ withDefaults(
   {
     customClass: "",
     isHeader: false,
+    scope: "col",
     colspan: undefined,
     rowspan: undefined,
   },
@@ -16,9 +17,10 @@ withDefaults(
   <component
     :is="isHeader ? 'th' : 'td'"
     :class="customClass"
+    :scope="isHeader ? scope : undefined"
     :colspan="colspan"
     :rowspan="rowspan"
   >
     <slot></slot>
   </component>
-</template> 
+</template>
