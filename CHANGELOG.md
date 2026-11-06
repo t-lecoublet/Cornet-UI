@@ -3,6 +3,17 @@
 All notable changes to Cornet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/) and the project follows [Semantic Versioning](https://semver.org/).
 
+## [0.1.0-beta.35]
+
+### Fixed
+
+- `DuTable`: with `pinCols`, every column header stuck to the left edge and
+  they piled on top of each other once the table scrolled — daisyUI pins every
+  `<th>` of a row, and the column headers are `<th>`. Only the `rowHeader`
+  columns stay pinned now; mark the column that names each row `rowHeader` to
+  pin it. In manual mode, use `<td>` (or `class="static"`) for header cells
+  that must not stick.
+
 ## [0.1.0-beta.34]
 
 ### Upgrading from beta.33

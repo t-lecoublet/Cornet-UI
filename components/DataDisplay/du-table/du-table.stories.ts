@@ -132,9 +132,17 @@ export const PinnedRows: Story = {
   }),
 }
 
+/** Only `rowHeader` columns are pinned: they render as `<th scope="row">`. */
 export const PinnedColumns: Story = {
   args: {
     pinCols: true,
+    wrapperClass: "max-w-md",
+    columns: [
+      { key: "name", label: "Name", rowHeader: true },
+      { key: "job", label: "Job" },
+      { key: "status", label: "Status" },
+      { key: "action", label: "Action" },
+    ],
   },
 }
 

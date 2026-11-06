@@ -445,6 +445,29 @@ describe('DuTable — scrolling', () => {
   })
 })
 
+describe('DuTable — pinCols', () => {
+  it('keeps only the row-header columns pinned, header and footer included', () => {
+    // daisyUI pins every <th> of a pinned-columns table. Without this the
+    // column headers — all <th> — would stack at the left edge.
+    const wrapper = mount(DuTable, {
+      props: { columns: sortable, rows, pinCols: true, footer: true, selectionMode: 'multiple' },
+    })
+    const [select, name, total] = wrapper.findAll('thead th')
+    expect(select!.classes()).toContain('static')
+    expect(name!.classes()).not.toContain('static')
+    expect(total!.classes()).toContain('static')
+
+    const footer = wrapper.findAll('tfoot th')
+    expect(footer[0]!.classes()).not.toContain('static')
+    expect(footer[1]!.classes()).toContain('static')
+  })
+
+  it('leaves header cells alone without pinCols', () => {
+    const wrapper = mount(DuTable, { props: { columns: sortable, rows } })
+    expect(wrapper.findAll('thead th').some((th) => th.classes().includes('static'))).toBe(false)
+  })
+})
+
 describe('DuTable — sortRequired', () => {
   it('alternates ascending and descending without clearing', async () => {
     const wrapper = mount(DuTable, { props: { columns: sortable, rows, sortRequired: true } })

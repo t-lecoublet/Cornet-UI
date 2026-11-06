@@ -307,7 +307,7 @@ them, and `total` drives the pagination.
 **Props:**
 - `columns?`: DuTableColumn<R>[] · `rows?`: R[] — generic over the row type; `row.id` must be unique and stable (selection and expansion are keyed by it)
 - `caption?` / `hideCaption?` — the caption also names the scroll region (focusable, so a wide table scrolls by keyboard)
-- `zebra?`, `pinRows?`, `pinCols?`, `size?`: DuTableSize, `header?` (default `true`), `footer?`
+- `zebra?`, `pinRows?`, `pinCols?`, `size?`: DuTableSize, `header?` (default `true`), `footer?` — `pinCols` pins the `rowHeader` columns only: daisyUI pins every `<th>`, so the other header and footer cells get `static`
 - Classes: `customClass` (`<table>`), `wrapperClass` (scroll container), `rowClass?`: string | (row, index) => string, and `toolbarClass`, `headClass` (`<thead>`), `footerClass` (range + pagination bar) — each **replaces** its part's default (see `TABLE_PART_CLASSES` / `TABLE_PANEL_CLASSES`) so two utilities never fight
 - `panel?`: boolean — the bordered-panel preset: rounded bordered surface, toolbar and footer separated by borders with `p-4`, tinted `<thead>`, hovered rows, the sorted header in full colour, and `loadingOverlay` on. Theme tokens only, so it follows the app's daisyUI theme
 - Sorting: `sort?`: DuTableSort[] (`v-model:sort`), `sortMode?`: `'single'` | `'multiple'`, `sortRequired?` (asc ↔ desc, never cleared), `sortAnnouncement?`: (label, direction | null) => string — click cycles none → asc → desc → none; empty values sort last both ways

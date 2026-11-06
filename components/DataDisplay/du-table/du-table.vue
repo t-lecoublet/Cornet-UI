@@ -155,6 +155,14 @@ const tableClass = computed(() => [
   props.customClass,
 ])
 
+// daisyUI's `table-pin-cols` pins every <th> of every row, header rows
+// included. Column headers are <th> here — they must be, to carry `scope` — so
+// they would all stick to the left edge and pile on top of each other. Only
+// the row-header columns (`rowHeader`, rendered as <th> in the body) stay
+// pinned; every other header and footer cell is put back in the flow.
+const unpinned = computed(() => (props.pinCols ? "static" : undefined))
+const unpinnedFor = (column: DuTableColumn<R>) => (column.rowHeader ? undefined : unpinned.value)
+
 const hasSelection = computed(() => props.selectionMode !== "none")
 const expandable = computed(() => slots.expanded !== undefined)
 const colspan = computed(
@@ -277,7 +285,7 @@ defineExpose({ toggleSort, toggleRow, toggleAll, clearSelection, toggleExpanded,
             <thead v-if="$slots.header || header" :class="headClassValue">
               <slot v-if="$slots.header" name="header"></slot>
               <tr v-else>
-                <th v-if="hasSelection" scope="col" class="w-0">
+                <th v-if="hasSelection" scope="col" :class="['w-0', unpinned]">
                   <slot name="select-all" :state="selectAllState" :toggle="toggleAll">
                     <DuCheckbox
                       v-if="selectionMode === 'multiple'"
@@ -291,7 +299,7 @@ defineExpose({ toggleSort, toggleRow, toggleAll, clearSelection, toggleExpanded,
                     <span v-else class="sr-only">{{ selectColumnLabel }}</span>
                   </slot>
                 </th>
-                <th v-if="expandable" scope="col" class="w-0">
+                <th v-if="expandable" scope="col" :class="['w-0', unpinned]">
                   <span class="sr-only">{{ expandColumnLabel }}</span>
                 </th>
                 <th
@@ -299,7 +307,7 @@ defineExpose({ toggleSort, toggleRow, toggleAll, clearSelection, toggleExpanded,
                   :key="column.key"
                   scope="col"
                   v-bind="headerCellProps(column)"
-                  :class="[alignClass(column), column.customClass, column.headerClass]"
+                  :class="[alignClass(column), unpinnedFor(column), column.customClass, column.headerClass]"
                   :style="column.width ? { width: column.width } : undefined"
                 >
                   <button
@@ -449,7 +457,7 @@ defineExpose({ toggleSort, toggleRow, toggleAll, clearSelection, toggleExpanded,
                   v-for="column in columns"
                   :key="column.key"
                   scope="col"
-                  :class="[alignClass(column), column.customClass, column.headerClass]"
+                  :class="[alignClass(column), unpinnedFor(column), column.customClass, column.headerClass]"
                 >
                   <slot :name="`footer-${column.key}`" :column="column">
                     {{ column.label }}

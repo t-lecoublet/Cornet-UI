@@ -70,7 +70,7 @@ falls and why.
 | DuStat | Simple | Pure slot-presence conditional wrapper. | Keep as is |
 | DuStats | Intermediate | Item-type resolution (component/image/HTML) for figure and actions. | Polish only |
 | DuStatus | Simple | Conditional markup plus class mapping. | Keep as is |
-| DuTable | Intermediate | Dynamic columns/rows vs manual-slot mode, purely structural. | Polish only |
+| DuTable | Rich | APG sortable table: search → sort → page, selection and expansion keyed by row id, a manual (server) mode, every state `v-model`-able, loading/empty states. | Facade over `core/table` |
 | DuTimeline | Intermediate | Non-trivial multi-layer fallback logic in `getLineClass` plus dynamic/manual modes. | Factorize later |
 
 ## DataInput
@@ -118,7 +118,7 @@ falls and why.
 | DuLink | Simple | Pure class-mapping wrapper. | Keep as is |
 | DuMenu | Rich | Two roles (nav list vs APG menu), roving tabindex, typeahead, collapsible submenus, recursive rendering through a context. | Facade over `core/navigation` |
 | DuNavbar | Simple | Pure slot-presence layout wrapper. | Keep as is |
-| DuPagination | Intermediate (in truth) | No internal state/modelValue/keyboard — just a page-range/ellipsis algorithm. | Split (composable: `usePaginationPages`) |
+| DuPagination | Intermediate (in truth) | A page-range/ellipsis algorithm, plus its own page when uncontrolled (`core/shared/useControllableState`); no keyboard nav of its own. | Split (composable: `usePaginationPages`) |
 | DuStepItem | Simple | Pure class-composition wrapper. | Keep as is |
 | DuSteps | Intermediate | Dynamic-items vs manual mode with per-index class resolution. | Polish only |
 | DuTabs | Rich | APG tablist with roving tabindex, `v-model` by stable value, automatic/manual activation. | Facade over `core/navigation` |
@@ -128,11 +128,12 @@ falls and why.
 > **Rewritten after the Phase 2–5 refactor.** Nine components moved from
 > `Simple`/`Intermediate` to `Rich` because they gained the state they had been
 > faking with CSS — a dropdown that only toggled a class, tabs driven by hidden
-> radios, a toast that was a positioned box. The classification below describes
-> what they are now.
+> radios, a toast that was a positioned box. DuTable followed in beta.34, when
+> sorting, selection and paging landed on `core/table`. The classification
+> below describes what they are now.
 
 - **Simple:** presentational wrappers — no state, no keyboard, no ARIA beyond a name. No action needed.
 - **Intermediate:** rendering modes and class resolution, but nothing to extract.
-- **Rich, built on `components/core/`:** DuSelect and DuSearch (`core/combobox`), DuDropdown and DuTooltip (`core/popover` + `core/positioning`), DuMenu and DuTabs (`core/navigation`), DuDrawer (`core/popover` + `core/focus`), DuAccordion and DuCollapse (`core/shared/useControllableState`), DuInputField (`core/shared/useNativeValidation`), DuToast (`composables/useToasts`).
+- **Rich, built on `components/core/`:** DuSelect and DuSearch (`core/combobox`), DuDropdown and DuTooltip (`core/popover` + `core/positioning`), DuMenu and DuTabs (`core/navigation`), DuDrawer (`core/popover` + `core/focus`), DuAccordion and DuCollapse (`core/shared/useControllableState`), DuTable (`core/table`), DuInputField (`core/shared/useNativeValidation`), DuToast (`composables/useToasts`).
 - **Rich, with their own local composables:** DuFab, DuRating, DuPagination, DuCountdown, DuDrawer — logic that is genuinely theirs (class derivation, a page-range algorithm, a timer), which is what a local composable is for.
 - **`Factorize later`:** DuTimeline (multi-layer line-class fallback logic).
