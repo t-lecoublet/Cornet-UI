@@ -87,6 +87,7 @@
 - [x] **4.4** — **DuRating**: the radio group is kept (it is the right pattern, and the browser gives the arrows) and now named, with `itemLabel` naming each star. `readonly` renders plain elements exposed as `role="img"` with the value as its name, rather than a row of disabled radios
 - [x] **4.5** — **DuRange**: `valueText` → `aria-valuetext`, `ariaLabel` / `ariaLabelledby`, `ticks` → a `<datalist>`. The keyboard is the browser's and stays that way. Dual thumb remains out of scope — it needs a `core/` primitive, not a prop
 - [x] **4.6** — **DuPagination**: checked, nothing to do. The labelled nav landmark, `aria-current="page"`, i18n labels and non-focusable `aria-hidden` ellipses were all already there, with 16 tests and no `any`
+  - ⚠️ *Correction (5.6)*: "nothing to do" missed §5. `modelValue` defaulted to `1` and the clicks only emitted, so a pagination without `v-model` never changed page. It now goes through `useControllableState`
 
 ## Phase 5 — Data display & polish
 
@@ -94,6 +95,8 @@
 - [x] **5.2** — **DuCarousel**: `role="region"` + `aria-roledescription="carousel"` + a name, a named `role="group"` per slide, `tabindex="0"` on the strip (a scrollable region nothing inside can focus cannot be scrolled by keyboard at all), and optional named prev/next buttons. Auto-play was never implemented, so its pause button is not owed yet — the day it lands, it is mandatory (WCAG 2.2.2)
 - [x] **5.3** — Hygiene pass: `role="timer"` on the countdown, the missing bounds on the radial progressbar, `aria-current="step"` on steps, DuDock as a named `<nav>` with `aria-current`, and a `label` on DuLoading / DuSkeleton / DuStatus which are `aria-hidden` without one. Plus the form plumbing: one error surface over native validation (`useNativeValidation`), and a DuFileInput that finally reports what was chosen
 - [x] **5.5** — `tests/template-root-invariant.spec.ts`: no template may open with a comment. It adds a vnode, Vue only inherits attributes onto a single root, and the component then silently drops a consumer's `class` — in development only, since production strips comments. Nine components had one
+- [x] **5.6** — **DuTable, rich**: the `core/table` engine the 5.1 entry called for (one closure: search → sort → page, selection and expansion keyed by row id, ARIA prop bags), and a facade with client-side or `manual` (server) data, sorting with `aria-sort` and a polite announcement, single/multiple selection with a page-scoped select-all, expandable detail rows, built-in search, paging through DuPagination, loading and empty states, a row-click that ignores the controls inside the row, and a slot for every part. Every state is `v-model`-able (§5)
+  - Next batch, deliberately left out: shift-click multi-sort and range selection, column visibility / resizing / reordering, virtualisation, inline editing, grouping and aggregates, CSV export, `role="grid"` keyboard navigation, persisted state
 - [x] **5.4** — Coverage: `components/core/` is at 96% against an 80% CI threshold, scoped there rather than globally because it is the only code with no styling to look at and no story to click through. Every interactive facade has black-box tests; `tests/ssr.spec.ts` renders all 61 components on a server, twice, and `tests/api-consistency.spec.ts` checks the names rather than the behaviour
 
 ## Phase 6 — Road to v1.0

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import TableExamples from './examples/TableExamples.vue'
 import {
   // Actions
   DuButton,
@@ -23,7 +24,6 @@ import {
   DuStat,
   DuStats,
   DuStatus,
-  DuTable,
   DuTimeline,
   // Data Input
   DuCheckbox,
@@ -121,22 +121,11 @@ const chatItems = [
   { message: 'Sure! Check out our documentation below.', placement: 'start' as const, variant: 'primary' as const },
 ]
 
-const tableColumns = [
-  { key: 'id', label: 'ID' },
-  { key: 'name', label: 'Name' },
-  { key: 'role', label: 'Role' },
-]
-
-const tableRows = [
-  { id: 1, name: 'Alice', role: 'Developer' },
-  { id: 2, name: 'Bob', role: 'Designer' },
-  { id: 3, name: 'Charlie', role: 'Manager' },
-]
-
+// No `middle`: the default icon shows each step's validity (✓ green / red).
 const timelineItems = [
-  { start: '2024', middle: '●', end: 'Project Started' },
-  { start: '2025', middle: '●', end: 'Beta Release' },
-  { start: '2026', middle: '●', end: 'Version 1.0' },
+  { start: '2024', end: 'Project Started' },
+  { start: '2025', end: 'Beta Release' },
+  { start: '2026', end: 'Version 1.0' },
 ]
 
 const statsItems = [
@@ -296,8 +285,8 @@ const themesItems = [
   <div class="min-h-screen bg-base-100">
     <div class="fixed top-0 right-0 m-4 z-9999">
       <DuDropdown placement="end">
-        <template #trigger>
-          <DuButton size="sm">
+        <template #trigger="{ triggerProps }">
+          <DuButton size="sm" v-bind="triggerProps">
             Theme
             <svg width="12px" height="12px" class="inline-block h-2 w-2 fill-current opacity-60"
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
@@ -381,8 +370,8 @@ const themesItems = [
           <p class="text-base-content/70 mb-4">Dropdown menus with various placements.</p>
           <div class="flex flex-wrap gap-4">
             <DuDropdown>
-              <template #trigger>
-                <DuButton>Click me</DuButton>
+              <template #trigger="{ triggerProps }">
+                <DuButton v-bind="triggerProps">Click me</DuButton>
               </template>
               <DuMenu class="w-56">
                 <li><a>Item 1</a></li>
@@ -391,8 +380,8 @@ const themesItems = [
               </DuMenu>
             </DuDropdown>
             <DuDropdown hover>
-              <template #trigger>
-                <DuButton variant="secondary">Hover me</DuButton>
+              <template #trigger="{ triggerProps }">
+                <DuButton variant="secondary" v-bind="triggerProps">Hover me</DuButton>
               </template>
               <DuMenu class="w-56">
                 <li><a>Item 1</a></li>
@@ -581,16 +570,15 @@ const themesItems = [
         </DuCard>
 
         <!-- Table -->
-        <DuCard dash class="mb-6" title="DuTable">
-          <p class="text-base-content/70 mb-4">Data tables with sorting and styling options.</p>
-          <DuTable :columns="tableColumns" :rows="tableRows" zebra header />
-        </DuCard>
+        <TableExamples class="mb-6" />
 
         <div class="grid md:grid-cols-2 gap-6 mb-6">
           <!-- Timeline -->
           <DuCard dash class="mb-6" title="DuTimeline">
-            <p class="text-base-content/70 mb-4">Display events in chronological order.</p>
-            <DuTimeline :items="timelineItems" :valid-items="[true, true, false]" />
+            <!-- daisyUI grows a card's <p>; here the timeline takes the height
+                 the neighbouring card gives the row instead. -->
+            <p class="text-base-content/70 mb-4 grow-0">Display events in chronological order.</p>
+            <DuTimeline :items="timelineItems" :valid-items="[true, true, false]" boxed customClass="grow [&>li]:grow" />
           </DuCard>
 
           <!-- Stats -->
